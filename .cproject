@@ -97,6 +97,7 @@
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings">
 				<externalSettings containerId="DWire;com.ti.ccstudio.buildDefinitions.MSP432.Debug.609017245" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier"/>
 				<externalSettings containerId="PQ9Bus;com.ti.ccstudio.buildDefinitions.MSP432.Debug.1621818276" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier"/>
+				<externalSettings containerId="INA226;com.ti.ccstudio.buildDefinitions.MSP432.Debug.2134378591" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier"/>
 			</storageModule>
 		</cconfiguration>
 		<cconfiguration id="com.ti.ccstudio.buildDefinitions.MSP432.Release.2110840172">
@@ -131,6 +132,7 @@
 									<listOptionValue builtIn="false" value="${CCS_BASE_ROOT}/arm/include"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/PQ9Bus"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/DWire"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/INA226"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/ti/devices/msp432p4xx/driverlib"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source"/>
 									<listOptionValue builtIn="false" value="${CCS_BASE_ROOT}/arm/include/CMSIS"/>
@@ -172,6 +174,7 @@
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_MSP432_SDK_INSTALL_DIR}/source/ti/devices/msp432p4xx/driverlib/ccs/msp432p4xx_driverlib.lib"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/PQ9Bus/${ConfigName}/PQ9Bus.lib"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/DWire/${ConfigName}/DWire.lib"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/INA226/${ConfigName}/INA226.lib"/>
 									<listOptionValue builtIn="false" value="${INHERITED_LIBRARIES}"/>
 								</option>
 								<option id="com.ti.ccstudio.buildDefinitions.MSP432_18.12.linkerID.MAP_FILE.1513386774" name="Link information (map) listed into &lt;file&gt; (--map_file, -m)" superClass="com.ti.ccstudio.buildDefinitions.MSP432_18.12.linkerID.MAP_FILE" value="${ProjName}.map" valueType="string"/>
@@ -196,6 +199,7 @@
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings">
 				<externalSettings containerId="DWire;com.ti.ccstudio.buildDefinitions.MSP432.Release.1890536172" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier"/>
 				<externalSettings containerId="PQ9Bus;com.ti.ccstudio.buildDefinitions.MSP432.Release.670474376" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier"/>
+				<externalSettings containerId="INA226;com.ti.ccstudio.buildDefinitions.MSP432.Release.845204607" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier"/>
 			</storageModule>
 		</cconfiguration>
 	</storageModule>

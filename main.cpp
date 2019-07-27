@@ -4,24 +4,18 @@
 DWire i2c0(0);
 INA226 INAbus0(i2c0, 0x40);
 INA226 INAbus1(i2c0, 0x49);
-PQ9Bus uart(3, GPIO_PORT_P9, GPIO_PIN0);
+// CDHS bus handler
+PQ9Bus pq9bus(3, GPIO_PORT_P9, GPIO_PIN0);
+// debug console handler
 DSerial serial;
+// services running in the system
+PingService ping;
+ResetService reset;
+SoftwareUpdateService SWUpdate;
+Service* services[] = { &ping, &reset, &SWUpdate };
+// command handler, dealing with all CDHS requests and responses
+PQ9CommandHandler cmdHandler(pq9bus, services, 3);
 
-#define BUFFER_LENGTH 8
-
-unsigned char Txdata[BUFFER_LENGTH];
-
-
-PQ9Frame rxBuffer, txBuffer;
-
-uint8_t addr;
-volatile bool dataReceived = false;
-
-void onReceive( PQ9Frame &newFrame)
-{
-    newFrame.copy(rxBuffer);
-    dataReceived = true;
-}
 
 /**
  * main.c
@@ -59,13 +53,10 @@ void main(void)
     INAbus1.setShuntResistor(0.04);
 
     serial.begin( );        //baud rate: 9600 bps
-    uart.begin(115200, 5);  //baud rate: 115200 bps
-    uart.setReceiveHandler(&onReceive);
+    pq9bus.begin(115200, 5);  //baud rate: 115200 bps
 
-    for (int i = 0; i < BUFFER_LENGTH; i++)
-    {
-        Txdata[i] = 'A';
-    }
+    // initialize the command handler: from now on, commands can be processed
+    cmdHandler.init();
 
     serial.println("Hello World");
 
@@ -75,22 +66,9 @@ void main(void)
 
     while(true)
     {
-        if (dataReceived)
-        {
-            // copy the received buffer into the transmitter buffer
-            rxBuffer.copy(txBuffer);
+        cmdHandler.commandLoop();
 
-            // swap source and destination to respond
-            txBuffer.setDestination( rxBuffer.getSource() );
-            txBuffer.setSource( rxBuffer.getDestination() );
-
-            // transmit
-            uart.transmit( txBuffer );
-
-            // clear the flag, waiting for the next received command
-            dataReceived = false;
-
-            if (!INAbus0.getVoltage(v))
+            /*if (!INAbus0.getVoltage(v))
             {
                 serial.print("Voltage: ");
                 serial.print(v, DEC);
@@ -134,6 +112,7 @@ void main(void)
                 serial.println("Error reading voltage bus 1");
             }
             serial.println();
-        }
+            */
+
     }
 }

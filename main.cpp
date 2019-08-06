@@ -1,20 +1,30 @@
 
 #include "EPS.h"
 
+// I2C busses
 DWire i2c0(0);
+DWire BatteryBoardBus(3);
+
+// Battery bus
+//LTC2942 gasGauge(BatteryBoardBus);
+
 INA226 INAbus0(i2c0, 0x40);
 INA226 INAbus1(i2c0, 0x49);
 // CDHS bus handler
 PQ9Bus pq9bus(3, GPIO_PORT_P9, GPIO_PIN0);
+
 // debug console handler
 DSerial serial;
 // services running in the system
+EPSHousekeepingService hk;
 PingService ping;
 ResetService reset;
 SoftwareUpdateService SWUpdate;
-Service* services[] = { &ping, &reset, &SWUpdate };
+TestService test;
+Service* services[] = { &hk, &ping, &reset, &SWUpdate, &test };
+
 // command handler, dealing with all CDHS requests and responses
-PQ9CommandHandler cmdHandler(pq9bus, services, 3);
+PQ9CommandHandler cmdHandler(pq9bus, services, 5);
 
 
 /**
@@ -53,7 +63,7 @@ void main(void)
     INAbus1.setShuntResistor(0.04);
 
     serial.begin( );        //baud rate: 9600 bps
-    pq9bus.begin(115200, 5);  //baud rate: 115200 bps
+    pq9bus.begin(115200, 2);  //baud rate: 115200 bps
 
     // initialize the command handler: from now on, commands can be processed
     cmdHandler.init();
@@ -64,11 +74,23 @@ void main(void)
     signed short i = 0;
     unsigned short p = 0;
 
+    // TODO
+    //gasGauge.init(Q, R, I);
+
+    int counter = 0;
+    int c = 0;
     while(true)
     {
         cmdHandler.commandLoop();
 
-            /*if (!INAbus0.getVoltage(v))
+        // hack to simulate timer to acquire telemetry
+        if (counter >= 1400000)
+        {
+            counter = 0;
+            serial.println("Acquiring telemetry....");
+
+            /*serial.println("Gas Gauge: ");
+            if (!gasGauge.readVoltage(v))
             {
                 serial.print("Voltage: ");
                 serial.print(v, DEC);
@@ -77,6 +99,18 @@ void main(void)
             else
             {
                 serial.println("Error reading voltage bus 0");
+            }*/
+
+
+            if (!INAbus0.getVoltage(v))
+            {
+                serial.print("Voltage: ");
+                serial.print(v, DEC);
+                serial.println(" mV");
+            }
+            else
+            {
+                serial.println("Error reading voltage on bus 0");
             }
 
             if (!INAbus0.getCurrent(i))
@@ -87,32 +121,15 @@ void main(void)
             }
             else
             {
-                serial.println("Error reading current bus 0");
+                serial.println("Error reading current on bus 0");
             }
+            EPSTelemetryContainer *tc = static_cast<EPSTelemetryContainer*>(hk.getContainerToWrite());
+            tc->setIntCurrent(i);
+            tc->setIntVoltage(v);
+            hk.stageTelemetry();
+        }
 
-            if (!INAbus0.getPower(p))
-            {
-                serial.print("Power: ");
-                serial.print(p, DEC);
-                serial.println(" mW");
-            }
-            else
-            {
-                serial.println("Error reading power bus 0");
-            }
-
-            if (!INAbus1.getVoltage(v))
-            {
-                serial.print("Voltage: ");
-                serial.print(v, DEC);
-                serial.println(" mV");
-            }
-            else
-            {
-                serial.println("Error reading voltage bus 1");
-            }
-            serial.println();
-            */
+        counter++;
 
     }
 }

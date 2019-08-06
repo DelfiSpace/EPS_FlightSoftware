@@ -5,6 +5,7 @@
 	<projects>
 		<project>DWire</project>
 		<project>INA226</project>
+		<project>LTC2942</project>
 		<project>PQ9Bus</project>
 	</projects>
 	<buildSpec>

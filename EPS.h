@@ -28,4 +28,6 @@
 
 #define FCLOCK 48000000
 
+#define EPS_ADDRESS     2
+
 #endif /* EPS_H_ */

@@ -89,6 +89,11 @@ public:
     void setSAXmVoltage(unsigned short ushort);
     bool getSAXmStatus();
     void setSAXmStatus(bool bval);
+
+    unsigned short getGGVoltage();
+    void setGGVoltage(unsigned short ushort);
+    bool getGGStatus();
+    void setGGStatus(bool bval);
 };
 
 #endif /* EPSTELEMETRYCONTAINER_H_ */

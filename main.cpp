@@ -7,7 +7,7 @@ DWire SolarPanelsBus(1);
 DWire BatteryBoardBus(2);
 
 // Battery bus
-//LTC2942 gasGauge(BatteryBoardBus);
+LTC2942 gasGauge(BatteryBoardBus);
 
 // internal power busses
 INA226 internalBus(I2Cinternal, 0x48);
@@ -100,7 +100,7 @@ void main(void)
     // initialize the command handler: from now on, commands can be processed
     cmdHandler.init();
 
-    //gasGauge.init(750, 5, 1500);            //Battery capacity: 750mAh, Rsense: 5mOhm, Imax: 1500mA
+    gasGauge.init(750, 5, 1500);            //Battery capacity: 750mAh, Rsense: 5mOhm, Imax: 1500mA
 
     MAP_GPIO_setAsPeripheralModuleFunctionInputPin( GPIO_PORT_P4, GPIO_PIN0,
                                              GPIO_PRIMARY_MODULE_FUNCTION );
@@ -131,11 +131,16 @@ void main(void)
             unsigned short v = 0;
             signed short i = 0;
 
+            // measure the gas gauge
+            tc->setGGStatus(!gasGauge.getVoltage(v));
+            tc->setGGVoltage(v);
+
+            // TODO: temperature makes no sense
             /*serial.println("Gas Gauge: ");
-            if (!gasGauge.readVoltage(v))
+            if (!gasGauge.getTemperature(i))
             {
                 serial.print("Voltage: ");
-                serial.print(v, DEC);
+                serial.print(i & 0xFFFF, DEC);
                 serial.println(" mV");
             }
             else

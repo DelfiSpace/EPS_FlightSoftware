@@ -127,6 +127,17 @@ void EPSTelemetryContainer::setSAXmStatus(bool bval)
     telemetry[7] |= bval ? 0x20 : 0x00;
 }
 
+bool EPSTelemetryContainer::getGGStatus()
+{
+    return ((telemetry[7] & 0x40) != 0);
+}
+
+void EPSTelemetryContainer::setGGStatus(bool bval)
+{
+    telemetry[7] &= (~0x40);
+    telemetry[7] |= bval ? 0x40 : 0x00;
+}
+
 unsigned short EPSTelemetryContainer::getIntBCurrent()
 {
     unsigned short ushort;
@@ -405,4 +416,18 @@ void EPSTelemetryContainer::setSAXmVoltage(unsigned short ushort)
 {
     telemetry[31] = ((unsigned char *)&ushort)[1];
     telemetry[32] = ((unsigned char *)&ushort)[0];
+}
+
+unsigned short EPSTelemetryContainer::getGGVoltage()
+{
+    unsigned short ushort;
+    ((unsigned char *)&ushort)[1] = telemetry[49];
+    ((unsigned char *)&ushort)[0] = telemetry[50];
+    return ushort;
+}
+
+void EPSTelemetryContainer::setGGVoltage(unsigned short ushort)
+{
+    telemetry[49] = ((unsigned char *)&ushort)[1];
+    telemetry[50] = ((unsigned char *)&ushort)[0];
 }

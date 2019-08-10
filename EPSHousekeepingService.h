@@ -10,7 +10,6 @@
 
 #include "HousekeepingService.h"
 #include "EPSTelemetryContainer.h"
-#include "DSerial.h"
 
 class EPSHousekeepingService: public HousekeepingService
 {
@@ -18,7 +17,14 @@ protected:
     EPSTelemetryContainer telemetryContainer[2];
 
 public:
-    virtual TelemetryContainer* getContainerToRead();
-    virtual TelemetryContainer* getContainerToWrite();
+    virtual TelemetryContainer* getContainerToRead()
+    {
+        return &(telemetryContainer[(telemetryIndex + 1) % 2]);
+    };
+
+    virtual TelemetryContainer* getContainerToWrite()
+    {
+        return &(telemetryContainer[telemetryIndex]);
+    };
 };
 #endif /* EPSHOUSEKEEPINGSERVICE_H_ */

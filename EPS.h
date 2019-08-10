@@ -15,6 +15,7 @@
 #include "DWire.h"
 #include "INA226.h"
 #include "LTC2942.h"
+#include "TMP100.h"
 #include "DSerial.h"
 #include "PQ9CommandHandler.h"
 #include "Service.h"

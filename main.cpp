@@ -25,6 +25,11 @@ INA226 SAYm(SolarPanelsBus, 0x41);
 INA226 SAXp(SolarPanelsBus, 0x42);
 INA226 SAXm(SolarPanelsBus, 0x43);
 
+TMP100 tempYp(SolarPanelsBus, 0x4B);
+TMP100 tempYm(SolarPanelsBus, 0x4F);
+TMP100 tempXp(SolarPanelsBus, 0x4D);
+TMP100 tempXm(SolarPanelsBus, 0x49);
+
 // CDHS bus handler
 PQ9Bus pq9bus(3, GPIO_PORT_P10, GPIO_PIN0);
 
@@ -93,6 +98,11 @@ void main(void)
     SAXp.setShuntResistor(0.04);
     SAXm.setShuntResistor(0.04);
 
+    tempYp.init(RESOLUTION_12_BIT);
+    tempYm.init(RESOLUTION_12_BIT);
+    tempXp.init(RESOLUTION_12_BIT);
+    tempXm.init(RESOLUTION_12_BIT);
+
     serial.begin( );                        // baud rate: 9600 bps
     pq9bus.begin(115200, EPS_ADDRESS);      // baud rate: 115200 bps
                                             // address EPS (2)
@@ -130,24 +140,13 @@ void main(void)
 
             unsigned short v = 0;
             signed short i = 0;
+            signed short t;
 
-            // measure the gas gauge
-            tc->setGGStatus(!gasGauge.getVoltage(v));
-            tc->setGGVoltage(v);
-
-            // TODO: temperature makes no sense
-            /*serial.println("Gas Gauge: ");
-            if (!gasGauge.getTemperature(i))
-            {
-                serial.print("Voltage: ");
-                serial.print(i & 0xFFFF, DEC);
-                serial.println(" mV");
-            }
-            else
-            {
-                serial.println("Error reading voltage bus 0");
-            }*/
-
+            // measure the battery board
+            tc->setBattStatus(!gasGauge.getVoltage(v));
+            tc->setBattVoltage(v);
+            tc->setBattStatus(!gasGauge.getTemperature(i));
+            tc->setBattTemperature(i);
 
             // measure the internal bus
             tc->setIntBStatus(!internalBus.getVoltage(v));
@@ -190,25 +189,34 @@ void main(void)
             tc->setSAYpVoltage(v);
             tc->setSAYpStatus(!SAYp.getCurrent(i));
             tc->setSAYpCurrent(i);
+            tc->setSAYpTmpStatus(!tempYp.getTemperature(t));
+            tc->setSAYpTemperature(t);
 
             // measure solar array Ym
             tc->setSAYmStatus(!SAYm.getVoltage(v));
             tc->setSAYmVoltage(v);
             tc->setSAYmStatus(!SAYm.getCurrent(i));
             tc->setSAYmCurrent(i);
+            tc->setSAYmTmpStatus(!tempYm.getTemperature(t));
+            tc->setSAYmTemperature(t);
 
             // measure solar array Xp
             tc->setSAXpStatus(!SAXp.getVoltage(v));
             tc->setSAXpVoltage(v);
             tc->setSAXpStatus(!SAXp.getCurrent(i));
             tc->setSAXpCurrent(i);
+            tc->setSAXpTmpStatus(!tempXp.getTemperature(t));
+            tc->setSAXpTemperature(t);
 
             // measure solar array Xm
             tc->setSAXmStatus(!SAXm.getVoltage(v));
             tc->setSAXmVoltage(v);
             tc->setSAXmStatus(!SAXm.getCurrent(i));
             tc->setSAXmCurrent(i);
+            tc->setSAXmTmpStatus(!tempXm.getTemperature(t));
+            tc->setSAXmTemperature(t);
 
+            // telemetry collected, store the values and prepare for next collection
             hk.stageTelemetry();
         }
 

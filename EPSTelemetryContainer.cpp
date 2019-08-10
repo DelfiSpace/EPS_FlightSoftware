@@ -127,18 +127,62 @@ void EPSTelemetryContainer::setSAXmStatus(bool bval)
     telemetry[7] |= bval ? 0x20 : 0x00;
 }
 
-bool EPSTelemetryContainer::getGGStatus()
+bool EPSTelemetryContainer::getBattStatus()
 {
     return ((telemetry[7] & 0x40) != 0);
 }
 
-void EPSTelemetryContainer::setGGStatus(bool bval)
+void EPSTelemetryContainer::setBattStatus(bool bval)
 {
     telemetry[7] &= (~0x40);
     telemetry[7] |= bval ? 0x40 : 0x00;
 }
 
-unsigned short EPSTelemetryContainer::getIntBCurrent()
+bool EPSTelemetryContainer::getSAYpTmpStatus()
+{
+    return ((telemetry[8] & 0x01) != 0);
+}
+
+void EPSTelemetryContainer::setSAYpTmpStatus(bool bval)
+{
+    telemetry[8] &= (~0x01);
+    telemetry[8] |= bval ? 0x01 : 0x00;
+}
+
+bool EPSTelemetryContainer::getSAYmTmpStatus()
+{
+    return ((telemetry[8] & 0x02) != 0);
+}
+
+void EPSTelemetryContainer::setSAYmTmpStatus(bool bval)
+{
+    telemetry[8] &= (~0x02);
+    telemetry[8] |= bval ? 0x02 : 0x00;
+}
+
+bool EPSTelemetryContainer::getSAXpTmpStatus()
+{
+    return ((telemetry[8] & 0x04) != 0);
+}
+
+void EPSTelemetryContainer::setSAXpTmpStatus(bool bval)
+{
+    telemetry[8] &= (~0x04);
+    telemetry[8] |= bval ? 0x04 : 0x00;
+}
+
+bool EPSTelemetryContainer::getSAXmTmpStatus()
+{
+    return ((telemetry[8] & 0x08) != 0);
+}
+
+void EPSTelemetryContainer::setSAXmTmpStatus(bool bval)
+{
+    telemetry[8] &= (~0x08);
+    telemetry[8] |= bval ? 0x08 : 0x00;
+}
+
+signed short EPSTelemetryContainer::getIntBCurrent()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[58];
@@ -146,7 +190,7 @@ unsigned short EPSTelemetryContainer::getIntBCurrent()
     return ushort;
 }
 
-void EPSTelemetryContainer::setIntBCurrent(unsigned short ushort)
+void EPSTelemetryContainer::setIntBCurrent(signed short ushort)
 {
     telemetry[58] = ((unsigned char *)&ushort)[1];
     telemetry[59] = ((unsigned char *)&ushort)[0];
@@ -166,7 +210,7 @@ void EPSTelemetryContainer::setIntBVoltage(unsigned short ushort)
     telemetry[61] = ((unsigned char *)&ushort)[0];
 }
 
-unsigned short EPSTelemetryContainer::getURBCurrent()
+signed short EPSTelemetryContainer::getURBCurrent()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[62];
@@ -174,7 +218,7 @@ unsigned short EPSTelemetryContainer::getURBCurrent()
     return ushort;
 }
 
-void EPSTelemetryContainer::setURBCurrent(unsigned short ushort)
+void EPSTelemetryContainer::setURBCurrent(signed short ushort)
 {
     telemetry[62] = ((unsigned char *)&ushort)[1];
     telemetry[63] = ((unsigned char *)&ushort)[0];
@@ -194,7 +238,7 @@ void EPSTelemetryContainer::setURBVoltage(unsigned short ushort)
     telemetry[65] = ((unsigned char *)&ushort)[0];
 }
 
-unsigned short EPSTelemetryContainer::getB1Current()
+signed short EPSTelemetryContainer::getB1Current()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[33];
@@ -202,7 +246,7 @@ unsigned short EPSTelemetryContainer::getB1Current()
     return ushort;
 }
 
-void EPSTelemetryContainer::setB1Current(unsigned short ushort)
+void EPSTelemetryContainer::setB1Current(signed short ushort)
 {
     telemetry[33] = ((unsigned char *)&ushort)[1];
     telemetry[34] = ((unsigned char *)&ushort)[0];
@@ -222,7 +266,7 @@ void EPSTelemetryContainer::setB1Voltage(unsigned short ushort)
     telemetry[42] = ((unsigned char *)&ushort)[0];
 }
 
-unsigned short EPSTelemetryContainer::getB2Current()
+signed short EPSTelemetryContainer::getB2Current()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[35];
@@ -230,7 +274,7 @@ unsigned short EPSTelemetryContainer::getB2Current()
     return ushort;
 }
 
-void EPSTelemetryContainer::setB2Current(unsigned short ushort)
+void EPSTelemetryContainer::setB2Current(signed short ushort)
 {
     telemetry[35] = ((unsigned char *)&ushort)[1];
     telemetry[36] = ((unsigned char *)&ushort)[0];
@@ -250,7 +294,7 @@ void EPSTelemetryContainer::setB2Voltage(unsigned short ushort)
     telemetry[44] = ((unsigned char *)&ushort)[0];
 }
 
-unsigned short EPSTelemetryContainer::getB3Current()
+signed short EPSTelemetryContainer::getB3Current()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[37];
@@ -258,7 +302,7 @@ unsigned short EPSTelemetryContainer::getB3Current()
     return ushort;
 }
 
-void EPSTelemetryContainer::setB3Current(unsigned short ushort)
+void EPSTelemetryContainer::setB3Current(signed short ushort)
 {
     telemetry[37] = ((unsigned char *)&ushort)[1];
     telemetry[38] = ((unsigned char *)&ushort)[0];
@@ -278,7 +322,7 @@ void EPSTelemetryContainer::setB3Voltage(unsigned short ushort)
     telemetry[46] = ((unsigned char *)&ushort)[0];
 }
 
-unsigned short EPSTelemetryContainer::getB4Current()
+signed short EPSTelemetryContainer::getB4Current()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[39];
@@ -286,7 +330,7 @@ unsigned short EPSTelemetryContainer::getB4Current()
     return ushort;
 }
 
-void EPSTelemetryContainer::setB4Current(unsigned short ushort)
+void EPSTelemetryContainer::setB4Current(signed short ushort)
 {
     telemetry[39] = ((unsigned char *)&ushort)[1];
     telemetry[40] = ((unsigned char *)&ushort)[0];
@@ -306,7 +350,7 @@ void EPSTelemetryContainer::setB4Voltage(unsigned short ushort)
     telemetry[48] = ((unsigned char *)&ushort)[0];
 }
 
-unsigned short EPSTelemetryContainer::getSAYpCurrent()
+signed short EPSTelemetryContainer::getSAYpCurrent()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[17];
@@ -314,7 +358,7 @@ unsigned short EPSTelemetryContainer::getSAYpCurrent()
     return ushort;
 }
 
-void EPSTelemetryContainer::setSAYpCurrent(unsigned short ushort)
+void EPSTelemetryContainer::setSAYpCurrent(signed short ushort)
 {
     telemetry[17] = ((unsigned char *)&ushort)[1];
     telemetry[18] = ((unsigned char *)&ushort)[0];
@@ -334,7 +378,7 @@ void EPSTelemetryContainer::setSAYpVoltage(unsigned short ushort)
     telemetry[26] = ((unsigned char *)&ushort)[0];
 }
 
-unsigned short EPSTelemetryContainer::getSAYmCurrent()
+signed short EPSTelemetryContainer::getSAYmCurrent()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[19];
@@ -342,7 +386,7 @@ unsigned short EPSTelemetryContainer::getSAYmCurrent()
     return ushort;
 }
 
-void EPSTelemetryContainer::setSAYmCurrent(unsigned short ushort)
+void EPSTelemetryContainer::setSAYmCurrent(signed short ushort)
 {
     telemetry[19] = ((unsigned char *)&ushort)[1];
     telemetry[20] = ((unsigned char *)&ushort)[0];
@@ -362,7 +406,7 @@ void EPSTelemetryContainer::setSAYmVoltage(unsigned short ushort)
     telemetry[28] = ((unsigned char *)&ushort)[0];
 }
 
-unsigned short EPSTelemetryContainer::getSAXpCurrent()
+signed short EPSTelemetryContainer::getSAXpCurrent()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[21];
@@ -370,7 +414,7 @@ unsigned short EPSTelemetryContainer::getSAXpCurrent()
     return ushort;
 }
 
-void EPSTelemetryContainer::setSAXpCurrent(unsigned short ushort)
+void EPSTelemetryContainer::setSAXpCurrent(signed short ushort)
 {
     telemetry[21] = ((unsigned char *)&ushort)[1];
     telemetry[22] = ((unsigned char *)&ushort)[0];
@@ -390,7 +434,7 @@ void EPSTelemetryContainer::setSAXpVoltage(unsigned short ushort)
     telemetry[30] = ((unsigned char *)&ushort)[0];
 }
 
-unsigned short EPSTelemetryContainer::getSAXmCurrent()
+signed short EPSTelemetryContainer::getSAXmCurrent()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[23];
@@ -398,7 +442,7 @@ unsigned short EPSTelemetryContainer::getSAXmCurrent()
     return ushort;
 }
 
-void EPSTelemetryContainer::setSAXmCurrent(unsigned short ushort)
+void EPSTelemetryContainer::setSAXmCurrent(signed short ushort)
 {
     telemetry[23] = ((unsigned char *)&ushort)[1];
     telemetry[24] = ((unsigned char *)&ushort)[0];
@@ -418,7 +462,7 @@ void EPSTelemetryContainer::setSAXmVoltage(unsigned short ushort)
     telemetry[32] = ((unsigned char *)&ushort)[0];
 }
 
-unsigned short EPSTelemetryContainer::getGGVoltage()
+unsigned short EPSTelemetryContainer::getBattVoltage()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[49];
@@ -426,8 +470,78 @@ unsigned short EPSTelemetryContainer::getGGVoltage()
     return ushort;
 }
 
-void EPSTelemetryContainer::setGGVoltage(unsigned short ushort)
+void EPSTelemetryContainer::setBattVoltage(unsigned short ushort)
 {
     telemetry[49] = ((unsigned char *)&ushort)[1];
     telemetry[50] = ((unsigned char *)&ushort)[0];
+}
+
+signed short EPSTelemetryContainer::getBattTemperature()
+{
+    unsigned short ushort;
+    ((unsigned char *)&ushort)[1] = telemetry[53];
+    ((unsigned char *)&ushort)[0] = telemetry[54];
+    return ushort;
+}
+
+void EPSTelemetryContainer::setBattTemperature(signed short ushort)
+{
+    telemetry[53] = ((unsigned char *)&ushort)[1];
+    telemetry[54] = ((unsigned char *)&ushort)[0];
+}
+
+signed short EPSTelemetryContainer::getSAYpTemperature()
+{
+    unsigned short ushort;
+    ((unsigned char *)&ushort)[1] = telemetry[9];
+    ((unsigned char *)&ushort)[0] = telemetry[10];
+    return ushort;
+}
+
+void EPSTelemetryContainer::setSAYpTemperature(signed short ushort)
+{
+    telemetry[9] = ((unsigned char *)&ushort)[1];
+    telemetry[10] = ((unsigned char *)&ushort)[0];
+}
+
+signed short EPSTelemetryContainer::getSAYmTemperature()
+{
+    unsigned short ushort;
+    ((unsigned char *)&ushort)[1] = telemetry[11];
+    ((unsigned char *)&ushort)[0] = telemetry[12];
+    return ushort;
+}
+
+void EPSTelemetryContainer::setSAYmTemperature(signed short ushort)
+{
+    telemetry[11] = ((unsigned char *)&ushort)[1];
+    telemetry[12] = ((unsigned char *)&ushort)[0];
+}
+
+signed short EPSTelemetryContainer::getSAXpTemperature()
+{
+    unsigned short ushort;
+    ((unsigned char *)&ushort)[1] = telemetry[13];
+    ((unsigned char *)&ushort)[0] = telemetry[14];
+    return ushort;
+}
+
+void EPSTelemetryContainer::setSAXpTemperature(signed short ushort)
+{
+    telemetry[13] = ((unsigned char *)&ushort)[1];
+    telemetry[14] = ((unsigned char *)&ushort)[0];
+}
+
+signed short EPSTelemetryContainer::getSAXmTemperature()
+{
+    unsigned short ushort;
+    ((unsigned char *)&ushort)[1] = telemetry[15];
+    ((unsigned char *)&ushort)[0] = telemetry[16];
+    return ushort;
+}
+
+void EPSTelemetryContainer::setSAXmTemperature(signed short ushort)
+{
+    telemetry[15] = ((unsigned char *)&ushort)[1];
+    telemetry[16] = ((unsigned char *)&ushort)[0];
 }

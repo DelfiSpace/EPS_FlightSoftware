@@ -38,7 +38,7 @@ DSerial serial;
 // services running in the system
 EPSHousekeepingService hk;
 PingService ping;
-ResetService reset;
+ResetService reset( GPIO_PORT_P5, GPIO_PIN0 );
 SoftwareUpdateService SWUpdate;
 TestService test;
 Service* services[] = { &hk, &ping, &reset, &SWUpdate, &test };
@@ -46,6 +46,15 @@ Service* services[] = { &hk, &ping, &reset, &SWUpdate, &test };
 // command handler, dealing with all CDHS requests and responses
 PQ9CommandHandler cmdHandler(pq9bus, services, 5);
 
+// system uptime
+unsigned long uptime = 0;
+volatile int counter = 0;
+
+void timerHandler(void)
+{
+    MAP_Timer32_clearInterruptFlag(TIMER32_0_BASE);
+    counter++;
+}
 
 /**
  * main.c
@@ -122,19 +131,37 @@ void main(void)
     MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P4, GPIO_PIN1 );
     MAP_GPIO_setAsOutputPin( GPIO_PORT_P4, GPIO_PIN1 );
 
-    serial.println("Hello World");
+    // initialize the reset handler
+    reset.init();
 
-    int counter = 0;
+    // Configuring Timer32 to FCLOCK (1s) of MCLK in periodic mode
+    MAP_Timer32_initModule(TIMER32_0_BASE, TIMER32_PRESCALER_1, TIMER32_32BIT,
+            TIMER32_PERIODIC_MODE);
+    MAP_Timer32_registerInterrupt(TIMER32_0_INTERRUPT, &timerHandler);
+    MAP_Timer32_setCount(TIMER32_0_BASE, FCLOCK);
+    MAP_Timer32_startTimer(TIMER32_0_BASE, false);
+
+    serial.println("Hello World");
 
     while(true)
     {
         cmdHandler.commandLoop();
 
         // hack to simulate timer to acquire telemetry approximately once per second
-        if (counter >= 1400000)
+        if (counter != 0)
         {
+            uptime ++;
+
+            // watchdog time window
+            // t_win typ = 22.5s max = 28s min = 16.8s
+            // tb_min 182ms tb max 542ms
+
+            // toggle WDI every 2 seconds
+            if (uptime %2 )
+            {
+                reset.kickHardwareWatchDog();
+            }
             counter = 0;
-            serial.println("Acquiring telemetry....");
 
             EPSTelemetryContainer *tc = static_cast<EPSTelemetryContainer*>(hk.getContainerToWrite());
 
@@ -142,11 +169,14 @@ void main(void)
             signed short i = 0;
             signed short t;
 
+            // set uptime in telemetry
+            tc->setUpTime(uptime);
+
             // measure the battery board
             tc->setBattStatus(!gasGauge.getVoltage(v));
             tc->setBattVoltage(v);
-            tc->setBattStatus(!gasGauge.getTemperature(i));
-            tc->setBattTemperature(i);
+            tc->setBattStatus(!gasGauge.getTemperature(t));
+            tc->setBattTemperature(t);
 
             // measure the internal bus
             tc->setIntBStatus(!internalBus.getVoltage(v));
@@ -220,7 +250,7 @@ void main(void)
             hk.stageTelemetry();
         }
 
-        counter++;
+        //MAP_PCM_gotoLPM0();
 
     }
 }

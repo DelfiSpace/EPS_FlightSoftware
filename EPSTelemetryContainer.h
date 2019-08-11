@@ -20,6 +20,9 @@ public:
     virtual int size();
     virtual unsigned char * getArray();
 
+    unsigned long getUpTime();
+    void setUpTime(unsigned long ulong);
+
     signed short getIntBCurrent();
     void setIntBCurrent(signed short ushort);
     unsigned short getIntBVoltage();

@@ -509,6 +509,20 @@ void EPSTelemetryContainer::setBattTemperature(signed short ushort)
     telemetry[54] = ((unsigned char *)&ushort)[0];
 }
 
+unsigned short EPSTelemetryContainer::getBattCapacity()
+{
+    unsigned short ushort;
+    ((unsigned char *)&ushort)[1] = telemetry[51];
+    ((unsigned char *)&ushort)[0] = telemetry[52];
+    return ushort;
+}
+
+void EPSTelemetryContainer::setBattCapacity(unsigned short ushort)
+{
+    telemetry[51] = ((unsigned char *)&ushort)[1];
+    telemetry[52] = ((unsigned char *)&ushort)[0];
+}
+
 signed short EPSTelemetryContainer::getSAYpTemperature()
 {
     unsigned short ushort;

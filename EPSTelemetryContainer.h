@@ -113,6 +113,8 @@ public:
     void setBattVoltage(unsigned short ushort);
     signed short getBattTemperature();
     void setBattTemperature(signed short ushort);
+    unsigned short getBattCapacity();
+    void setBattCapacity(unsigned short ushort);
     bool getBattStatus();
     void setBattStatus(bool bval);
 };

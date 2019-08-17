@@ -50,6 +50,8 @@ PQ9CommandHandler cmdHandler(pq9bus, services, 5);
 unsigned long uptime = 0;
 volatile int counter = 0;
 
+void testFunction();
+
 void timerHandler(void)
 {
     MAP_Timer32_clearInterruptFlag(TIMER32_0_BASE);
@@ -119,17 +121,24 @@ void main(void)
     // initialize the command handler: from now on, commands can be processed
     cmdHandler.init();
 
-    gasGauge.init(750, 5, 1500);            //Battery capacity: 750mAh, Rsense: 5mOhm, Imax: 1500mA
+    gasGauge.init(750, 33, 1500);            //Battery capacity: 750mAh, Rsense: 5mOhm, Imax: 1500mA
 
     MAP_GPIO_setAsPeripheralModuleFunctionInputPin( GPIO_PORT_P4, GPIO_PIN0,
                                              GPIO_PRIMARY_MODULE_FUNCTION );
     MAP_GPIO_setAsPeripheralModuleFunctionInputPin( GPIO_PORT_P4, GPIO_PIN1,
                                              GPIO_PRIMARY_MODULE_FUNCTION );
 
-    MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P4, GPIO_PIN0 );
+    // initialize the pins to control the power busses
+    // all OFF, they can be turned on only if there is enough energy availble
+    MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN0 );
+    MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN1 );
+    MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN2 );
+    MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN3 );
+
     MAP_GPIO_setAsOutputPin( GPIO_PORT_P4, GPIO_PIN0 );
-    MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P4, GPIO_PIN1 );
     MAP_GPIO_setAsOutputPin( GPIO_PORT_P4, GPIO_PIN1 );
+    MAP_GPIO_setAsOutputPin( GPIO_PORT_P4, GPIO_PIN2 );
+    MAP_GPIO_setAsOutputPin( GPIO_PORT_P4, GPIO_PIN3 );
 
     // initialize the reset handler
     reset.init();
@@ -168,6 +177,7 @@ void main(void)
             unsigned short v = 0;
             signed short i = 0;
             signed short t;
+            unsigned short c;
 
             // set uptime in telemetry
             tc->setUpTime(uptime);
@@ -177,6 +187,8 @@ void main(void)
             tc->setBattVoltage(v);
             tc->setBattStatus(!gasGauge.getTemperature(t));
             tc->setBattTemperature(t);
+            tc->setBattStatus(!gasGauge.getAvailableCapacity(c));
+            tc->setBattCapacity(c);
 
             // measure the internal bus
             tc->setIntBStatus(!internalBus.getVoltage(v));
@@ -190,6 +202,13 @@ void main(void)
             tc->setURBStatus(!unregulatedBus.getCurrent(i));
             tc->setURBCurrent(i);
 
+            if (v < 3000)
+            {
+                MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN0 );
+                MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN1 );
+                MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN2 );
+                MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN3 );
+            }
             // measure bus 1
             tc->setB1Status(!bus1.getVoltage(v));
             tc->setB1Voltage(v);
@@ -248,9 +267,39 @@ void main(void)
 
             // telemetry collected, store the values and prepare for next collection
             hk.stageTelemetry();
+
+            testFunction();
         }
 
         //MAP_PCM_gotoLPM0();
 
     }
+}
+
+void testFunction()
+{
+    unsigned short coulomb_charge;
+    if (!gasGauge.getAvailableCapacity(coulomb_charge))
+    {
+        serial.print(coulomb_charge, DEC);
+        serial.print("      ");
+    }
+    else
+    {
+        serial.println("gas gauge failed");
+    }
+
+    unsigned short adc_code;
+    int ret1 = gasGauge.readRegister(ACCUM_CHARGE_MSB_REG, ((unsigned char*)&adc_code)[1]);
+    int ret2 = gasGauge.readRegister(ACCUM_CHARGE_LSB_REG, ((unsigned char*)&adc_code)[0]);
+
+    serial.print(adc_code, DEC);
+    serial.print("       ");
+    unsigned short v;
+    gasGauge.getVoltage(v);
+    serial.print(v, DEC);
+
+    serial.println();
+    serial.println();
+
 }

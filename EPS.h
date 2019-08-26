@@ -10,6 +10,7 @@
 
 #include <driverlib.h>
 #include "msp.h"
+#include "DelfiPQcore.h"
 #include "PQ9Bus.h"
 #include "PQ9Frame.h"
 #include "DWire.h"
@@ -26,6 +27,7 @@
 #include "ResetService.h"
 #include "SoftwareUpdateService.h"
 #include "TestService.h"
+#include "PowerBusHandler.h"
 
 #define FCLOCK 48000000
 

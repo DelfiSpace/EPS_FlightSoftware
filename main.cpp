@@ -49,9 +49,55 @@ Service* services[] = { &hk, &ping, &reset, &SWUpdate, &test };
 // command handler, dealing with all CDHS requests and responses
 PQ9CommandHandler cmdHandler(pq9bus, services, 5);
 
+// EPS board tasks
+Task cmdTask(commandTask);
+PeriodicTask timerTask(FCLOCK, periodicTask);
+Task* tasks[] = { &cmdTask, &timerTask };
+
 // system uptime
 unsigned long uptime = 0;
-volatile int counter = 0;
+
+void onReceive( PQ9Frame &newFrame )
+{
+    cmdHandler.received(newFrame);
+    cmdTask.notify();
+}
+
+// handler used for the execution of received commands
+void commandTask()
+{
+    if (cmdHandler.handleCommands())
+    {
+        // if a correct command has been received, clear the watchdog
+        // if no command is received before the watchdog triggers,
+        // the board is power-cycled
+        reset.kickInternalWatchDog();
+    }
+}
+
+void periodicTask()
+{
+    // increase the timer, this happens every second
+    uptime++;
+
+    // collect telemetry
+    EPSTelemetryContainer *tc = static_cast<EPSTelemetryContainer*>(hk.getContainerToWrite());
+    acquireTelemetry(tc);
+
+    pb.checkBussesStatus(tc);
+    // handle power busses
+
+    // telemetry collected, store the values and prepare for next collection
+    hk.stageTelemetry();
+
+    // refresh the watch-dog configuration to make sure that, even in case of internal
+    // registers corruption, the watch-dog is capable of recovering from an error
+    reset.refreshConfiguration();
+
+    // watch-dog time window
+    // kick hardware watch-dog after every telemetry collection happens
+    reset.kickExternalWatchDog();
+}
 
 void acquireTelemetry(EPSTelemetryContainer *tc)
 {
@@ -138,12 +184,6 @@ void acquireTelemetry(EPSTelemetryContainer *tc)
     tc->setSAXmTemperature(t);
 }
 
-void timerHandler(void)
-{
-    MAP_Timer32_clearInterruptFlag(TIMER32_0_BASE);
-    counter++;
-}
-
 /**
  * main.c
  */
@@ -154,9 +194,9 @@ void main(void)
     // - clock tree
     DelfiPQcore::initMCU();
 
-    // init the reset handler:
-    // - prepare the watchdog
-    // - initialize the pins for the hardware watchdog
+    // initialize the reset handler:
+    // - prepare the watch-dog
+    // - initialize the pins for the hardware watch-dog
     // prepare the pin for power cycling the system
     reset.init();
 
@@ -196,51 +236,13 @@ void main(void)
                                             // address EPS (2)
 
     // initialize the command handler: from now on, commands can be processed
-    cmdHandler.init();
+    pq9bus.setReceiveHandler(&onReceive);
 
     gasGauge.init(750, 33, 1500);            //Battery capacity: 750mAh, Rsense: 5mOhm, Imax: 1500mA
 
-    // Configuring Timer32 to FCLOCK (1s) of MCLK in periodic mode
-    MAP_Timer32_initModule(TIMER32_0_BASE, TIMER32_PRESCALER_1, TIMER32_32BIT,
-            TIMER32_PERIODIC_MODE);
-    MAP_Timer32_registerInterrupt(TIMER32_0_INTERRUPT, &timerHandler);
-    MAP_Timer32_setCount(TIMER32_0_BASE, FCLOCK);
-    MAP_Timer32_startTimer(TIMER32_0_BASE, false);
+    serial.println("EPS booting...");
 
-    serial.println("Hello World");
-
-    while(true)
-    {
-        if (cmdHandler.commandLoop())
-        {
-            // if a correct command has been received, clear the watchdog
-            reset.kickInternalWatchDog();
-        }
-
-        // hack to simulate timer to acquire telemetry approximately once per second
-        if (counter != 0)
-        {
-            uptime ++;
-
-            // collect telemetry
-            EPSTelemetryContainer *tc = static_cast<EPSTelemetryContainer*>(hk.getContainerToWrite());
-            acquireTelemetry(tc);
-
-            pb.checkBussesStatus(tc);
-            // handle power busses
-
-
-            // telemetry collected, store the values and prepare for next collection
-            hk.stageTelemetry();
-
-            // watchdog time window
-            // t_win typ = 22.5s max = 28s min = 16.8s
-            // tb_min 182ms tb max 542ms
-            // kick hardware watchdog after every telemetry collection happens
-            reset.kickExternalWatchDog();
-        }
-
-        //MAP_PCM_gotoLPM0();
-
-    }
+    // start the Task Manager: all activities from now on
+    // will be managed from a dedicated task
+    DelfiPQcore::startTaskManager(tasks, 2);
 }

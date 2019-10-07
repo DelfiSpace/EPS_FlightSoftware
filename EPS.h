@@ -19,6 +19,9 @@
 #include "TMP100.h"
 #include "DSerial.h"
 #include "PQ9CommandHandler.h"
+#include "Task.h"
+#include "PeriodicTask.h"
+#include "TaskManager.h"
 #include "Service.h"
 #include "HousekeepingService.h"
 #include "EPSHousekeepingService.h"
@@ -32,5 +35,10 @@
 #define FCLOCK 48000000
 
 #define EPS_ADDRESS     2
+
+// callback functions
+void commandTask();
+void acquireTelemetry(EPSTelemetryContainer *tc);
+void periodicTask();
 
 #endif /* EPS_H_ */

@@ -37,7 +37,6 @@
 #define EPS_ADDRESS     2
 
 // callback functions
-void commandTask();
 void acquireTelemetry(EPSTelemetryContainer *tc);
 void periodicTask();
 

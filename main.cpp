@@ -38,6 +38,7 @@ PowerBusHandler pb;
 
 // debug console handler
 DSerial serial;
+
 // services running in the system
 EPSHousekeepingService hk;
 PingService ping;
@@ -46,34 +47,13 @@ SoftwareUpdateService SWUpdate;
 TestService test;
 Service* services[] = { &hk, &ping, &reset, &SWUpdate, &test };
 
-// command handler, dealing with all CDHS requests and responses
-PQ9CommandHandler cmdHandler(pq9bus, services, 5);
-
 // EPS board tasks
-Task cmdTask(commandTask);
+PQ9CommandHandler cmdHandler(pq9bus, services, 5);
 PeriodicTask timerTask(FCLOCK, periodicTask);
-Task* tasks[] = { &cmdTask, &timerTask };
+Task* tasks[] = { &cmdHandler, &timerTask };
 
 // system uptime
 unsigned long uptime = 0;
-
-void onReceive( PQ9Frame &newFrame )
-{
-    cmdHandler.received(newFrame);
-    cmdTask.notify();
-}
-
-// handler used for the execution of received commands
-void commandTask()
-{
-    if (cmdHandler.handleCommands())
-    {
-        // if a correct command has been received, clear the watchdog
-        // if no command is received before the watchdog triggers,
-        // the board is power-cycled
-        reset.kickInternalWatchDog();
-    }
-}
 
 void periodicTask()
 {
@@ -82,6 +62,8 @@ void periodicTask()
 
     // collect telemetry
     EPSTelemetryContainer *tc = static_cast<EPSTelemetryContainer*>(hk.getContainerToWrite());
+
+    // acquire telemetry
     acquireTelemetry(tc);
 
     pb.checkBussesStatus(tc);
@@ -235,10 +217,16 @@ void main(void)
     pq9bus.begin(115200, EPS_ADDRESS);      // baud rate: 115200 bps
                                             // address EPS (2)
 
-    // initialize the command handler: from now on, commands can be processed
-    pq9bus.setReceiveHandler(&onReceive);
+    // link the command handler to the PQ9 bus:
+    // every time a new command is received, it will be forwarded to the command handler
+    pq9bus.setReceiveHandler([](PQ9Frame &newFrame){ cmdHandler.received(newFrame); });
 
-    gasGauge.init(750, 33, 1500);            //Battery capacity: 750mAh, Rsense: 5mOhm, Imax: 1500mA
+    // every time a command is correctly processed, call the watch-dog
+    cmdHandler.onValidCommand([]{ reset.kickInternalWatchDog(); });
+
+    gasGauge.init(750, 21, 1500);            // Battery capacity: 750mAh
+                                             // Rsense: 21mOhm
+                                             // Imax: 1500mA
 
     serial.println("EPS booting...");
 

@@ -9,6 +9,7 @@
 #define EPS_H_
 
 #include <driverlib.h>
+#include "CommandHandler.h"
 #include "msp.h"
 #include "DelfiPQcore.h"
 #include "PQ9Bus.h"
@@ -18,7 +19,6 @@
 #include "LTC2942.h"
 #include "TMP100.h"
 #include "DSerial.h"
-#include "PQ9CommandHandler.h"
 #include "Task.h"
 #include "PeriodicTask.h"
 #include "TaskManager.h"

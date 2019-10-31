@@ -22,6 +22,7 @@
 #include "Task.h"
 #include "PeriodicTask.h"
 #include "TaskManager.h"
+#include "PowerBusHandler.h"
 #include "Service.h"
 #include "HousekeepingService.h"
 #include "EPSHousekeepingService.h"

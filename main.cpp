@@ -45,10 +45,11 @@ PingService ping;
 ResetService reset( GPIO_PORT_P5, GPIO_PIN0 );
 SoftwareUpdateService SWUpdate;
 TestService test;
-Service* services[] = { &hk, &ping, &reset, &SWUpdate, &test };
+PowerBusHandler busHandler;
+Service* services[] = { &hk, &ping, &reset, &SWUpdate, &busHandler, &test };
 
 // EPS board tasks
-PQ9CommandHandler cmdHandler(pq9bus, services, 5);
+PQ9CommandHandler cmdHandler(pq9bus, services, 6);
 PeriodicTask timerTask(FCLOCK, periodicTask);
 Task* tasks[] = { &cmdHandler, &timerTask };
 

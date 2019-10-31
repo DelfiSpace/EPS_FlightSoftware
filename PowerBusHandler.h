@@ -10,6 +10,13 @@
 
 #include <driverlib.h>
 #include "EPSTelemetryContainer.h"
+#include "Service.h"
+#include "DSerial.h"
+
+#define COMMAND_SERVICE            1
+#define COMMAND_ERROR              0
+#define COMMAND_REQUEST            1
+#define COMMAND_RESPONSE           2
 
 #define VBUS_LOW_THRESHOLD          3000
 #define VBUS_HIGH_THRESHOLD         3200
@@ -21,7 +28,7 @@
 
 #define DEFAULT     BUS1
 
-class PowerBusHandler
+class PowerBusHandler: public Service
 {
 private:
     unsigned char busDesiredStatus;
@@ -31,6 +38,8 @@ public:
     PowerBusHandler();
     void checkBussesStatus( EPSTelemetryContainer *tc );
     unsigned char getStatus( void );
+    virtual bool process( PQ9Frame &command, PQ9Bus &interface, PQ9Frame &workingBbuffer );
+    void setPowerBus(unsigned char bus, unsigned char status);
 };
 
 #endif /* POWERBUSHANDLER_H_ */

@@ -36,16 +36,6 @@ bool TestService::process(PQ9Frame &command, PQ9Bus &interface, PQ9Frame &workin
         {
             gasGauge.reset_charge(0);
         }
-        else if (command.getPayload()[1] == 3)
-        {
-            MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN2 );
-            MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN3 );
-        }
-        else if (command.getPayload()[1] == 4)
-        {
-            MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P4, GPIO_PIN2 );
-            MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P4, GPIO_PIN3 );
-        }
         else if (command.getPayload()[1] == 5)
         {
             unsigned char reg_save; //value of control register

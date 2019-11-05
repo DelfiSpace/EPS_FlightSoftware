@@ -31,13 +31,13 @@
 class PowerBusHandler: public Service
 {
 private:
-    unsigned char busDesiredStatus;
     bool undervoltageProtection;
 
 public:
     PowerBusHandler();
     void checkBussesStatus( EPSTelemetryContainer *tc );
     unsigned char getStatus( void );
+    unsigned char getErrorStatus( void );
     virtual bool process( PQ9Frame &command, PQ9Bus &interface, PQ9Frame &workingBbuffer );
     void setPowerBus(unsigned char bus, unsigned char status);
 };

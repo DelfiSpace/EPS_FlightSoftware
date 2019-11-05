@@ -7,6 +7,8 @@
 
 #include <PowerBusHandler.h>
 
+extern DSerial serial;
+
 PowerBusHandler::PowerBusHandler()
 {
     // always start with the busses in protection
@@ -32,6 +34,12 @@ PowerBusHandler::PowerBusHandler()
     MAP_GPIO_setAsOutputPin( GPIO_PORT_P4, GPIO_PIN1 );
     MAP_GPIO_setAsOutputPin( GPIO_PORT_P4, GPIO_PIN2 );
     MAP_GPIO_setAsOutputPin( GPIO_PORT_P4, GPIO_PIN3 );
+
+    // initialize the bus status bits
+    MAP_GPIO_setAsInputPin( GPIO_PORT_P3, GPIO_PIN0 );
+    MAP_GPIO_setAsInputPin( GPIO_PORT_P3, GPIO_PIN1 );
+    MAP_GPIO_setAsInputPin( GPIO_PORT_P3, GPIO_PIN2 );
+    MAP_GPIO_setAsInputPin( GPIO_PORT_P3, GPIO_PIN3 );
 
 }
 
@@ -141,22 +149,31 @@ void PowerBusHandler::setPowerBus(unsigned char bus, unsigned char status)
 unsigned char PowerBusHandler::getStatus( void )
 {
     return MAP_GPIO_getInputPinValue( GPIO_PORT_P4, GPIO_PIN0 ) |
-          (MAP_GPIO_getInputPinValue( GPIO_PORT_P4, GPIO_PIN1 ) < 1) |
-          (MAP_GPIO_getInputPinValue( GPIO_PORT_P4, GPIO_PIN2 ) < 2) |
-          (MAP_GPIO_getInputPinValue( GPIO_PORT_P4, GPIO_PIN3 ) < 3);
+          (MAP_GPIO_getInputPinValue( GPIO_PORT_P4, GPIO_PIN1 ) << 1) |
+          (MAP_GPIO_getInputPinValue( GPIO_PORT_P4, GPIO_PIN2 ) << 2) |
+          (MAP_GPIO_getInputPinValue( GPIO_PORT_P4, GPIO_PIN3 ) << 3);
+}
+
+unsigned char PowerBusHandler::getErrorStatus( void )
+{
+    return MAP_GPIO_getInputPinValue( GPIO_PORT_P3, GPIO_PIN0 ) |
+          (MAP_GPIO_getInputPinValue( GPIO_PORT_P3, GPIO_PIN1 ) << 1) |
+          (MAP_GPIO_getInputPinValue( GPIO_PORT_P3, GPIO_PIN2 ) << 2) |
+          (MAP_GPIO_getInputPinValue( GPIO_PORT_P3, GPIO_PIN3 ) << 3);
 }
 
 bool PowerBusHandler::process(PQ9Frame &command, PQ9Bus &interface, PQ9Frame &workingBuffer)
 {
     if (command.getPayload()[0] == COMMAND_SERVICE)
     {
+        serial.println("PowerBusHandler: Execute");
         // prepare response frame
         workingBuffer.setDestination(command.getSource());
         workingBuffer.setSource(interface.getAddress());
         workingBuffer.setPayloadSize(3);
         workingBuffer.getPayload()[0] = COMMAND_SERVICE;
 
-        if ((command.getPayloadSize() == 3) && (command.getPayload()[1] == COMMAND_REQUEST))
+        if (command.getPayloadSize() == 4)
         {
             workingBuffer.getPayload()[2] = command.getPayload()[2];
             switch(command.getPayload()[2])

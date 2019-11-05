@@ -98,51 +98,61 @@ void PowerBusHandler::checkBussesStatus( EPSTelemetryContainer *tc )
 
 void PowerBusHandler::setPowerBus(unsigned char bus, unsigned char status)
 {
-    switch(bus)
+    if (!undervoltageProtection)
     {
-        case BUS1:
-        if (status)
+        switch(bus)
         {
-            MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P4, GPIO_PIN0 );
-        }
-        else
-        {
-            MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN0 );
-        }
-        break;
+            case BUS1:
+            if (status)
+            {
+                MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P4, GPIO_PIN0 );
+            }
+            else
+            {
+                MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN0 );
+            }
+            break;
 
-        case BUS2:
-        if (status)
-        {
-            MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P4, GPIO_PIN1 );
-        }
-        else
-        {
-            MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN1 );
-        }
-        break;
+            case BUS2:
+            if (status)
+            {
+                MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P4, GPIO_PIN1 );
+            }
+            else
+            {
+                MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN1 );
+            }
+            break;
 
-        case BUS3:
-        if (status)
-        {
-            MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P4, GPIO_PIN3 );
-        }
-        else
-        {
-            MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN3 );
-        }
-        break;
+            case BUS3:
+            if (status)
+            {
+                MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P4, GPIO_PIN3 );
+            }
+            else
+            {
+                MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN3 );
+            }
+            break;
 
-        case BUS4:
-        if (status)
-        {
-            MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P4, GPIO_PIN4 );
+            case BUS4:
+            if (status)
+            {
+                MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P4, GPIO_PIN4 );
+            }
+            else
+            {
+                MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN4 );
+            }
+            break;
         }
-        else
-        {
-            MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN4 );
-        }
-        break;
+    }
+    else
+    {
+        MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN0 );
+        MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN1 );
+        MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN2 );
+        MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN3 );
     }
 }
 

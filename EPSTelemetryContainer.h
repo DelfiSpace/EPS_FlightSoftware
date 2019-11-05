@@ -117,6 +117,11 @@ public:
     void setBattCapacity(unsigned short ushort);
     bool getBattStatus();
     void setBattStatus(bool bval);
+
+    unsigned char getBusStatus();
+    void setBusStatus(unsigned char uchar);
+    unsigned char getBusErrorStatus();
+    void setBusErrorStatus(unsigned char uchar);
 };
 
 #endif /* EPSTELEMETRYCONTAINER_H_ */

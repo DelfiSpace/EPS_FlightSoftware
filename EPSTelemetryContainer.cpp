@@ -578,3 +578,25 @@ void EPSTelemetryContainer::setSAXmTemperature(signed short ushort)
     telemetry[15] = ((unsigned char *)&ushort)[1];
     telemetry[16] = ((unsigned char *)&ushort)[0];
 }
+
+unsigned char EPSTelemetryContainer::getBusStatus()
+{
+    return (telemetry[55] & 0x0F);
+}
+
+void EPSTelemetryContainer::setBusStatus(unsigned char uchar)
+{
+    telemetry[55] &= (~0x0F);
+    telemetry[55] |= uchar & 0x0F;
+}
+
+unsigned char EPSTelemetryContainer::getBusErrorStatus()
+{
+    return (telemetry[55] & 0xF0);
+}
+
+void EPSTelemetryContainer::setBusErrorStatus(unsigned char uchar)
+{
+    telemetry[55] &= (~0xF0);
+    telemetry[55] |= (uchar << 4) & 0xF0;
+}

@@ -176,6 +176,10 @@ void acquireTelemetry(EPSTelemetryContainer *tc)
     tc->setSAXmCurrent(i);
     tc->setSAXmTmpStatus(!tempXm.getTemperature(t));
     tc->setSAXmTemperature(t);
+
+    // power bus status
+    tc->setBusStatus(busHandler.getStatus());
+    tc->setBusErrorStatus(busHandler.getErrorStatus());
 }
 
 /**

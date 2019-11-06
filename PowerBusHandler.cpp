@@ -14,17 +14,6 @@ PowerBusHandler::PowerBusHandler()
     // always start with the busses in protection
     undervoltageProtection = true;
 
-    // set power busses enable pins to GPIO mode
-    MAP_GPIO_setAsPeripheralModuleFunctionInputPin( GPIO_PORT_P4, GPIO_PIN0,
-                                             GPIO_PRIMARY_MODULE_FUNCTION );
-    MAP_GPIO_setAsPeripheralModuleFunctionInputPin( GPIO_PORT_P4, GPIO_PIN1,
-                                             GPIO_PRIMARY_MODULE_FUNCTION );
-    MAP_GPIO_setAsPeripheralModuleFunctionInputPin( GPIO_PORT_P4, GPIO_PIN2,
-                                             GPIO_PRIMARY_MODULE_FUNCTION );
-    MAP_GPIO_setAsPeripheralModuleFunctionInputPin( GPIO_PORT_P4, GPIO_PIN3,
-                                             GPIO_PRIMARY_MODULE_FUNCTION );
-
-    // initialize the pins to control the power busses
     MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN0 );
     MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN1 );
     MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN2 );
@@ -40,7 +29,6 @@ PowerBusHandler::PowerBusHandler()
     MAP_GPIO_setAsInputPin( GPIO_PORT_P3, GPIO_PIN1 );
     MAP_GPIO_setAsInputPin( GPIO_PORT_P3, GPIO_PIN2 );
     MAP_GPIO_setAsInputPin( GPIO_PORT_P3, GPIO_PIN3 );
-
 }
 
 void PowerBusHandler::checkBussesStatus( EPSTelemetryContainer *tc )
@@ -224,4 +212,3 @@ bool PowerBusHandler::process(PQ9Frame &command, PQ9Bus &interface, PQ9Frame &wo
         return false;
     }
 }
-

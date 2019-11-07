@@ -78,11 +78,11 @@ void PowerBusHandler::checkBussesStatus( EPSTelemetryContainer *tc )
             }
             if (DEFAULT & BUS3)
             {
-                MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P4, GPIO_PIN3 );
+                MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P4, GPIO_PIN2 );
             }
             else
             {
-                MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN3 );
+                MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN2 );
             }
             if (DEFAULT & BUS4)
             {
@@ -98,7 +98,14 @@ void PowerBusHandler::checkBussesStatus( EPSTelemetryContainer *tc )
 
 void PowerBusHandler::setPowerBus(unsigned char bus, unsigned char status)
 {
-    if (!undervoltageProtection)
+    serial.print("value of bus");
+    //std::string s( reinterpret_cast< char const* >(bus) ) ;
+    //serial.print(sprintf(%d, bus));
+    //serial.print(“Text before number “);
+    serial.print(bus, DEC);
+    serial.println();
+
+    //if (!undervoltageProtection)
     {
         switch(bus)
         {
@@ -127,6 +134,18 @@ void PowerBusHandler::setPowerBus(unsigned char bus, unsigned char status)
             case BUS3:
             if (status)
             {
+                MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P4, GPIO_PIN2 );
+
+            }
+            else
+            {
+                MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN2 );
+            }
+            break;
+
+            case BUS4:
+            if (status)
+            {
                 MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P4, GPIO_PIN3 );
             }
             else
@@ -134,26 +153,15 @@ void PowerBusHandler::setPowerBus(unsigned char bus, unsigned char status)
                 MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN3 );
             }
             break;
-
-            case BUS4:
-            if (status)
-            {
-                MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P4, GPIO_PIN4 );
-            }
-            else
-            {
-                MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN4 );
-            }
-            break;
         }
     }
-    else
+    /*else
     {
         MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN0 );
         MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN1 );
         MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN2 );
         MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN3 );
-    }
+    }*/
 }
 
 unsigned char PowerBusHandler::getStatus( void )
@@ -190,8 +198,8 @@ bool PowerBusHandler::process(PQ9Frame &command, PQ9Bus &interface, PQ9Frame &wo
             {
                 case 1:
                 case 2:
-                case 3:
                 case 4:
+                case 8:
                     setPowerBus(command.getPayload()[2], command.getPayload()[3]);
                     workingBuffer.getPayload()[1] = COMMAND_RESPONSE;
                     break;

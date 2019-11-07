@@ -33,9 +33,6 @@ TMP100 tempXm(SolarPanelsBus, 0x49);
 // CDHS bus handler
 PQ9Bus pq9bus(3, GPIO_PORT_P10, GPIO_PIN0);
 
-// power busses handler
-PowerBusHandler pb;
-
 // debug console handler
 DSerial serial;
 
@@ -78,7 +75,7 @@ void periodicTask()
     // acquire telemetry
     acquireTelemetry(tc);
 
-    pb.checkBussesStatus(tc);
+    busHandler.checkBussesStatus(tc);
     // handle power busses
 
     // telemetry collected, store the values and prepare for next collection
@@ -95,7 +92,8 @@ void periodicTask()
 
 void acquireTelemetry(EPSTelemetryContainer *tc)
 {
-    unsigned short v, c;
+    unsigned short v;
+    unsigned long c;
     signed short i, t;
 
     // set uptime in telemetry

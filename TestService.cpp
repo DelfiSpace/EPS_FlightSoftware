@@ -19,7 +19,7 @@ bool TestService::process(PQ9Frame &command, PQ9Bus &interface, PQ9Frame &workin
 
         if (command.getPayload()[1] == 1)
         {
-            unsigned short coulomb_charge;
+            unsigned long coulomb_charge;
             if (!gasGauge.getAvailableCapacity(coulomb_charge))
             {
                 serial.print(coulomb_charge, DEC);
@@ -34,7 +34,7 @@ bool TestService::process(PQ9Frame &command, PQ9Bus &interface, PQ9Frame &workin
         }
         else if (command.getPayload()[1] == 2)
         {
-            gasGauge.reset_charge(0);
+            gasGauge.reset_charge();
         }
         else if (command.getPayload()[1] == 5)
         {

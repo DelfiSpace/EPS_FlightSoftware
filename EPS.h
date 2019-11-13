@@ -25,7 +25,6 @@
 #include "PowerBusHandler.h"
 #include "Service.h"
 #include "HousekeepingService.h"
-#include "EPSHousekeepingService.h"
 #include "EPSTelemetryContainer.h"
 #include "PingService.h"
 #include "ResetService.h"

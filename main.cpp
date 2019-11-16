@@ -6,8 +6,10 @@ DWire I2Cinternal(0);
 DWire SolarPanelsBus(1);
 DWire BatteryBoardBus(2);
 
-// Battery bus
-LTC2942 gasGauge(BatteryBoardBus);
+// Battery gas gauge
+// Battery capacity: 1500mAh
+// Rsense: 33 mOhm
+LTC2942 gasGauge(BatteryBoardBus, 1500, 33);
 
 // internal power busses
 INA226 internalBus(I2Cinternal, 0x48);
@@ -236,9 +238,7 @@ void main(void)
     //cmdHandler.onValidCommand([]{ reset.kickInternalWatchDog(); });
     cmdHandler.onValidCommand(validCmd);
 
-    gasGauge.init(750, 21, 1500);            // Battery capacity: 750mAh
-                                             // Rsense: 21mOhm
-                                             // Imax: 1500mA
+    gasGauge.init();
 
     serial.println("EPS booting...");
 

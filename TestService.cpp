@@ -34,15 +34,13 @@ bool TestService::process(PQ9Frame &command, PQ9Bus &interface, PQ9Frame &workin
         }
         else if (command.getPayload()[1] == 2)
         {
-            gasGauge.reset_charge(0);
+            gasGauge.setRawCharge(0);
         }
-        else if (command.getPayload()[1] == 5)
+        else if (command.getPayload()[1] == 3)
         {
-            unsigned char reg_save; //value of control register
-            gasGauge.readRegister(CONTROL_REG, reg_save);
-            serial.print(reg_save, HEX);
-            serial.println();
+            gasGauge.setRawCharge(0xFFFF);
         }
+
         return true;
     }
     return false;

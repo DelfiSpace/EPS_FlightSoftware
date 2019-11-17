@@ -218,10 +218,10 @@ void main(void)
     SAXp.setShuntResistor(0.04);
     SAXm.setShuntResistor(0.04);
 
-    tempYp.init(RESOLUTION_12_BIT);
-    tempYm.init(RESOLUTION_12_BIT);
-    tempXp.init(RESOLUTION_12_BIT);
-    tempXm.init(RESOLUTION_12_BIT);
+    tempYp.init();
+    tempYm.init();
+    tempXp.init();
+    tempXm.init();
 
     serial.begin( );                        // baud rate: 9600 bps
     pq9bus.begin(115200, EPS_ADDRESS);      // baud rate: 115200 bps

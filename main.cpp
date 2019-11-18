@@ -244,5 +244,5 @@ void main(void)
 
     // start the Task Manager: all activities from now on
     // will be managed from a dedicated task
-    DelfiPQcore::startTaskManager(tasks, 2);
+    TaskManager::start(tasks, 2);
 }

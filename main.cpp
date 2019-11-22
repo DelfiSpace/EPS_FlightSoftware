@@ -96,77 +96,67 @@ void acquireTelemetry(EPSTelemetryContainer *tc)
     tc->setUpTime(uptime);
 
     // measure the battery board
-    tc->setBattStatus(!gasGauge.getVoltage(v));
+    tc->setBattStatus((!gasGauge.getVoltage(v)) &
+                      (!gasGauge.getTemperature(t)) &
+                      (!gasGauge.getAvailableCapacity(c)));
     tc->setBattVoltage(v);
-    tc->setBattStatus(!gasGauge.getTemperature(t));
     tc->setBattTemperature(t);
-    tc->setBattStatus(!gasGauge.getAvailableCapacity(c));
     tc->setBattCapacity(c);
 
     // measure the internal bus
-    tc->setIntBStatus(!internalBus.getVoltage(v));
+    tc->setIntBStatus((!internalBus.getVoltage(v)) & (!internalBus.getCurrent(i)));
     tc->setIntBVoltage(v);
-    tc->setIntBStatus(!internalBus.getCurrent(i));
     tc->setIntBCurrent(i);
 
     // measure the unregulated bus
-    tc->setURBStatus(!unregulatedBus.getVoltage(v));
+    tc->setURBStatus((!unregulatedBus.getVoltage(v)) & (!unregulatedBus.getCurrent(i)));
     tc->setURBVoltage(v);
-    tc->setURBStatus(!unregulatedBus.getCurrent(i));
     tc->setURBCurrent(i);
 
     // measure bus 1
-    tc->setB1Status(!bus1.getVoltage(v));
+    tc->setB1Status((!bus1.getVoltage(v)) & (!bus1.getCurrent(i)));
     tc->setB1Voltage(v);
-    tc->setB1Status(!bus1.getCurrent(i));
     tc->setB1Current(i);
 
     // measure bus 2
-    tc->setB2Status(!bus2.getVoltage(v));
+    tc->setB2Status((!bus2.getVoltage(v)) & (!bus2.getCurrent(i)));
     tc->setB2Voltage(v);
-    tc->setB2Status(!bus2.getCurrent(i));
     tc->setB2Current(i);
 
     // measure bus3
-    tc->setB3Status(!bus3.getVoltage(v));
+    tc->setB3Status((!bus3.getVoltage(v)) & (!bus3.getCurrent(i)));
     tc->setB3Voltage(v);
-    tc->setB3Status(!bus3.getCurrent(i));
     tc->setB3Current(i);
 
     // measure bus 4
-    tc->setB4Status(!bus4.getVoltage(v));
+    tc->setB4Status((!bus4.getVoltage(v)) & (!bus4.getCurrent(i)));
     tc->setB4Voltage(v);
-    tc->setB4Status(!bus4.getCurrent(i));
     tc->setB4Current(i);
 
     // measure solar array Yp
-    tc->setSAYpStatus(!SAYp.getVoltage(v));
+    tc->setSAYpStatus((!SAYp.getVoltage(v)) & (!SAYp.getCurrent(i)));
     tc->setSAYpVoltage(v);
-    tc->setSAYpStatus(!SAYp.getCurrent(i));
     tc->setSAYpCurrent(i);
     tc->setSAYpTmpStatus(!tempYp.getTemperature(t));
     tc->setSAYpTemperature(t);
 
     // measure solar array Ym
-    tc->setSAYmStatus(!SAYm.getVoltage(v));
+    tc->setSAYmStatus((!SAYm.getVoltage(v)) & (!SAYm.getCurrent(i)));
     tc->setSAYmVoltage(v);
-    tc->setSAYmStatus(!SAYm.getCurrent(i));
     tc->setSAYmCurrent(i);
     tc->setSAYmTmpStatus(!tempYm.getTemperature(t));
     tc->setSAYmTemperature(t);
 
     // measure solar array Xp
-    tc->setSAXpStatus(!SAXp.getVoltage(v));
+    tc->setSAXpStatus((!SAXp.getVoltage(v)) & (!SAXp.getCurrent(i)));
     tc->setSAXpVoltage(v);
-    tc->setSAXpStatus(!SAXp.getCurrent(i));
     tc->setSAXpCurrent(i);
     tc->setSAXpTmpStatus(!tempXp.getTemperature(t));
     tc->setSAXpTemperature(t);
 
     // measure solar array Xm
-    tc->setSAXmStatus(!SAXm.getVoltage(v));
+    tc->setSAXmStatus((!SAXm.getVoltage(v)) & (!SAXm.getCurrent(i)));
     tc->setSAXmVoltage(v);
-    tc->setSAXmStatus(!SAXm.getCurrent(i));
     tc->setSAXmCurrent(i);
     tc->setSAXmTmpStatus(!tempXm.getTemperature(t));
     tc->setSAXmTemperature(t);

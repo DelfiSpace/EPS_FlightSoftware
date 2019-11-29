@@ -191,22 +191,22 @@ void main(void)
     BatteryBoardBus.begin();
 
     // initialize the shunt resistor
-    internalBus.setShuntResistor(0.04);
+    internalBus.setShuntResistor(40);
 
     // initialize the shunt resistor
-    unregulatedBus.setShuntResistor(0.04);
+    unregulatedBus.setShuntResistor(40);
 
     // initialize the shunt resistor
-    bus1.setShuntResistor(0.04);
-    bus2.setShuntResistor(0.04);
-    bus3.setShuntResistor(0.04);
-    bus4.setShuntResistor(0.04);
+    bus1.setShuntResistor(40);
+    bus2.setShuntResistor(40);
+    bus3.setShuntResistor(40);
+    bus4.setShuntResistor(40);
 
     // initialize the shunt resistor
-    SAYp.setShuntResistor(0.04);
-    SAYm.setShuntResistor(0.04);
-    SAXp.setShuntResistor(0.04);
-    SAXm.setShuntResistor(0.04);
+    SAYp.setShuntResistor(40);
+    SAYm.setShuntResistor(40);
+    SAXp.setShuntResistor(40);
+    SAXm.setShuntResistor(40);
 
     tempYp.init();
     tempYm.init();

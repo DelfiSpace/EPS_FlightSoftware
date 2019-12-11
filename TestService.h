@@ -11,6 +11,7 @@
 #include "Service.h"
 #include "PQ9Frame.h"
 #include "DSerial.h"
+#include "MB85RS.h"
 
 class TestService: public Service
 {

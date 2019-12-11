@@ -18,6 +18,8 @@
 #include "INA226.h"
 #include "LTC2942.h"
 #include "TMP100.h"
+#include "DSPI.h"
+#include "MB85RS.h"
 #include "DSerial.h"
 #include "Task.h"
 #include "PeriodicTask.h"

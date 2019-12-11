@@ -6,6 +6,9 @@ DWire I2Cinternal(0);
 DWire SolarPanelsBus(1);
 DWire BatteryBoardBus(2);
 
+// SPI bus
+DSPI spi(3);
+
 // Battery gas gauge
 // Battery capacity: 1500mAh
 // Rsense: 33 mOhm
@@ -31,6 +34,9 @@ TMP100 tempYp(SolarPanelsBus, 0x4B);
 TMP100 tempYm(SolarPanelsBus, 0x4F);
 TMP100 tempXp(SolarPanelsBus, 0x4D);
 TMP100 tempXm(SolarPanelsBus, 0x49);
+
+// FRAM
+MB85RS fram(spi, GPIO_PORT_P1, GPIO_PIN0 );
 
 // CDHS bus handler
 PQ9Bus pq9bus(3, GPIO_PORT_P10, GPIO_PIN0);
@@ -212,6 +218,9 @@ void main(void)
     tempYm.init();
     tempXp.init();
     tempXm.init();
+
+    // Initialize SPI master
+    spi.initMaster(DSPI::MODE0, DSPI::MSBFirst, 1000000);
 
     serial.begin( );                        // baud rate: 9600 bps
     pq9bus.begin(115200, EPS_ADDRESS);      // baud rate: 115200 bps

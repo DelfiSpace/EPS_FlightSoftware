@@ -4,10 +4,12 @@
 DWire I2Cinternal(0);
 DWire SolarPanelsBus(1);
 DWire BatteryBoardBus(2);
+// battery board
 // Battery gas gauge
 // Battery capacity: 1500mAh
 // Rsense: 33 mOhm
 LTC2942 gasGauge(BatteryBoardBus, 1500, 33);
+INA226 battery(BatteryBoardBus, 0x40);
 // internal power busses
 INA226 internalBus(I2Cinternal, 0x48);
 INA226 unregulatedBus(I2Cinternal, 0x4A);
@@ -21,6 +23,10 @@ INA226 SAYp(SolarPanelsBus, 0x40);
 INA226 SAYm(SolarPanelsBus, 0x41);
 INA226 SAXp(SolarPanelsBus, 0x42);
 INA226 SAXm(SolarPanelsBus, 0x43);
+INA226 SPYm(SolarPanelsBus, 0x4A);
+INA226 SPYp(SolarPanelsBus, 0x48);
+INA226 SPXp(SolarPanelsBus, 0x4C);
+INA226 SPXm(SolarPanelsBus, 0x4E);
 TMP100 tempYp(SolarPanelsBus, 0x4B);
 TMP100 tempYm(SolarPanelsBus, 0x4F);
 TMP100 tempXp(SolarPanelsBus, 0x4D);
@@ -54,7 +60,7 @@ Task* tasks[] = { &cmdHandler, &timerTask };
 unsigned long uptime = 0;
 
 // TODO: remove when bug in CCS has been solved
-void kickWatchdog(PQ9Frame &newFrame)
+void receivedCommand(PQ9Frame &newFrame)
 {
     cmdHandler.received(newFrame);
 }
@@ -100,6 +106,28 @@ void acquireTelemetry(EPSTelemetryContainer *tc)
     tc->setBattVoltage(v);
     tc->setBattTemperature(t);
     tc->setBattCapacity(c);
+
+    // INA on battery
+    tc->setBattINAStatus((!battery.getVoltage(v)) & (!battery.getCurrent(i)));
+    tc->setBattVoltage1(v);
+    tc->setBattCurrent(i);
+
+    // INAS on the output of solar panels
+    tc->setSPYmStatus((!SPYm.getVoltage(v)) & (!SPYm.getCurrent(i)));
+    tc->setSAYmVoltage(v);
+    tc->setSAYmCurrent(i);
+
+    tc->setSPYpStatus((!SPYp.getVoltage(v)) & (!SPYp.getCurrent(i)));
+    tc->setSAYpVoltage(v);
+    tc->setSAYpCurrent(i);
+
+    tc->setSPXpStatus((!SPXp.getVoltage(v)) & (!SPXp.getCurrent(i)));
+    tc->setSAXpVoltage(v);
+    tc->setSAXpCurrent(i);
+
+    tc->setSPXmStatus((!SPXm.getVoltage(v)) & (!SPXm.getCurrent(i)));
+    tc->setSAXmVoltage(v);
+    tc->setSAXmCurrent(i);
 
     // measure the internal bus
     tc->setIntBStatus((!internalBus.getVoltage(v)) & (!internalBus.getCurrent(i)));
@@ -188,24 +216,24 @@ void main(void)
     BatteryBoardBus.setFastMode();
     BatteryBoardBus.begin();
 
-    // initialize the shunt resistor
+    // initialize the shunt resistors
     internalBus.setShuntResistor(40);
-
-    // initialize the shunt resistor
     unregulatedBus.setShuntResistor(40);
-
-    // initialize the shunt resistor
     bus1.setShuntResistor(40);
     bus2.setShuntResistor(40);
     bus3.setShuntResistor(40);
     bus4.setShuntResistor(40);
-
-    // initialize the shunt resistor
     SAYp.setShuntResistor(40);
     SAYm.setShuntResistor(40);
     SAXp.setShuntResistor(40);
     SAXm.setShuntResistor(40);
+    SPYp.setShuntResistor(40);
+    SPYm.setShuntResistor(40);
+    SPXp.setShuntResistor(40);
+    SPXm.setShuntResistor(40);
+    battery.setShuntResistor(33);
 
+    // initialize temperature sensors
     tempYp.init();
     tempYm.init();
     tempXp.init();
@@ -213,6 +241,7 @@ void main(void)
 
     // Initialize SPI master
     spi.initMaster(DSPI::MODE0, DSPI::MSBFirst, 1000000);
+    fram.init();
 
     serial.begin( );                        // baud rate: 9600 bps
     pq9bus.begin(115200, EPS_ADDRESS);      // baud rate: 115200 bps
@@ -222,7 +251,7 @@ void main(void)
     // every time a new command is received, it will be forwarded to the command handler
     // TODO: put back the lambda function after bug in CCS has been fixed
     //pq9bus.setReceiveHandler([](PQ9Frame &newFrame){ cmdHandler.received(newFrame); });
-    pq9bus.setReceiveHandler(kickWatchdog);
+    pq9bus.setReceiveHandler(receivedCommand);
 
     // every time a command is correctly processed, call the watch-dog
     // TODO: put back the lambda function after bug in CCS has been fixed

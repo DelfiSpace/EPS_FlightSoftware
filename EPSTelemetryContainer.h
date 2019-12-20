@@ -10,7 +10,7 @@
 
 #include "TelemetryContainer.h"
 
-#define EPS_CONTAINER_SIZE  66
+#define EPS_CONTAINER_SIZE  87
 class EPSTelemetryContainer : public TelemetryContainer
 {
 protected:
@@ -109,19 +109,56 @@ public:
     bool getSAXmTmpStatus();
     void setSAXmTmpStatus(bool bval);
 
+    signed short getSPXmCurrent();
+    void setSPXmCurrent(signed short ushort);
+    unsigned short getSPXmVoltage();
+    void setSPXmVoltage(unsigned short ushort);
+    bool getSPXmStatus();
+    void setSPXmStatus(bool bval);
+
+    signed short getSPXpCurrent();
+    void setSPXpCurrent(signed short ushort);
+    unsigned short getSPXpVoltage();
+    void setSPXpVoltage(unsigned short ushort);
+    bool getSPXpStatus();
+    void setSPXpStatus(bool bval);
+
+    signed short getSPYmCurrent();
+    void setSPYmCurrent(signed short ushort);
+    unsigned short getSPYmVoltage();
+    void setSPYmVoltage(unsigned short ushort);
+    bool getSPYmStatus();
+    void setSPYmStatus(bool bval);
+
+    signed short getSPYpCurrent();
+    void setSPYpCurrent(signed short ushort);
+    unsigned short getSPYpVoltage();
+    void setSPYpVoltage(unsigned short ushort);
+    bool getSPYpStatus();
+    void setSPYpStatus(bool bval);
+
     unsigned short getBattVoltage();
     void setBattVoltage(unsigned short ushort);
+    unsigned short getBattVoltage1();
+    void setBattVoltage1(unsigned short ushort);
+    signed short getBattCurrent();
+    void setBattCurrent(signed short ushort);
     signed short getBattTemperature();
     void setBattTemperature(signed short ushort);
     unsigned short getBattCapacity();
     void setBattCapacity(unsigned short ushort);
     bool getBattStatus();
     void setBattStatus(bool bval);
+    bool getBattINAStatus();
+    void setBattINAStatus(bool bval);
 
     unsigned char getBusStatus();
     void setBusStatus(unsigned char uchar);
     unsigned char getBusErrorStatus();
     void setBusErrorStatus(unsigned char uchar);
+
+    signed short getMCUTemperature();
+    void setMCUTemperature(signed short ushort);
 };
 
 #endif /* EPSTELEMETRYCONTAINER_H_ */

@@ -1,41 +1,33 @@
-
 #include "EPS.h"
 
 // I2C busses
 DWire I2Cinternal(0);
 DWire SolarPanelsBus(1);
 DWire BatteryBoardBus(2);
-
-// SPI bus
-DSPI spi(3);
-
 // Battery gas gauge
 // Battery capacity: 1500mAh
 // Rsense: 33 mOhm
 LTC2942 gasGauge(BatteryBoardBus, 1500, 33);
-
 // internal power busses
 INA226 internalBus(I2Cinternal, 0x48);
 INA226 unregulatedBus(I2Cinternal, 0x4A);
-
 // external power busses
 INA226 bus1(I2Cinternal, 0x40);
 INA226 bus2(I2Cinternal, 0x41);
 INA226 bus3(I2Cinternal, 0x43);
 INA226 bus4(I2Cinternal, 0x42);
-
 // solar arrays
 INA226 SAYp(SolarPanelsBus, 0x40);
 INA226 SAYm(SolarPanelsBus, 0x41);
 INA226 SAXp(SolarPanelsBus, 0x42);
 INA226 SAXm(SolarPanelsBus, 0x43);
-
 TMP100 tempYp(SolarPanelsBus, 0x4B);
 TMP100 tempYm(SolarPanelsBus, 0x4F);
 TMP100 tempXp(SolarPanelsBus, 0x4D);
 TMP100 tempXm(SolarPanelsBus, 0x49);
 
-// FRAM
+// SPI bus
+DSPI spi(3);
 MB85RS fram(spi, GPIO_PORT_P1, GPIO_PIN0 );
 
 // CDHS bus handler

@@ -114,20 +114,20 @@ void acquireTelemetry(EPSTelemetryContainer *tc)
 
     // INAS on the output of solar panels
     tc->setSPYmStatus((!SPYm.getVoltage(v)) & (!SPYm.getCurrent(i)));
-    tc->setSAYmVoltage(v);
-    tc->setSAYmCurrent(i);
+    tc->setSPYmVoltage(v);
+    tc->setSPYmCurrent(i);
 
     tc->setSPYpStatus((!SPYp.getVoltage(v)) & (!SPYp.getCurrent(i)));
-    tc->setSAYpVoltage(v);
-    tc->setSAYpCurrent(i);
+    tc->setSPYpVoltage(v);
+    tc->setSPYpCurrent(i);
 
     tc->setSPXpStatus((!SPXp.getVoltage(v)) & (!SPXp.getCurrent(i)));
-    tc->setSAXpVoltage(v);
-    tc->setSAXpCurrent(i);
+    tc->setSPXpVoltage(v);
+    tc->setSPXpCurrent(i);
 
     tc->setSPXmStatus((!SPXm.getVoltage(v)) & (!SPXm.getCurrent(i)));
-    tc->setSAXmVoltage(v);
-    tc->setSAXmCurrent(i);
+    tc->setSPXmVoltage(v);
+    tc->setSPXmCurrent(i);
 
     // measure the internal bus
     tc->setIntBStatus((!internalBus.getVoltage(v)) & (!internalBus.getCurrent(i)));

@@ -227,10 +227,10 @@ void main(void)
     SAYm.setShuntResistor(40);
     SAXp.setShuntResistor(40);
     SAXm.setShuntResistor(40);
-    SPYp.setShuntResistor(40);
-    SPYm.setShuntResistor(40);
-    SPXp.setShuntResistor(40);
-    SPXm.setShuntResistor(40);
+    SPYp.setShuntResistor(33);
+    SPYm.setShuntResistor(33);
+    SPXp.setShuntResistor(33);
+    SPXm.setShuntResistor(33);
     battery.setShuntResistor(33);
 
     // initialize temperature sensors

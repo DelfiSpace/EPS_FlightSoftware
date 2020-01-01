@@ -164,7 +164,7 @@ unsigned char PowerBusHandler::getErrorStatus( void )
            ((MAP_GPIO_getInputPinValue( GPIO_PORT_P3, GPIO_PIN3 ) == GPIO_INPUT_PIN_HIGH) << 3));
 }
 
-bool PowerBusHandler::process(PQ9Frame &command, PQ9Bus &interface, PQ9Frame &workingBuffer)
+bool PowerBusHandler::process(PQ9Frame &command, PQ9Sender &interface, PQ9Frame &workingBuffer)
 {
     if (command.getPayload()[0] == COMMAND_SERVICE)
     {

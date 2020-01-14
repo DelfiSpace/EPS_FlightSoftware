@@ -38,7 +38,7 @@ public:
     void checkBussesStatus( EPSTelemetryContainer *tc );
     unsigned char getStatus( void );
     unsigned char getErrorStatus( void );
-    virtual bool process( PQ9Frame &command, PQ9Sender &interface, PQ9Frame &workingBbuffer );
+    virtual bool process( PQ9Frame &command, DataBus &interface, PQ9Frame &workingBbuffer );
     void setPowerBus(unsigned char bus, unsigned char status);
 };
 

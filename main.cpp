@@ -52,7 +52,7 @@ PowerBusHandler busHandler;
 Service* services[] = { &hk, &ping, &reset, &SWUpdate, &busHandler, &test };
 
 // EPS board tasks
-PQ9CommandHandler cmdHandler(pq9bus, services, 6);
+CommandHandler<PQ9Frame> cmdHandler(pq9bus, services, 6);
 PeriodicTask timerTask(FCLOCK, periodicTask);
 Task* tasks[] = { &cmdHandler, &timerTask };
 
@@ -60,7 +60,7 @@ Task* tasks[] = { &cmdHandler, &timerTask };
 unsigned long uptime = 0;
 
 // TODO: remove when bug in CCS has been solved
-void receivedCommand(PQ9Frame &newFrame)
+void receivedCommand(DataFrame &newFrame)
 {
     cmdHandler.received(newFrame);
 }

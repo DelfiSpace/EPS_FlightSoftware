@@ -38,7 +38,7 @@ public:
     void checkBussesStatus( EPSTelemetryContainer *tc );
     unsigned char getStatus( void );
     unsigned char getErrorStatus( void );
-    virtual bool process( DataFrame &command, DataBus &interface, DataFrame &workingBbuffer );
+    virtual bool process( DataMessage &command, DataMessage &workingBbuffer );
     void setPowerBus(unsigned char bus, unsigned char status);
 };
 

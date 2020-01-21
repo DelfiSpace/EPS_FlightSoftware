@@ -164,20 +164,20 @@ unsigned char PowerBusHandler::getErrorStatus( void )
            ((MAP_GPIO_getInputPinValue( GPIO_PORT_P3, GPIO_PIN3 ) == GPIO_INPUT_PIN_HIGH) << 3));
 }
 
-bool PowerBusHandler::process(DataFrame &command, DataBus &interface, DataFrame &workingBuffer)
+bool PowerBusHandler::process(DataMessage &command, DataMessage &workingBuffer)
 {
     if (command.getPayload()[0] == COMMAND_SERVICE)
     {
         serial.print("PowerBusHandler: Set Bus ");
         // prepare response frame
-        workingBuffer.setDestination(command.getSource());
-        workingBuffer.setSource(interface.getAddress());
-        workingBuffer.setPayloadSize(4);
+        //workingBuffer.setDestination(command.getSource());
+        //workingBuffer.setSource(interface.getAddress());
+        workingBuffer.setSize(4);
         workingBuffer.getPayload()[0] = COMMAND_SERVICE;
         workingBuffer.getPayload()[2] = command.getPayload()[2];
         workingBuffer.getPayload()[3] = command.getPayload()[3];
 
-        if ((command.getPayloadSize() == 4) && (command.getPayload()[1] == COMMAND_REQUEST))
+        if ((command.getSize() == 4) && (command.getPayload()[1] == COMMAND_REQUEST))
         {
             workingBuffer.getPayload()[2] = command.getPayload()[2];
             switch(command.getPayload()[2])
@@ -207,7 +207,7 @@ bool PowerBusHandler::process(DataFrame &command, DataBus &interface, DataFrame 
         }
 
         // send response
-        interface.transmit(workingBuffer);
+        //interface.transmit(workingBuffer);
 
         // command processed
         return true;

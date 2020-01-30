@@ -35,6 +35,15 @@
 *****************************************************************************/
 
 #include <stdint.h>
+#include "driverlib.h"
+
+#define SLOT0    (0x00000000)
+#define SLOT1    (0x00020000)
+#define SLOT2    (0x00030000)
+#define SLOTSIZE (0x00010000)
+
+#define SELECTED_SLOT (SLOT0)
+
 
 /* Linker variable that marks the top of the stack. */
 extern unsigned long __STACK_END;
@@ -42,6 +51,7 @@ extern unsigned long __STACK_END;
 /* External declaration for the reset handler that is to be called when the */
 /* processor is started                                                     */
 extern void _c_int00(void);
+extern void configVectorTable(void);
 
 /* External declaration for system initialization function                  */
 extern void SystemInit(void);
@@ -182,11 +192,16 @@ void Reset_Handler(void)
 {
     SystemInit();
 
+    configVectorTable();
     /* Jump to the CCS C Initialization Routine. */
     __asm("    .global _c_int00\n"
           "    b.w     _c_int00");
 }
 
+void configVectorTable(void)
+{
+    SCB->VTOR = (uint32_t)SELECTED_SLOT;
+}
 
 /* This is the code that gets called when the processor receives an unexpected  */
 /* interrupt.  This simply enters an infinite loop, preserving the system state */
@@ -197,10 +212,10 @@ void Default_Handler(void)
     #pragma diag_push
     #pragma CHECK_ULP("-2.1")
 
-	/* Enter an infinite loop. */
-	while(1)
-	{
-	}
+    /* Enter an infinite loop. */
+    while(1)
+    {
+    }
 
-	#pragma diag_pop
+    #pragma diag_pop
 }

@@ -36,6 +36,9 @@ TMP100 tempXm(SolarPanelsBus, 0x49);
 DSPI spi(3);
 MB85RS fram(spi, GPIO_PORT_P1, GPIO_PIN0 );
 
+// Bootloader
+Bootloader bootLoader = Bootloader(fram);
+
 // CDHS bus handler
 PQ9Bus pq9bus(3, GPIO_PORT_P10, GPIO_PIN0);
 
@@ -46,10 +49,10 @@ DSerial serial;
 HousekeepingService<EPSTelemetryContainer> hk;
 PingService ping;
 ResetService reset( GPIO_PORT_P5, GPIO_PIN0 );
-SoftwareUpdateService SWUpdate;
+SoftwareUpdateService SWupdate(fram);
 TestService test;
 PowerBusHandler busHandler;
-Service* services[] = { &hk, &ping, &reset, &SWUpdate, &busHandler, &test };
+Service* services[] = { &hk, &ping, &reset, &SWupdate, &busHandler, &test };
 
 // EPS board tasks
 CommandHandler<PQ9Frame> cmdHandler(pq9bus, services, 6);
@@ -74,6 +77,7 @@ void validCmd(void)
 
 void periodicTask()
 {
+    busHandler.setPowerBus(3, 1);
     // increase the timer, this happens every second
     uptime++;
 
@@ -243,6 +247,9 @@ void main(void)
     pq9bus.begin(115200, EPS_ADDRESS);      // baud rate: 115200 bps
                                             // address EPS (2)
 
+    //InitBootLoader!
+    bootLoader.JumpSlot();
+
     // initialize the reset handler:
     // - prepare the watch-dog
     // - initialize the pins for the hardware watch-dog
@@ -262,7 +269,7 @@ void main(void)
 
     gasGauge.init();
 
-    serial.println("EPS booting...");
+    serial.println("EPS booting...SLOT 0");
 
     // start the Task Manager: all activities from now on
     // will be managed from a dedicated task

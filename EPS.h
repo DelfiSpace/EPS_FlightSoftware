@@ -34,6 +34,7 @@
 #include "TestService.h"
 #include "PowerBusHandler.h"
 #include "PeriodicTaskNotifier.h"
+#include "BootLoader.h"
 
 #define FCLOCK 48000000
 

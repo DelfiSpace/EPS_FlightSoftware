@@ -10,6 +10,7 @@
 
 extern DSerial serial;
 extern MB85RS fram;
+extern LTC2942 gasGauge;
 
 bool TestService::process(DataMessage &command, DataMessage &workingBuffer)
 {
@@ -56,7 +57,13 @@ bool TestService::process(DataMessage &command, DataMessage &workingBuffer)
          {
              serial.println("Erase all");
              fram.erase();
+         } else if (command.getPayload()[1] == 4){
+             serial.println("resetting LTC to 0");
+             gasGauge.setRawCharge(0);
          }
+
+
+
 
          return true;
      }

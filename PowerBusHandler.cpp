@@ -37,13 +37,16 @@ void PowerBusHandler::checkBussesStatus( EPSTelemetryContainer *tc )
     // if so, switch all buses off
     if (tc->getURBVoltage() < VBUS_LOW_THRESHOLD)
     {
-        undervoltageProtection = true;
         MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN0 );
         MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN1 );
         MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN2 );
         MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN3 );
 
-        serial.println("PowerBusHandler: Under-voltage protection ON");
+        if ( !undervoltageProtection )
+        {
+            serial.println("PowerBusHandler: Under-voltage protection ON");
+        }
+        undervoltageProtection = true;
     }
     else
     {

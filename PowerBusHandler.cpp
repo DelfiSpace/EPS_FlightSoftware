@@ -215,8 +215,3 @@ bool PowerBusHandler::process(DataMessage &command, DataMessage &workingBuffer)
         return false;
     }
 }
-other service,
-        // report the command was not processed
-        return false;
-    }
-}

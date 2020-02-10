@@ -170,8 +170,6 @@ bool PowerBusHandler::process(DataMessage &command, DataMessage &workingBuffer)
     {
         serial.print("PowerBusHandler: Set Bus ");
         // prepare response frame
-        //workingBuffer.setDestination(command.getSource());
-        //workingBuffer.setSource(interface.getAddress());
         workingBuffer.setSize(4);
         workingBuffer.getPayload()[0] = COMMAND_SERVICE;
         workingBuffer.getPayload()[2] = command.getPayload()[2];
@@ -190,7 +188,8 @@ bool PowerBusHandler::process(DataMessage &command, DataMessage &workingBuffer)
                     workingBuffer.getPayload()[1] = COMMAND_RESPONSE;
                     serial.print(command.getPayload()[2], DEC);
                     serial.print(" ");
-                    serial.println(command.getPayload()[3] ? "ON" : "OFF");
+                    serial.print(command.getPayload()[3] ? "ON" : "OFF");
+                    serial.println(undervoltageProtection ? " Undervoltage Protection Error" : "");
                     break;
 
                 default:
@@ -206,15 +205,17 @@ bool PowerBusHandler::process(DataMessage &command, DataMessage &workingBuffer)
             workingBuffer.getPayload()[1] = COMMAND_ERROR;
         }
 
-        // send response
-        //interface.transmit(workingBuffer);
-
         // command processed
         return true;
     }
     else
     {
         // this command is related to another service,
+        // report the command was not processed
+        return false;
+    }
+}
+other service,
         // report the command was not processed
         return false;
     }

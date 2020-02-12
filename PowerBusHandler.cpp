@@ -37,13 +37,16 @@ void PowerBusHandler::checkBussesStatus( EPSTelemetryContainer *tc )
     // if so, switch all buses off
     if (tc->getURBVoltage() < VBUS_LOW_THRESHOLD)
     {
-        undervoltageProtection = true;
         MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN0 );
         MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN1 );
         MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN2 );
         MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN3 );
 
-        serial.println("PowerBusHandler: Under-voltage protection ON");
+        if ( !undervoltageProtection )
+        {
+            serial.println("PowerBusHandler: Under-voltage protection ON");
+        }
+        undervoltageProtection = true;
     }
     else
     {
@@ -170,8 +173,6 @@ bool PowerBusHandler::process(DataMessage &command, DataMessage &workingBuffer)
     {
         serial.print("PowerBusHandler: Set Bus ");
         // prepare response frame
-        //workingBuffer.setDestination(command.getSource());
-        //workingBuffer.setSource(interface.getAddress());
         workingBuffer.setSize(4);
         workingBuffer.getPayload()[0] = COMMAND_SERVICE;
         workingBuffer.getPayload()[2] = command.getPayload()[2];
@@ -190,7 +191,8 @@ bool PowerBusHandler::process(DataMessage &command, DataMessage &workingBuffer)
                     workingBuffer.getPayload()[1] = COMMAND_RESPONSE;
                     serial.print(command.getPayload()[2], DEC);
                     serial.print(" ");
-                    serial.println(command.getPayload()[3] ? "ON" : "OFF");
+                    serial.print(command.getPayload()[3] ? "ON" : "OFF");
+                    serial.println(undervoltageProtection ? " Undervoltage Protection Error" : "");
                     break;
 
                 default:
@@ -205,9 +207,6 @@ bool PowerBusHandler::process(DataMessage &command, DataMessage &workingBuffer)
             // unknown request
             workingBuffer.getPayload()[1] = COMMAND_ERROR;
         }
-
-        // send response
-        //interface.transmit(workingBuffer);
 
         // command processed
         return true;

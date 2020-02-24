@@ -60,6 +60,9 @@ bool TestService::process(DataMessage &command, DataMessage &workingBuffer)
          } else if (command.getPayload()[1] == 4){
              serial.println("resetting LTC to 0");
              gasGauge.setRawCharge(0);
+         }  else if (command.getPayload()[1] == 5){
+             serial.println("setting LTC to 750");
+             gasGauge.setRawCharge(23294);
          }
 
 

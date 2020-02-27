@@ -34,9 +34,10 @@
 #include "TestService.h"
 #include "PowerBusHandler.h"
 #include "PeriodicTaskNotifier.h"
-#include "BootLoader.h"
+#include "Bootloader.h"
 
 #define FCLOCK 48000000
+#define SCLOCK 32768
 
 #define EPS_ADDRESS     2
 

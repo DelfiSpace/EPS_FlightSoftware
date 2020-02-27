@@ -1,5 +1,8 @@
 #include "EPS.h"
 
+#define xstr(s) str(s)
+#define str(s) #s
+
 // I2C busses
 DWire I2Cinternal(0);
 DWire SolarPanelsBus(1);
@@ -49,7 +52,17 @@ DSerial serial;
 HousekeepingService<EPSTelemetryContainer> hk;
 PingService ping;
 ResetService reset( GPIO_PORT_P5, GPIO_PIN0 );
+
+#ifndef SW_VERSION
+#define HAS_SW_VERSION 0
 SoftwareUpdateService SWupdate(fram);
+#else
+#define HAS_SW_VERSION 1
+uint8_t versionString[] = xstr(SW_VERSION);
+SoftwareUpdateService SWupdate(fram, versionString);
+#endif
+
+
 TestService test;
 PowerBusHandler busHandler;
 Service* services[] = { &hk, &ping, &reset, &SWupdate, &busHandler, &test };
@@ -269,7 +282,7 @@ void main(void)
 
     gasGauge.init();
 
-    serial.println("EPS booting...SLOT 0");
+    serial.println("EPS booting...SLOT0");
 
     // start the Task Manager: all activities from now on
     // will be managed from a dedicated task

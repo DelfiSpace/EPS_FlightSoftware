@@ -42,13 +42,7 @@
 
 --retain=flashMailbox
 
-#define SLOT0 	 0x00000000
-#define SLOT1	 0x00020000
-#define SLOT2 	 0x00030000
-#define SLOTSIZE 0x00010000
-
-#define SELECTED_SLOT (SLOT0)
-
+#include "SLOT_SELECT.h"
 
 MEMORY
 {

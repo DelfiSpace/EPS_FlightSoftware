@@ -277,7 +277,7 @@ void main(void)
     gasGauge.init();
 
     serial.print("EPS booting...SLOT: ");
-    serial.println(Bootloader::getCurrentSlot());
+    serial.println(Bootloader::getCurrentSlot(), DEC);
 
     if(HAS_SW_VERSION == 1){
         serial.print("SW_VERSION: ");

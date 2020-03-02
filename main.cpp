@@ -1,8 +1,5 @@
 #include "EPS.h"
 
-#define xstr(s) str(s)
-#define str(s) #s
-
 // I2C busses
 DWire I2Cinternal(0);
 DWire SolarPanelsBus(1);
@@ -54,12 +51,9 @@ PingService ping;
 ResetService reset( GPIO_PORT_P5, GPIO_PIN0 );
 
 #ifndef SW_VERSION
-#define HAS_SW_VERSION 0
 SoftwareUpdateService SWupdate(fram);
 #else
-#define HAS_SW_VERSION 1
-uint8_t versionString[] = xstr(SW_VERSION);
-SoftwareUpdateService SWupdate(fram, versionString);
+SoftwareUpdateService SWupdate(fram, (uint8_t*)xtr(SW_VERSION));
 #endif
 
 
@@ -282,8 +276,13 @@ void main(void)
 
     gasGauge.init();
 
-    serial.println("EPS booting...SLOT0");
+    serial.print("EPS booting...SLOT: ");
+    serial.println(Bootloader::getCurrentSlot());
 
+    if(HAS_SW_VERSION == 1){
+        serial.print("SW_VERSION: ");
+        serial.println((const char*)xtr(SW_VERSION));
+    }
     // start the Task Manager: all activities from now on
     // will be managed from a dedicated task
     TaskManager::start(tasks, 2);

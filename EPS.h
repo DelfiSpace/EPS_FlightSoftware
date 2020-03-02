@@ -9,6 +9,7 @@
 #define EPS_H_
 
 #include <driverlib.h>
+#include "SLOT_SELECT.h"
 #include "CommandHandler.h"
 #include "msp.h"
 #include "DelfiPQcore.h"

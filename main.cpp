@@ -48,7 +48,7 @@ DSerial serial;
 // services running in the system
 HousekeepingService<EPSTelemetryContainer> hk;
 PingService ping;
-ResetService reset( GPIO_PORT_P5, GPIO_PIN0 );
+ResetService reset( GPIO_PORT_P5, GPIO_PIN0, &fram );
 
 #ifndef SW_VERSION
 SoftwareUpdateService SWupdate(fram);
@@ -280,7 +280,7 @@ void main(void)
     serial.println(Bootloader::getCurrentSlot(), DEC);
 
     if(HAS_SW_VERSION == 1){
-        serial.print("SW_VERSION: ");
+        serial.println("SW_VERSION: ");
         serial.println((const char*)xtr(SW_VERSION));
     }
     // start the Task Manager: all activities from now on

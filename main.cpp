@@ -18,15 +18,17 @@ INA226 bus1(I2Cinternal, 0x40);
 INA226 bus2(I2Cinternal, 0x41);
 INA226 bus3(I2Cinternal, 0x43);
 INA226 bus4(I2Cinternal, 0x42);
-// solar arrays
+// Solar arrays
 INA226 SAYp(SolarPanelsBus, 0x40);
 INA226 SAYm(SolarPanelsBus, 0x41);
 INA226 SAXp(SolarPanelsBus, 0x42);
 INA226 SAXm(SolarPanelsBus, 0x43);
+// SP's are on the batteryBoard, Current per Solar Panel.
 INA226 SPYm(SolarPanelsBus, 0x4A);
 INA226 SPYp(SolarPanelsBus, 0x48);
 INA226 SPXp(SolarPanelsBus, 0x4C);
 INA226 SPXm(SolarPanelsBus, 0x4E);
+
 TMP100 tempYp(SolarPanelsBus, 0x4B);
 TMP100 tempYm(SolarPanelsBus, 0x4F);
 TMP100 tempXp(SolarPanelsBus, 0x4D);

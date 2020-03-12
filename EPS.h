@@ -9,6 +9,7 @@
 #define EPS_H_
 
 #include <driverlib.h>
+#include "SLOT_SELECT.h"
 #include "CommandHandler.h"
 #include "msp.h"
 #include "DelfiPQcore.h"
@@ -34,8 +35,10 @@
 #include "TestService.h"
 #include "PowerBusHandler.h"
 #include "PeriodicTaskNotifier.h"
+#include "Bootloader.h"
 
 #define FCLOCK 48000000
+#define SCLOCK 32768
 
 #define EPS_ADDRESS     2
 

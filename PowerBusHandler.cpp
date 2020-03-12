@@ -169,16 +169,16 @@ unsigned char PowerBusHandler::getErrorStatus( void )
 
 bool PowerBusHandler::process(DataMessage &command, DataMessage &workingBuffer)
 {
-    if (command.getPayload()[0] == COMMAND_SERVICE)
+    if (command.getPayload()[0] == COMMAND_SERVICE_PBUS)
     {
         serial.print("PowerBusHandler: Set Bus ");
         // prepare response frame
         workingBuffer.setSize(4);
-        workingBuffer.getPayload()[0] = COMMAND_SERVICE;
+        workingBuffer.getPayload()[0] = COMMAND_SERVICE_PBUS;
         workingBuffer.getPayload()[2] = command.getPayload()[2];
         workingBuffer.getPayload()[3] = command.getPayload()[3];
 
-        if ((command.getSize() == 4) && (command.getPayload()[1] == COMMAND_REQUEST))
+        if ((command.getSize() == 4) && (command.getPayload()[1] == COMMAND_REQUEST_PBUS))
         {
             workingBuffer.getPayload()[2] = command.getPayload()[2];
             switch(command.getPayload()[2])
@@ -188,7 +188,7 @@ bool PowerBusHandler::process(DataMessage &command, DataMessage &workingBuffer)
                 case 3:
                 case 4:
                     setPowerBus(command.getPayload()[2], command.getPayload()[3]);
-                    workingBuffer.getPayload()[1] = COMMAND_RESPONSE;
+                    workingBuffer.getPayload()[1] = COMMAND_RESPONSE_PBUS;
                     serial.print(command.getPayload()[2], DEC);
                     serial.print(" ");
                     serial.print(command.getPayload()[3] ? "ON" : "OFF");
@@ -197,7 +197,7 @@ bool PowerBusHandler::process(DataMessage &command, DataMessage &workingBuffer)
 
                 default:
                     serial.println("error");
-                    workingBuffer.getPayload()[1] = COMMAND_ERROR;
+                    workingBuffer.getPayload()[1] = COMMAND_ERROR_PBUS;
                     break;
             }
         }
@@ -205,7 +205,7 @@ bool PowerBusHandler::process(DataMessage &command, DataMessage &workingBuffer)
         {
             serial.println("error");
             // unknown request
-            workingBuffer.getPayload()[1] = COMMAND_ERROR;
+            workingBuffer.getPayload()[1] = COMMAND_ERROR_PBUS;
         }
 
         // command processed

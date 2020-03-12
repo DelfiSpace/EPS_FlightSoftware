@@ -282,7 +282,7 @@ void main(void)
     serial.println(Bootloader::getCurrentSlot(), DEC);
 
     if(HAS_SW_VERSION == 1){
-        serial.println("SW_VERSION: ");
+        serial.print("SW_VERSION: ");
         serial.println((const char*)xtr(SW_VERSION));
     }
     // start the Task Manager: all activities from now on

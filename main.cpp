@@ -86,7 +86,6 @@ void validCmd(void)
 
 void periodicTask()
 {
-    busHandler.setPowerBus(3, 1);
     // increase the timer, this happens every second
     uptime++;
 

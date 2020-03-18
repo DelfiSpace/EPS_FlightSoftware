@@ -117,7 +117,7 @@ void acquireTelemetry(EPSTelemetryContainer *tc)
     tc->setUpTime(uptime);
 
     // MCU Temperature:
-    hwMonitor.readMCUTemp();
+    //hwMonitor.readMCUTemp();
     tc->setMCUTemperature(hwMonitor.getMCUTemp());
 
     // measure the battery board

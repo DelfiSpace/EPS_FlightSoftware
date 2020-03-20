@@ -18,8 +18,8 @@
 #define COMMAND_REQUEST_PBUS              1
 #define COMMAND_RESPONSE_PBUS             2
 
-#define VBUS_LOW_THRESHOLD          3000
-#define VBUS_HIGH_THRESHOLD         3200
+#define BATTERY_LOW_THRESHOLD          3000    // mV
+#define BATTERY_HIGH_THRESHOLD         3600    // mV
 
 #define BUS1        1
 #define BUS2        2

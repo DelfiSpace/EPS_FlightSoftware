@@ -35,7 +35,7 @@ void PowerBusHandler::checkBussesStatus( EPSTelemetryContainer *tc )
 {
     // check if Unregulated Bus voltage is below threshold
     // if so, switch all buses off
-    if (tc->getURBVoltage() < VBUS_LOW_THRESHOLD)
+    if (tc->getBattVoltage() < BATTERY_LOW_THRESHOLD)
     {
         MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN0 );
         MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN1 );
@@ -50,7 +50,7 @@ void PowerBusHandler::checkBussesStatus( EPSTelemetryContainer *tc )
     }
     else
     {
-        if ((undervoltageProtection) && (tc->getURBVoltage() >= VBUS_HIGH_THRESHOLD))
+        if ((undervoltageProtection) && (tc->getBattVoltage() >= BATTERY_HIGH_THRESHOLD))
         {
             undervoltageProtection = false;
             if (DEFAULT & BUS1)

@@ -68,9 +68,9 @@ Service* services[] = { &hk, &ping, &reset, &SWupdate, &busHandler, &test };
 
 // EPS board tasks
 CommandHandler<PQ9Frame> cmdHandler(pq9bus, services, 6);
-Task timerTask(periodicTask);
-Task* periodicTasks[] = {&timerTask};
-PeriodicTaskNotifier periodicNotifier = PeriodicTaskNotifier(FCLOCK, periodicTasks, 1);
+PeriodicTask timerTask(10, periodicTask);
+PeriodicTask* periodicTasks[] = {&timerTask};
+PeriodicTaskNotifier taskNotifier = PeriodicTaskNotifier(periodicTasks, 1);
 Task* tasks[] = { &cmdHandler, &timerTask };
 
 // system uptime

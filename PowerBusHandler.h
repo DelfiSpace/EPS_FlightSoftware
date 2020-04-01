@@ -11,7 +11,7 @@
 #include <driverlib.h>
 #include "EPSTelemetryContainer.h"
 #include "Service.h"
-#include "DSerial.h"
+#include "Console.h"
 
 #define COMMAND_SERVICE_PBUS            1
 #define COMMAND_ERROR_PBUS                0

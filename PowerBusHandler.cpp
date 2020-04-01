@@ -5,9 +5,8 @@
  *      Author: stefanosperett
  */
 
-#include <PowerBusHandler.h>
+#include "PowerBusHandler.h"
 
-extern DSerial serial;
 
 PowerBusHandler::PowerBusHandler()
 {
@@ -44,7 +43,7 @@ void PowerBusHandler::checkBussesStatus( EPSTelemetryContainer *tc )
 
         if ( !undervoltageProtection )
         {
-            serial.println("PowerBusHandler: Under-voltage protection ON");
+            Console::log("PowerBusHandler: Under-voltage protection ON");
         }
         undervoltageProtection = true;
     }
@@ -86,7 +85,7 @@ void PowerBusHandler::checkBussesStatus( EPSTelemetryContainer *tc )
                 MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN3 );
             }
 
-            serial.println("PowerBusHandler: Under-voltage protection OFF");
+            Console::log("PowerBusHandler: Under-voltage protection OFF");
         }
     }
 }
@@ -171,7 +170,7 @@ bool PowerBusHandler::process(DataMessage &command, DataMessage &workingBuffer)
 {
     if (command.getPayload()[0] == COMMAND_SERVICE_PBUS)
     {
-        serial.print("PowerBusHandler: Set Bus ");
+        Console::log("PowerBusHandler: Set Bus ");
         // prepare response frame
         workingBuffer.setSize(4);
         workingBuffer.getPayload()[0] = COMMAND_SERVICE_PBUS;
@@ -189,21 +188,18 @@ bool PowerBusHandler::process(DataMessage &command, DataMessage &workingBuffer)
                 case 4:
                     setPowerBus(command.getPayload()[2], command.getPayload()[3]);
                     workingBuffer.getPayload()[1] = COMMAND_RESPONSE_PBUS;
-                    serial.print(command.getPayload()[2], DEC);
-                    serial.print(" ");
-                    serial.print(command.getPayload()[3] ? "ON" : "OFF");
-                    serial.println(undervoltageProtection ? " Undervoltage Protection Error" : "");
+                    Console::log("%d - %s %s",command.getPayload()[2],command.getPayload()[3] ? "ON" : "OFF",undervoltageProtection ? "Undervoltage Protection Error" : "");
                     break;
 
                 default:
-                    serial.println("error");
+                    Console::log("error");
                     workingBuffer.getPayload()[1] = COMMAND_ERROR_PBUS;
                     break;
             }
         }
         else
         {
-            serial.println("error");
+            Console::log("error");
             // unknown request
             workingBuffer.getPayload()[1] = COMMAND_ERROR_PBUS;
         }

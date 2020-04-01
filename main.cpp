@@ -44,9 +44,6 @@ Bootloader bootLoader = Bootloader(fram);
 // CDHS bus handler
 PQ9Bus pq9bus(3, GPIO_PORT_P10, GPIO_PIN0);
 
-// debug console handler
-DSerial serial;
-
 // services running in the system
 HousekeepingService<EPSTelemetryContainer> hk;
 PingService ping;
@@ -251,7 +248,7 @@ void main(void)
     spi.initMaster(DSPI::MODE0, DSPI::MSBFirst, 1000000);
     fram.init();
 
-    serial.begin( );                        // baud rate: 9600 bps
+    Console::init( 115200 );                // baud rate: 9600 bps
     pq9bus.begin(115200, EPS_ADDRESS);      // baud rate: 115200 bps
                                             // address EPS (2)
 
@@ -277,12 +274,10 @@ void main(void)
 
     gasGauge.init();
 
-    serial.print("EPS booting...SLOT: ");
-    serial.println(Bootloader::getCurrentSlot(), DEC);
+    Console::log("EPS booting...SLOT: %d", (int) Bootloader::getCurrentSlot());
 
     if(HAS_SW_VERSION == 1){
-        serial.print("SW_VERSION: ");
-        serial.println((const char*)xtr(SW_VERSION));
+        Console::log("SW_VERSION: %s", (const char*)xtr(SW_VERSION));
     }
     // start the Task Manager: all activities from now on
     // will be managed from a dedicated task

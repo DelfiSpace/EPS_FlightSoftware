@@ -36,6 +36,8 @@
 #include "PowerBusHandler.h"
 #include "PeriodicTaskNotifier.h"
 #include "Bootloader.h"
+#include "HWMonitor.h"
+#include "ADCManager.h"
 
 #define FCLOCK 48000000
 #define SCLOCK 32768

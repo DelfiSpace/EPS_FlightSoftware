@@ -50,7 +50,7 @@ PQ9Bus pq9bus(3, GPIO_PORT_P10, GPIO_PIN0);
 // services running in the system
 HousekeepingService<EPSTelemetryContainer> hk;
 PingService ping;
-ResetService reset( GPIO_PORT_P5, GPIO_PIN0, &fram );
+ResetService reset( GPIO_PORT_P5, GPIO_PIN0 );
 
 #ifndef SW_VERSION
 SoftwareUpdateService SWupdate(fram);
@@ -257,7 +257,7 @@ void main(void)
     spi.initMaster(DSPI::MODE0, DSPI::MSBFirst, 1000000);
     fram.init();
 
-    Console::init( 115200 );                // baud rate: 9600 bps
+    Console::init( 115200 );                // baud rate: 115200 bps
     pq9bus.begin(115200, EPS_ADDRESS);      // baud rate: 115200 bps
                                             // address EPS (2)
 

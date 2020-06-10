@@ -168,40 +168,42 @@ unsigned char PowerBusHandler::getErrorStatus( void )
 
 bool PowerBusHandler::process(DataMessage &command, DataMessage &workingBuffer)
 {
-    if (command.getPayload()[0] == COMMAND_SERVICE_PBUS)
+    if (command.getService() == COMMAND_SERVICE_PBUS)
     {
         Console::log("PowerBusHandler: Set Bus ");
         // prepare response frame
-        workingBuffer.setSize(4);
-        workingBuffer.getPayload()[0] = COMMAND_SERVICE_PBUS;
-        workingBuffer.getPayload()[2] = command.getPayload()[2];
-        workingBuffer.getPayload()[3] = command.getPayload()[3];
+        workingBuffer.setService(COMMAND_SERVICE_PBUS);
+        workingBuffer.setMessageType(SERVICE_RESPONSE_REPLY);
 
-        if ((command.getSize() == 4) && (command.getPayload()[1] == COMMAND_REQUEST_PBUS))
+        //Echo the requested bus/state back.
+        workingBuffer.setPayloadSize(2);
+        workingBuffer.getDataPayload()[0] = command.getDataPayload()[0];
+        workingBuffer.getDataPayload()[1] = command.getDataPayload()[1];
+
+        if ((command.getPayloadSize() == 2)) //make sure the bus message is exactly this length (targetBus + State)
         {
-            workingBuffer.getPayload()[2] = command.getPayload()[2];
-            switch(command.getPayload()[2])
+            switch(command.getDataPayload()[0]) //get Bus number
             {
                 case 1:
                 case 2:
                 case 3:
                 case 4:
-                    setPowerBus(command.getPayload()[2], command.getPayload()[3]);
-                    workingBuffer.getPayload()[1] = COMMAND_RESPONSE_PBUS;
-                    Console::log("%d - %s %s",command.getPayload()[2],command.getPayload()[3] ? "ON" : "OFF",undervoltageProtection ? "Undervoltage Protection Error" : "");
+                    setPowerBus(command.getDataPayload()[0], command.getDataPayload()[1]);
+                    Console::log("%d - %s %s",command.getDataPayload()[0],command.getDataPayload()[1] ? "ON" : "OFF",undervoltageProtection ? "Undervoltage Protection Error" : "");
                     break;
 
                 default:
-                    Console::log("error");
-                    workingBuffer.getPayload()[1] = COMMAND_ERROR_PBUS;
+                    Console::log("Bus does not exist!");
+                    workingBuffer.getDataPayload()[0] = COMMAND_ERROR_PBUS; //set bus echo to '0' signifying an error.
                     break;
             }
         }
         else
         {
-            Console::log("error");
+            Console::log("Uknown command / Wrong command length");
             // unknown request
-            workingBuffer.getPayload()[1] = COMMAND_ERROR_PBUS;
+            workingBuffer.setPayloadSize(1);
+            workingBuffer.getDataPayload()[0] = COMMAND_ERROR_PBUS;
         }
 
         // command processed

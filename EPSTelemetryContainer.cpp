@@ -29,7 +29,6 @@ unsigned long EPSTelemetryContainer::getUpTime()
 
 void EPSTelemetryContainer::setUpTime(unsigned long ulong)
 {
-    *((unsigned long *)&(telemetry[0])) = ulong;
     telemetry[0] = ((unsigned char *)&ulong)[3];
     telemetry[1] = ((unsigned char *)&ulong)[2];
     telemetry[2] = ((unsigned char *)&ulong)[1];

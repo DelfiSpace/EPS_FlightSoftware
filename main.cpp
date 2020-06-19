@@ -18,11 +18,20 @@ INA226 bus1(I2Cinternal, 0x40);
 INA226 bus2(I2Cinternal, 0x41);
 INA226 bus3(I2Cinternal, 0x43);
 INA226 bus4(I2Cinternal, 0x42);
+
 // Solar arrays
 INA226 SAYp(SolarPanelsBus, 0x40);
 INA226 SAYm(SolarPanelsBus, 0x41);
 INA226 SAXp(SolarPanelsBus, 0x42);
 INA226 SAXm(SolarPanelsBus, 0x43);
+
+//Solar Arrays MPPT
+INA226 MPPTYp(SolarPanelsBus, 0x44);
+INA226 MPPTYm(SolarPanelsBus, 0x45);
+INA226 MPPTXp(SolarPanelsBus, 0x46);
+INA226 MPPTXm(SolarPanelsBus, 0x47);
+
+
 // SP's are on the batteryBoard, Current per Solar Panel.
 INA226 SPYm(SolarPanelsBus, 0x4A);
 INA226 SPYp(SolarPanelsBus, 0x48);
@@ -201,6 +210,23 @@ void acquireTelemetry(EPSTelemetryContainer *tc)
     tc->setSAXmCurrent(i);
     tc->setSAXmTmpStatus(!tempXm.getTemperature(t));
     tc->setSAXmTemperature(t);
+
+    //Added MPPT INA226:
+    tc->setMPPTYpStatus((!MPPTYp.getVoltage(v)) & (!MPPTYp.getCurrent(i)));
+    tc->setMPPTYpVoltage(v);
+    tc->setMPPTYpCurrent(i);
+
+    tc->setMPPTYmStatus((!MPPTYm.getVoltage(v)) & (!MPPTYm.getCurrent(i)));
+    tc->setMPPTYmVoltage(v);
+    tc->setMPPTYmCurrent(i);
+
+    tc->setMPPTXpStatus((!MPPTXp.getVoltage(v)) & (!MPPTXp.getCurrent(i)));
+    tc->setMPPTXpVoltage(v);
+    tc->setMPPTXpCurrent(i);
+
+    tc->setMPPTXmStatus((!MPPTXm.getVoltage(v)) & (!MPPTXm.getCurrent(i)));
+    tc->setMPPTXmVoltage(v);
+    tc->setMPPTXmCurrent(i);
 
     // power bus status
     tc->setBusStatus(busHandler.getStatus());

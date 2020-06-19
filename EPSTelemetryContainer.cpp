@@ -35,6 +35,52 @@ void EPSTelemetryContainer::setUpTime(unsigned long ulong)
     telemetry[3] = ((unsigned char *)&ulong)[0];
 }
 
+//MPPT Status
+bool EPSTelemetryContainer::getMPPTYpStatus()
+{
+    return ((telemetry[9] & 0x10) != 0);
+}
+
+void EPSTelemetryContainer::setMPPTYpStatus(bool bval)
+{
+    telemetry[9] &= (~0x10);
+    telemetry[9] |= bval ? 0x10 : 0x00;
+}
+
+bool EPSTelemetryContainer::getMPPTYmStatus()
+{
+    return ((telemetry[9] & 0x20) != 0);
+}
+
+void EPSTelemetryContainer::setMPPTYmStatus(bool bval)
+{
+    telemetry[9] &= (~0x20);
+    telemetry[9] |= bval ? 0x20 : 0x00;
+}
+
+bool EPSTelemetryContainer::getMPPTXpStatus()
+{
+    return ((telemetry[9] & 0x40) != 0);
+}
+
+void EPSTelemetryContainer::setMPPTXpStatus(bool bval)
+{
+    telemetry[9] &= (~0x40);
+    telemetry[9] |= bval ? 0x40 : 0x00;
+}
+
+bool EPSTelemetryContainer::getMPPTXmStatus()
+{
+    return ((telemetry[9] & 0x80) != 0);
+}
+
+void EPSTelemetryContainer::setMPPTXmStatus(bool bval)
+{
+    telemetry[9] &= (~0x80);
+    telemetry[9] |= bval ? 0x80 : 0x00;
+}
+
+//SA Status
 bool EPSTelemetryContainer::getSPYpStatus()
 {
     return ((telemetry[9] & 0x01) != 0);
@@ -534,7 +580,120 @@ void EPSTelemetryContainer::setSAXmVoltage(unsigned short ushort)
     telemetry[32] = ((unsigned char *)&ushort)[1];
     telemetry[33] = ((unsigned char *)&ushort)[0];
 }
+//MPPT
+signed short EPSTelemetryContainer::getMPPTYpCurrent()
+{
+    unsigned short ushort;
+    ((unsigned char *)&ushort)[1] = telemetry[87];
+    ((unsigned char *)&ushort)[0] = telemetry[88];
+    return ushort;
+}
 
+void EPSTelemetryContainer::setMPPTYpCurrent(signed short ushort)
+{
+    telemetry[87] = ((unsigned char *)&ushort)[1];
+    telemetry[88] = ((unsigned char *)&ushort)[0];
+}
+
+unsigned short EPSTelemetryContainer::getMPPTYpVoltage()
+{
+    unsigned short ushort;
+    ((unsigned char *)&ushort)[1] = telemetry[95];
+    ((unsigned char *)&ushort)[0] = telemetry[96];
+    return ushort;
+}
+
+void EPSTelemetryContainer::setMPPTYpVoltage(unsigned short ushort)
+{
+    telemetry[95] = ((unsigned char *)&ushort)[1];
+    telemetry[96] = ((unsigned char *)&ushort)[0];
+}
+
+signed short EPSTelemetryContainer::getMPPTYmCurrent()
+{
+    unsigned short ushort;
+    ((unsigned char *)&ushort)[1] = telemetry[89];
+    ((unsigned char *)&ushort)[0] = telemetry[90];
+    return ushort;
+}
+
+void EPSTelemetryContainer::setMPPTYmCurrent(signed short ushort)
+{
+    telemetry[89] = ((unsigned char *)&ushort)[1];
+    telemetry[90] = ((unsigned char *)&ushort)[0];
+}
+
+unsigned short EPSTelemetryContainer::getMPPTYmVoltage()
+{
+    unsigned short ushort;
+    ((unsigned char *)&ushort)[1] = telemetry[97];
+    ((unsigned char *)&ushort)[0] = telemetry[98];
+    return ushort;
+}
+
+void EPSTelemetryContainer::setMPPTYmVoltage(unsigned short ushort)
+{
+    telemetry[97] = ((unsigned char *)&ushort)[1];
+    telemetry[98] = ((unsigned char *)&ushort)[0];
+}
+
+signed short EPSTelemetryContainer::getMPPTXpCurrent()
+{
+    unsigned short ushort;
+    ((unsigned char *)&ushort)[1] = telemetry[91];
+    ((unsigned char *)&ushort)[0] = telemetry[92];
+    return ushort;
+}
+
+void EPSTelemetryContainer::setMPPTXpCurrent(signed short ushort)
+{
+    telemetry[91] = ((unsigned char *)&ushort)[1];
+    telemetry[92] = ((unsigned char *)&ushort)[0];
+}
+
+unsigned short EPSTelemetryContainer::getMPPTXpVoltage()
+{
+    unsigned short ushort;
+    ((unsigned char *)&ushort)[1] = telemetry[99];
+    ((unsigned char *)&ushort)[0] = telemetry[100];
+    return ushort;
+}
+
+void EPSTelemetryContainer::setMPPTXpVoltage(unsigned short ushort)
+{
+    telemetry[99] = ((unsigned char *)&ushort)[1];
+    telemetry[100] = ((unsigned char *)&ushort)[0];
+}
+
+signed short EPSTelemetryContainer::getMPPTXmCurrent()
+{
+    unsigned short ushort;
+    ((unsigned char *)&ushort)[1] = telemetry[93];
+    ((unsigned char *)&ushort)[0] = telemetry[94];
+    return ushort;
+}
+
+void EPSTelemetryContainer::setMPPTXmCurrent(signed short ushort)
+{
+    telemetry[93] = ((unsigned char *)&ushort)[1];
+    telemetry[94] = ((unsigned char *)&ushort)[0];
+}
+
+unsigned short EPSTelemetryContainer::getMPPTXmVoltage()
+{
+    unsigned short ushort;
+    ((unsigned char *)&ushort)[1] = telemetry[101];
+    ((unsigned char *)&ushort)[0] = telemetry[102];
+    return ushort;
+}
+
+void EPSTelemetryContainer::setMPPTXmVoltage(unsigned short ushort)
+{
+    telemetry[101] = ((unsigned char *)&ushort)[1];
+    telemetry[102] = ((unsigned char *)&ushort)[0];
+}
+
+//SP
 signed short EPSTelemetryContainer::getSPYpCurrent()
 {
     unsigned short ushort;

@@ -109,6 +109,37 @@ public:
     bool getSAXmTmpStatus();
     void setSAXmTmpStatus(bool bval);
 
+    //MPPT
+    signed short getMPPTXmCurrent();
+    void setMPPTXmCurrent(signed short ushort);
+    unsigned short getMPPTXmVoltage();
+    void setMPPTXmVoltage(unsigned short ushort);
+    bool getMPPTXmStatus();
+    void setMPPTXmStatus(bool bval);
+
+    signed short getMPPTXpCurrent();
+    void setMPPTXpCurrent(signed short ushort);
+    unsigned short getMPPTXpVoltage();
+    void setMPPTXpVoltage(unsigned short ushort);
+    bool getMPPTXpStatus();
+    void setMPPTXpStatus(bool bval);
+
+    signed short getMPPTYmCurrent();
+    void setMPPTYmCurrent(signed short ushort);
+    unsigned short getMPPTYmVoltage();
+    void setMPPTYmVoltage(unsigned short ushort);
+    bool getMPPTYmStatus();
+    void setMPPTYmStatus(bool bval);
+
+    signed short getMPPTYpCurrent();
+    void setMPPTYpCurrent(signed short ushort);
+    unsigned short getMPPTYpVoltage();
+    void setMPPTYpVoltage(unsigned short ushort);
+    bool getMPPTYpStatus();
+    void setMPPTYpStatus(bool bval);
+
+
+    //SP
     signed short getSPXmCurrent();
     void setSPXmCurrent(signed short ushort);
     unsigned short getSPXmVoltage();

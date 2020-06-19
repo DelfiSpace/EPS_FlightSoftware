@@ -10,7 +10,7 @@
 
 #include "TelemetryContainer.h"
 
-#define EPS_CONTAINER_SIZE  87
+#define EPS_CONTAINER_SIZE  103
 class EPSTelemetryContainer : public TelemetryContainer
 {
 protected:

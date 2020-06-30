@@ -115,6 +115,9 @@ void periodicTask()
     reset.kickExternalWatchDog();
 }
 
+volatile int curADCResult;
+volatile float normalizedADCResult;
+
 void acquireTelemetry(EPSTelemetryContainer *tc)
 {
     unsigned short v, c;
@@ -122,7 +125,7 @@ void acquireTelemetry(EPSTelemetryContainer *tc)
 
     // set uptime in telemetry
     tc->setUpTime(uptime);
-    tc->setMCUTemperature(hwMonitor.getMCUTemp());
+//    tc->setMCUTemperature(hwMonitor.getMCUTemp());
 
     // measure the battery board
     tc->setBattStatus((!batteryGG.getVoltage(v)) &
@@ -230,12 +233,38 @@ void acquireTelemetry(EPSTelemetryContainer *tc)
     tc->setBusStatus(busHandler.getStatus());
     tc->setBusErrorStatus(busHandler.getErrorStatus());
 
-    int temperature_mV = ADCManager::getMeasurementVolt(batteryTemp);
-    int temperature_C = (temperature_mV - 1886.3)/11.69;
+    int temperature_ADC = MAP_ADC14_getResult(ADC_MEM0);
+    int temperature_mV = (temperature_ADC * 2.5) / 16384;
+
+    uint64_t status = MAP_ADC14_getEnabledInterruptStatus();
+    MAP_ADC14_clearInterruptFlag(status);
+    MAP_ADC14_toggleConversionTrigger();
+    curADCResult = MAP_ADC14_getResult(ADC_MEM0);
+    normalizedADCResult = (curADCResult * 2.5) / 16384;
+    MAP_ADC14_toggleConversionTrigger();
+
+    int temperature_C = (int) (((1000*normalizedADCResult) - 1886.3)/(-11.69));
     if(temperature_C > 0){
-        Console::log("TMP20 Voltage: %d mV || %d C", temperature_mV, temperature_C);
+        Console::log("TMP20 Voltage: %d mV || %d C", (int) (1000*normalizedADCResult), temperature_C);
     }else{
         Console::log("TMP20 Voltage: %d mV || -%d C", temperature_mV, -temperature_C);
+    }
+
+}
+
+
+
+void ADC14_IRQHandler(void)
+{
+    uint64_t status = MAP_ADC14_getEnabledInterruptStatus();
+    MAP_ADC14_clearInterruptFlag(status);
+
+    if (ADC_INT0 & status)
+    {
+        curADCResult = MAP_ADC14_getResult(ADC_MEM0);
+        normalizedADCResult = (curADCResult * 2.5) / 16384;
+
+        MAP_ADC14_toggleConversionTrigger();
     }
 }
 
@@ -252,7 +281,7 @@ void main(void)
     // initialize the ADC
     // - ADC14 and FPU Module
     // - MEM0 for internal temperature measurements
-    ADCManager::initADC();
+    // ADCManager::initADC();
 
     // Initialize I2C masters
     I2Cinternal.setFastMode();
@@ -288,7 +317,45 @@ void main(void)
     tempYm.init();
     tempXp.init();
     tempXm.init();
-    batteryTemp = ADCManager::registerADC(ADC_INPUT_A22); //Register TMP20
+//    MAP_ADC14_disableConversion();
+//    batteryTemp = ADCManager::registerADC(ADC_INPUT_A21); //Register TMP20
+    /* Initializing ADC (MCLK/1/1) with temperature sensor routed */
+    /* Enabling the FPU for floating point operation */
+   MAP_FPU_enableModule();
+   MAP_FPU_enableLazyStacking();
+
+   //![Single Sample Mode Configure]
+   /* Initializing ADC (MCLK/1/4) */
+   MAP_ADC14_enableModule();
+   MAP_ADC14_initModule(ADC_CLOCKSOURCE_MCLK, ADC_PREDIVIDER_1, ADC_DIVIDER_4,
+           0);
+   MAP_ADC14_setSampleHoldTime(ADC_PULSE_WIDTH_192,ADC_PULSE_WIDTH_192);
+
+   /* Configuring GPIOs (5.5 A0) */
+   MAP_GPIO_setAsPeripheralModuleFunctionInputPin(GPIO_PORT_P8, GPIO_PIN4,
+   GPIO_TERTIARY_MODULE_FUNCTION);
+
+   MAP_REF_A_setReferenceVoltage(REF_A_VREF2_5V);
+   MAP_REF_A_enableReferenceVoltage();
+
+   /* Configuring ADC Memory */
+   MAP_ADC14_configureSingleSampleMode(ADC_MEM0, true);
+   MAP_ADC14_configureConversionMemory(ADC_MEM0, ADC_VREFPOS_INTBUF_VREFNEG_VSS,
+   ADC_INPUT_A21, false);
+
+   /* Configuring Sample Timer */
+   MAP_ADC14_enableSampleTimer(ADC_MANUAL_ITERATION);
+
+   /* Enabling/Toggling Conversion */
+   MAP_ADC14_enableConversion();
+   MAP_ADC14_toggleConversionTrigger();
+   //![Single Sample Mode Configure]
+
+   /* Enabling interrupts */
+//   MAP_ADC14_registerInterrupt(&ADC14_IRQHandler);
+//   MAP_ADC14_enableInterrupt(ADC_INT0);
+//   MAP_Interrupt_enableInterrupt(INT_ADC14);
+//   MAP_Interrupt_enableMaster();
 
     // initialize GasGauge
     batteryGG.init();

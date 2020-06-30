@@ -230,7 +230,13 @@ void acquireTelemetry(EPSTelemetryContainer *tc)
     tc->setBusStatus(busHandler.getStatus());
     tc->setBusErrorStatus(busHandler.getErrorStatus());
 
-    Console::log("TMP20 Voltage: %d mV", ADCManager::getMeasurementVolt(batteryTemp));
+    int temperature_mV = ADCManager::getMeasurementVolt(batteryTemp);
+    int temperature_C = (temperature_mV - 1886.3)/11.69;
+    if(temperature_C > 0){
+        Console::log("TMP20 Voltage: %d mV || %d C", temperature_mV, temperature_C);
+    }else{
+        Console::log("TMP20 Voltage: %d mV || -%d C", temperature_mV, -temperature_C);
+    }
 }
 
 /**

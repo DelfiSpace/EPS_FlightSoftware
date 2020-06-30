@@ -8,8 +8,8 @@ DWire BatteryBoardBus(2);
 // Battery gas gauge
 // Battery capacity: 1500mAh
 // Rsense: 33 mOhm
-LTC2942 gasGauge(BatteryBoardBus, 1500, 33);
-INA226 battery(BatteryBoardBus, 0x40);
+LTC2942 batteryGG(BatteryBoardBus, 1500, 33);
+INA226 batteryINA(BatteryBoardBus, 0x40);
 // internal power busses
 INA226 internalBus(I2Cinternal, 0x48);
 INA226 unregulatedBus(I2Cinternal, 0x4A);
@@ -19,29 +19,30 @@ INA226 bus2(I2Cinternal, 0x41);
 INA226 bus3(I2Cinternal, 0x43);
 INA226 bus4(I2Cinternal, 0x42);
 
-// Solar arrays
-INA226 SAYp(SolarPanelsBus, 0x40);
-INA226 SAYm(SolarPanelsBus, 0x41);
-INA226 SAXp(SolarPanelsBus, 0x42);
-INA226 SAXm(SolarPanelsBus, 0x43);
+// Solar Cells
+INA226 cellOutYp(SolarPanelsBus, 0x40);
+INA226 cellOutYm(SolarPanelsBus, 0x41);
+INA226 cellOutXp(SolarPanelsBus, 0x42);
+INA226 cellOutXm(SolarPanelsBus, 0x43);
 
 //Solar Arrays MPPT
-INA226 MPPTYp(SolarPanelsBus, 0x44);
-INA226 MPPTYm(SolarPanelsBus, 0x45);
-INA226 MPPTXp(SolarPanelsBus, 0x46);
-INA226 MPPTXm(SolarPanelsBus, 0x47);
-
+INA226 mpptOutYp(SolarPanelsBus, 0x44);
+INA226 mpptOutYm(SolarPanelsBus, 0x45);
+INA226 mpptOutXp(SolarPanelsBus, 0x46);
+INA226 mpptOutXm(SolarPanelsBus, 0x47);
 
 // SP's are on the batteryBoard, Current per Solar Panel.
-INA226 SPYm(SolarPanelsBus, 0x4A);
-INA226 SPYp(SolarPanelsBus, 0x48);
-INA226 SPXp(SolarPanelsBus, 0x4C);
-INA226 SPXm(SolarPanelsBus, 0x4E);
+INA226 panelOutYp(SolarPanelsBus, 0x48);
+INA226 panelOutYm(SolarPanelsBus, 0x4A);
+INA226 panelOutXp(SolarPanelsBus, 0x4C);
+INA226 panelOutXm(SolarPanelsBus, 0x4E);
 
 TMP100 tempYp(SolarPanelsBus, 0x4B);
 TMP100 tempYm(SolarPanelsBus, 0x4F);
 TMP100 tempXp(SolarPanelsBus, 0x4D);
 TMP100 tempXm(SolarPanelsBus, 0x49);
+
+int batteryTemp = 0; //Register on ADCManager  (P8.4 / A21)
 
 // SPI bus
 DSPI spi(3);
@@ -124,32 +125,32 @@ void acquireTelemetry(EPSTelemetryContainer *tc)
     tc->setMCUTemperature(hwMonitor.getMCUTemp());
 
     // measure the battery board
-    tc->setBattStatus((!gasGauge.getVoltage(v)) &
-                      (!gasGauge.getTemperature(t)) &
-                      (!gasGauge.getAvailableCapacity(c)));
+    tc->setBattStatus((!batteryGG.getVoltage(v)) &
+                      (!batteryGG.getTemperature(t)) &
+                      (!batteryGG.getAvailableCapacity(c)));
     tc->setBattVoltage(v);
     tc->setBattTemperature(t);
     tc->setBattCapacity(c);
 
     // INA on battery
-    tc->setBattINAStatus((!battery.getVoltage(v)) & (!battery.getCurrent(i)));
+    tc->setBattINAStatus((!batteryINA.getVoltage(v)) & (!batteryINA.getCurrent(i)));
     tc->setBattVoltage1(v);
     tc->setBattCurrent(i);
 
     // INAS on the output of solar panels
-    tc->setSPYmStatus((!SPYm.getVoltage(v)) & (!SPYm.getCurrent(i)));
+    tc->setSPYmStatus((!panelOutYm.getVoltage(v)) & (!panelOutYm.getCurrent(i)));
     tc->setSPYmVoltage(v);
     tc->setSPYmCurrent(i);
 
-    tc->setSPYpStatus((!SPYp.getVoltage(v)) & (!SPYp.getCurrent(i)));
+    tc->setSPYpStatus((!panelOutYp.getVoltage(v)) & (!panelOutYp.getCurrent(i)));
     tc->setSPYpVoltage(v);
     tc->setSPYpCurrent(i);
 
-    tc->setSPXpStatus((!SPXp.getVoltage(v)) & (!SPXp.getCurrent(i)));
+    tc->setSPXpStatus((!panelOutXp.getVoltage(v)) & (!panelOutXp.getCurrent(i)));
     tc->setSPXpVoltage(v);
     tc->setSPXpCurrent(i);
 
-    tc->setSPXmStatus((!SPXm.getVoltage(v)) & (!SPXm.getCurrent(i)));
+    tc->setSPXmStatus((!panelOutXm.getVoltage(v)) & (!panelOutXm.getCurrent(i)));
     tc->setSPXmVoltage(v);
     tc->setSPXmCurrent(i);
 
@@ -183,54 +184,53 @@ void acquireTelemetry(EPSTelemetryContainer *tc)
     tc->setB4Voltage(v);
     tc->setB4Current(i);
 
-    // measure solar array Yp
-    tc->setSAYpStatus((!SAYp.getVoltage(v)) & (!SAYp.getCurrent(i)));
+    // INAS on the output of solar cells
+    tc->setSAYpStatus((!cellOutYp.getVoltage(v)) & (!cellOutYp.getCurrent(i)));
     tc->setSAYpVoltage(v);
     tc->setSAYpCurrent(i);
     tc->setSAYpTmpStatus(!tempYp.getTemperature(t));
     tc->setSAYpTemperature(t);
 
-    // measure solar array Ym
-    tc->setSAYmStatus((!SAYm.getVoltage(v)) & (!SAYm.getCurrent(i)));
+    tc->setSAYmStatus((!cellOutYm.getVoltage(v)) & (!cellOutYm.getCurrent(i)));
     tc->setSAYmVoltage(v);
     tc->setSAYmCurrent(i);
     tc->setSAYmTmpStatus(!tempYm.getTemperature(t));
     tc->setSAYmTemperature(t);
 
-    // measure solar array Xp
-    tc->setSAXpStatus((!SAXp.getVoltage(v)) & (!SAXp.getCurrent(i)));
+    tc->setSAXpStatus((!cellOutXp.getVoltage(v)) & (!cellOutXp.getCurrent(i)));
     tc->setSAXpVoltage(v);
     tc->setSAXpCurrent(i);
     tc->setSAXpTmpStatus(!tempXp.getTemperature(t));
     tc->setSAXpTemperature(t);
 
-    // measure solar array Xm
-    tc->setSAXmStatus((!SAXm.getVoltage(v)) & (!SAXm.getCurrent(i)));
+    tc->setSAXmStatus((!cellOutXm.getVoltage(v)) & (!cellOutXm.getCurrent(i)));
     tc->setSAXmVoltage(v);
     tc->setSAXmCurrent(i);
     tc->setSAXmTmpStatus(!tempXm.getTemperature(t));
     tc->setSAXmTemperature(t);
 
     //Added MPPT INA226:
-    tc->setMPPTYpStatus((!MPPTYp.getVoltage(v)) & (!MPPTYp.getCurrent(i)));
+    tc->setMPPTYpStatus((!mpptOutYp.getVoltage(v)) & (!mpptOutYp.getCurrent(i)));
     tc->setMPPTYpVoltage(v);
     tc->setMPPTYpCurrent(i);
 
-    tc->setMPPTYmStatus((!MPPTYm.getVoltage(v)) & (!MPPTYm.getCurrent(i)));
+    tc->setMPPTYmStatus((!mpptOutYm.getVoltage(v)) & (!mpptOutYm.getCurrent(i)));
     tc->setMPPTYmVoltage(v);
     tc->setMPPTYmCurrent(i);
 
-    tc->setMPPTXpStatus((!MPPTXp.getVoltage(v)) & (!MPPTXp.getCurrent(i)));
+    tc->setMPPTXpStatus((!mpptOutXp.getVoltage(v)) & (!mpptOutXp.getCurrent(i)));
     tc->setMPPTXpVoltage(v);
     tc->setMPPTXpCurrent(i);
 
-    tc->setMPPTXmStatus((!MPPTXm.getVoltage(v)) & (!MPPTXm.getCurrent(i)));
+    tc->setMPPTXmStatus((!mpptOutXm.getVoltage(v)) & (!mpptOutXm.getCurrent(i)));
     tc->setMPPTXmVoltage(v);
     tc->setMPPTXmCurrent(i);
 
     // power bus status
     tc->setBusStatus(busHandler.getStatus());
     tc->setBusErrorStatus(busHandler.getErrorStatus());
+
+    Console::log("TMP20 Voltage: %d mV", ADCManager::getMeasurementVolt(batteryTemp));
 }
 
 /**
@@ -263,21 +263,29 @@ void main(void)
     bus2.setShuntResistor(40);
     bus3.setShuntResistor(40);
     bus4.setShuntResistor(40);
-    SAYp.setShuntResistor(40);
-    SAYm.setShuntResistor(40);
-    SAXp.setShuntResistor(40);
-    SAXm.setShuntResistor(40);
-    SPYp.setShuntResistor(33);
-    SPYm.setShuntResistor(33);
-    SPXp.setShuntResistor(33);
-    SPXm.setShuntResistor(33);
-    battery.setShuntResistor(33);
+    cellOutYp.setShuntResistor(40);
+    cellOutYm.setShuntResistor(40);
+    cellOutXp.setShuntResistor(40);
+    cellOutXm.setShuntResistor(40);
+    panelOutYp.setShuntResistor(33);
+    panelOutYm.setShuntResistor(33);
+    panelOutXp.setShuntResistor(33);
+    panelOutXm.setShuntResistor(33);
+    mpptOutYp.setShuntResistor(40);
+    mpptOutYm.setShuntResistor(40);
+    mpptOutXp.setShuntResistor(40);
+    mpptOutXm.setShuntResistor(40);
+    batteryINA.setShuntResistor(33);
 
     // initialize temperature sensors
     tempYp.init();
     tempYm.init();
     tempXp.init();
     tempXm.init();
+    batteryTemp = ADCManager::registerADC(ADC_INPUT_A22); //Register TMP20
+
+    // initialize GasGauge
+    batteryGG.init();
 
     // Initialize SPI master
     spi.initMaster(DSPI::MODE0, DSPI::MSBFirst, 1000000);
@@ -314,8 +322,6 @@ void main(void)
     // TODO: put back the lambda function after bug in CCS has been fixed
     //cmdHandler.onValidCommand([]{ reset.kickInternalWatchDog(); });
     cmdHandler.onValidCommand(validCmd);
-
-    gasGauge.init();
 
     Console::log("EPS booting...SLOT: %d", (int) Bootloader::getCurrentSlot());
 

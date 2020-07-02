@@ -967,3 +967,17 @@ void EPSTelemetryContainer::setMCUTemperature(signed short ushort)
     telemetry[77] = ((unsigned char *)&ushort)[1];
     telemetry[78] = ((unsigned char *)&ushort)[0];
 }
+
+signed short EPSTelemetryContainer::getBatteryTMP20Temperature()
+{
+    unsigned short ushort;
+    ((unsigned char *)&ushort)[1] = telemetry[103];
+    ((unsigned char *)&ushort)[0] = telemetry[104];
+    return ushort;
+}
+
+void EPSTelemetryContainer::setBatteryTMP20Temperature(signed short ushort)
+{
+    telemetry[103] = ((unsigned char *)&ushort)[1];
+    telemetry[104] = ((unsigned char *)&ushort)[0];
+}

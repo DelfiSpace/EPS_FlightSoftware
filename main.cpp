@@ -113,6 +113,9 @@ void periodicTask()
     // watch-dog time window
     // kick hardware watch-dog after every telemetry collection happens
     reset.kickExternalWatchDog();
+
+    // make sure we dont reset on silent bus.
+    reset.kickInternalWatchDog();
 }
 
 volatile int curADCResult;
@@ -233,22 +236,18 @@ void acquireTelemetry(EPSTelemetryContainer *tc)
     tc->setBusStatus(busHandler.getStatus());
     tc->setBusErrorStatus(busHandler.getErrorStatus());
 
-    int temperature_ADC = MAP_ADC14_getResult(ADC_MEM0);
-    int temperature_mV = (temperature_ADC * 2.5) / 16384;
+    curADCResult = MAP_ADC14_getResult(ADC_MEM0);
+    normalizedADCResult = (curADCResult * 2.5) / 16384;
 
     uint64_t status = MAP_ADC14_getEnabledInterruptStatus();
     MAP_ADC14_clearInterruptFlag(status);
     MAP_ADC14_toggleConversionTrigger();
-    curADCResult = MAP_ADC14_getResult(ADC_MEM0);
-    normalizedADCResult = (curADCResult * 2.5) / 16384;
-    MAP_ADC14_toggleConversionTrigger();
 
-    int temperature_C = (int) (((1000*normalizedADCResult) - 1886.3)/(-11.69));
-    if(temperature_C > 0){
-        Console::log("TMP20 Voltage: %d mV || %d C", (int) (1000*normalizedADCResult), temperature_C);
-    }else{
-        Console::log("TMP20 Voltage: %d mV || -%d C", temperature_mV, -temperature_C);
-    }
+
+    int temperature_C = (int) (((10000*normalizedADCResult) - 1886.3)/(-11.69));
+    Console::log("TMP20 = %d C || GG = %d C", temperature_C/10, tc->getBattTemperature()/10);
+
+    tc->setBatteryTMP20Temperature(temperature_C);
 
 }
 

@@ -10,7 +10,7 @@
 
 #include "TelemetryContainer.h"
 
-#define EPS_CONTAINER_SIZE  103
+#define EPS_CONTAINER_SIZE  105
 class EPSTelemetryContainer : public TelemetryContainer
 {
 protected:
@@ -138,7 +138,6 @@ public:
     bool getMPPTYpStatus();
     void setMPPTYpStatus(bool bval);
 
-
     //SP
     signed short getSPXmCurrent();
     void setSPXmCurrent(signed short ushort);
@@ -190,6 +189,10 @@ public:
 
     signed short getMCUTemperature();
     void setMCUTemperature(signed short ushort);
+
+    signed short getBatteryTMP20Temperature();
+    void setBatteryTMP20Temperature(signed short ushort);
+
 };
 
 #endif /* EPSTELEMETRYCONTAINER_H_ */

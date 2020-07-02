@@ -244,7 +244,7 @@ void acquireTelemetry(EPSTelemetryContainer *tc)
     MAP_ADC14_toggleConversionTrigger();
 
 
-    int temperature_C = (int) (((10000*normalizedADCResult) - 1886.3)/(-11.69));
+    int temperature_C = (int)(10*(((1000 * normalizedADCResult) - 1886.3)/(-11.69)));
     Console::log("TMP20 = %d C || GG = %d C", temperature_C/10, tc->getBattTemperature()/10);
 
     tc->setBatteryTMP20Temperature(temperature_C);

@@ -45,7 +45,7 @@ HWMonitor hwMonitor(&fram);
 Bootloader bootLoader = Bootloader(fram);
 
 // CDHS bus handler
-PQ9Bus pq9bus(3, GPIO_PORT_P10, GPIO_PIN0);
+PQ9Bus pq9bus(3, GPIO_PORT_P9, GPIO_PIN0);
 
 // services running in the system
 HousekeepingService<EPSTelemetryContainer> hk;

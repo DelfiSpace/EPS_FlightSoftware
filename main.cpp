@@ -1,5 +1,5 @@
 #include "EPS.h"
-
+//
 // I2C busses
 DWire I2Cinternal(0);
 DWire SolarPanelsBus(1);
@@ -33,11 +33,11 @@ TMP100 tempYp(SolarPanelsBus, 0x4B);
 TMP100 tempYm(SolarPanelsBus, 0x4F);
 TMP100 tempXp(SolarPanelsBus, 0x4D);
 TMP100 tempXm(SolarPanelsBus, 0x49);
-
+//
 // SPI bus
 DSPI spi(3);
 MB85RS fram(spi, GPIO_PORT_P1, GPIO_PIN0 );
-
+//
 // HardwareMonitor
 HWMonitor hwMonitor(&fram);
 
@@ -60,8 +60,9 @@ SoftwareUpdateService SWupdate(fram, (uint8_t*)xtr(SW_VERSION));
 
 
 TestService test;
-PowerBusHandler busHandler;
-Service* services[] = { &hk, &ping, &reset, &SWupdate, &busHandler, &test };
+//PowerBusHandler busHandler;
+//Service* services[] = { &hk, &ping, &reset, &SWupdate, &busHandler, &test };
+Service* services[] = { &hk, &ping, &reset, &SWupdate, &test };
 
 // EPS board tasks
 CommandHandler<PQ9Frame,PQ9Message> cmdHandler(pq9bus, services, 6);
@@ -73,7 +74,7 @@ Task* tasks[] = { &cmdHandler, &timerTask };
 // system uptime
 unsigned long uptime = 0;
 
-// TODO: remove when bug in CCS has been solved
+//// TODO: remove when bug in CCS has been solved
 void receivedCommand(DataFrame &newFrame)
 {
     cmdHandler.received(newFrame);
@@ -83,7 +84,7 @@ void validCmd(void)
 {
     reset.kickInternalWatchDog();
 }
-
+//
 void periodicTask()
 {
     // increase the timer, this happens every second
@@ -94,7 +95,7 @@ void periodicTask()
 
     // handle power busses:
     // verify if the internal bus is high enough to allow the power busses to be ON
-    busHandler.checkBussesStatus(hk.getTelemetry());
+    //busHandler.checkBussesStatus(hk.getTelemetry());
 
     // refresh the watch-dog configuration to make sure that, even in case of internal
     // registers corruption, the watch-dog is capable of recovering from an error
@@ -203,8 +204,8 @@ void acquireTelemetry(EPSTelemetryContainer *tc)
     tc->setSAXmTemperature(t);
 
     // power bus status
-    tc->setBusStatus(busHandler.getStatus());
-    tc->setBusErrorStatus(busHandler.getErrorStatus());
+    //tc->setBusStatus(busHandler.getStatus());
+    //tc->setBusErrorStatus(busHandler.getErrorStatus());
 }
 
 /**
@@ -278,15 +279,15 @@ void main(void)
     hwMonitor.readCSStatus();
 
 
-    // link the command handler to the PQ9 bus:
-    // every time a new command is received, it will be forwarded to the command handler
-    // TODO: put back the lambda function after bug in CCS has been fixed
-    //pq9bus.setReceiveHandler([](PQ9Frame &newFrame){ cmdHandler.received(newFrame); });
+//     link the command handler to the PQ9 bus:
+//     every time a new command is received, it will be forwarded to the command handler
+//     TODO: put back the lambda function after bug in CCS has been fixed
+//    pq9bus.setReceiveHandler([](PQ9Frame &newFrame){ cmdHandler.received(newFrame); });
     pq9bus.setReceiveHandler(receivedCommand);
 
-    // every time a command is correctly processed, call the watch-dog
-    // TODO: put back the lambda function after bug in CCS has been fixed
-    //cmdHandler.onValidCommand([]{ reset.kickInternalWatchDog(); });
+//     every time a command is correctly processed, call the watch-dog
+//     TODO: put back the lambda function after bug in CCS has been fixed
+//    cmdHandler.onValidCommand([]{ reset.kickInternalWatchDog(); });
     cmdHandler.onValidCommand(validCmd);
 
     gasGauge.init();

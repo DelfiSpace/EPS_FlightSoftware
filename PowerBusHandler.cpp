@@ -13,15 +13,15 @@ PowerBusHandler::PowerBusHandler()
     // always start with the busses in protection
     undervoltageProtection = true;
 
-    MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN0 );
-    MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN1 );
-    MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN2 );
-    MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN3 );
+    MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P8, GPIO_PIN0 );
+    MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P8, GPIO_PIN1 );
+    MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P8, GPIO_PIN2 );
+    MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P8, GPIO_PIN3 );
 
-    MAP_GPIO_setAsOutputPin( GPIO_PORT_P4, GPIO_PIN0 );
-    MAP_GPIO_setAsOutputPin( GPIO_PORT_P4, GPIO_PIN1 );
-    MAP_GPIO_setAsOutputPin( GPIO_PORT_P4, GPIO_PIN2 );
-    MAP_GPIO_setAsOutputPin( GPIO_PORT_P4, GPIO_PIN3 );
+    MAP_GPIO_setAsOutputPin( GPIO_PORT_P8, GPIO_PIN0 );
+    MAP_GPIO_setAsOutputPin( GPIO_PORT_P8, GPIO_PIN1 );
+    MAP_GPIO_setAsOutputPin( GPIO_PORT_P8, GPIO_PIN2 );
+    MAP_GPIO_setAsOutputPin( GPIO_PORT_P8, GPIO_PIN3 );
 
     // initialize the bus status bits
     MAP_GPIO_setAsInputPin( GPIO_PORT_P3, GPIO_PIN0 );
@@ -36,10 +36,10 @@ void PowerBusHandler::checkBussesStatus( EPSTelemetryContainer *tc )
     // if so, switch all buses off
     if (tc->getBattVoltage() < BATTERY_LOW_THRESHOLD)
     {
-        MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN0 );
-        MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN1 );
-        MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN2 );
-        MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN3 );
+        MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P8, GPIO_PIN0 );
+        MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P8, GPIO_PIN1 );
+        MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P8, GPIO_PIN2 );
+        MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P8, GPIO_PIN3 );
 
         if ( !undervoltageProtection )
         {
@@ -54,35 +54,35 @@ void PowerBusHandler::checkBussesStatus( EPSTelemetryContainer *tc )
             undervoltageProtection = false;
             if (DEFAULT & BUS1)
             {
-                MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P4, GPIO_PIN0 );
+                MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P8, GPIO_PIN0 );
             }
             else
             {
-                MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN0 );
+                MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P8, GPIO_PIN0 );
             }
             if (DEFAULT & BUS2)
             {
-                MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P4, GPIO_PIN1 );
+                MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P8, GPIO_PIN1 );
             }
             else
             {
-                MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN1 );
+                MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P8, GPIO_PIN1 );
             }
             if (DEFAULT & BUS3)
             {
-                MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P4, GPIO_PIN2 );
+                MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P8, GPIO_PIN2 );
             }
             else
             {
-                MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN2 );
+                MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P8, GPIO_PIN2 );
             }
             if (DEFAULT & BUS4)
             {
-                MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P4, GPIO_PIN3 );
+                MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P8, GPIO_PIN3 );
             }
             else
             {
-                MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN3 );
+                MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P8, GPIO_PIN3 );
             }
 
             Console::log("PowerBusHandler: Under-voltage protection OFF");
@@ -99,63 +99,63 @@ void PowerBusHandler::setPowerBus(unsigned char bus, unsigned char status)
             case 1:
             if (status)
             {
-                MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P4, GPIO_PIN0 );
+                MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P8, GPIO_PIN0 );
             }
             else
             {
-                MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN0 );
+                MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P8, GPIO_PIN0 );
             }
             break;
 
             case 2:
             if (status)
             {
-                MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P4, GPIO_PIN1 );
+                MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P8, GPIO_PIN1 );
             }
             else
             {
-                MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN1 );
+                MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P8, GPIO_PIN1 );
             }
             break;
 
             case 3:
             if (status)
             {
-                MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P4, GPIO_PIN2 );
+                MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P8, GPIO_PIN2 );
             }
             else
             {
-                MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN2 );
+                MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P8, GPIO_PIN2 );
             }
             break;
 
             case 4:
             if (status)
             {
-                MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P4, GPIO_PIN3 );
+                MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P8, GPIO_PIN3 );
             }
             else
             {
-                MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN3 );
+                MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P8, GPIO_PIN3 );
             }
             break;
         }
     }
     else
     {
-        MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN0 );
-        MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN1 );
-        MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN2 );
-        MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P4, GPIO_PIN3 );
+        MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P8, GPIO_PIN0 );
+        MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P8, GPIO_PIN1 );
+        MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P8, GPIO_PIN2 );
+        MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P8, GPIO_PIN3 );
     }
 }
 
 unsigned char PowerBusHandler::getStatus( void )
 {
-    return ((MAP_GPIO_getInputPinValue( GPIO_PORT_P4, GPIO_PIN0 ) == GPIO_INPUT_PIN_HIGH) |
-           ((MAP_GPIO_getInputPinValue( GPIO_PORT_P4, GPIO_PIN1 ) == GPIO_INPUT_PIN_HIGH) << 1) |
-           ((MAP_GPIO_getInputPinValue( GPIO_PORT_P4, GPIO_PIN2 ) == GPIO_INPUT_PIN_HIGH) << 2) |
-           ((MAP_GPIO_getInputPinValue( GPIO_PORT_P4, GPIO_PIN3 ) == GPIO_INPUT_PIN_HIGH) << 3));
+    return ((MAP_GPIO_getInputPinValue( GPIO_PORT_P8, GPIO_PIN0 ) == GPIO_INPUT_PIN_HIGH) |
+           ((MAP_GPIO_getInputPinValue( GPIO_PORT_P8, GPIO_PIN1 ) == GPIO_INPUT_PIN_HIGH) << 1) |
+           ((MAP_GPIO_getInputPinValue( GPIO_PORT_P8, GPIO_PIN2 ) == GPIO_INPUT_PIN_HIGH) << 2) |
+           ((MAP_GPIO_getInputPinValue( GPIO_PORT_P8, GPIO_PIN3 ) == GPIO_INPUT_PIN_HIGH) << 3));
 }
 
 unsigned char PowerBusHandler::getErrorStatus( void )

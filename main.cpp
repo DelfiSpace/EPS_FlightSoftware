@@ -60,9 +60,9 @@ SoftwareUpdateService SWupdate(fram, (uint8_t*)xtr(SW_VERSION));
 
 
 TestService test;
-//PowerBusHandler busHandler;
-//Service* services[] = { &hk, &ping, &reset, &SWupdate, &busHandler, &test };
-Service* services[] = { &hk, &ping, &reset, &SWupdate, &test };
+PowerBusHandler busHandler;
+Service* services[] = { &hk, &ping, &reset, &SWupdate, &busHandler, &test };
+//Service* services[] = { &hk, &ping, &reset, &SWupdate, &test };
 
 // EPS board tasks
 CommandHandler<PQ9Frame,PQ9Message> cmdHandler(pq9bus, services, 6);
@@ -95,7 +95,7 @@ void periodicTask()
 
     // handle power busses:
     // verify if the internal bus is high enough to allow the power busses to be ON
-    //busHandler.checkBussesStatus(hk.getTelemetry());
+    busHandler.checkBussesStatus(hk.getTelemetry());
 
     // refresh the watch-dog configuration to make sure that, even in case of internal
     // registers corruption, the watch-dog is capable of recovering from an error
@@ -204,8 +204,8 @@ void acquireTelemetry(EPSTelemetryContainer *tc)
     tc->setSAXmTemperature(t);
 
     // power bus status
-    //tc->setBusStatus(busHandler.getStatus());
-    //tc->setBusErrorStatus(busHandler.getErrorStatus());
+    tc->setBusStatus(busHandler.getStatus());
+    tc->setBusErrorStatus(busHandler.getErrorStatus());
 }
 
 /**

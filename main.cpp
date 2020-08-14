@@ -40,7 +40,7 @@ TMP100 tempXm(SolarPanelsBus, 0x49);
 int batteryTemp = 0; //Register on ADCManager  (P8.4 / A21)
 // SPI bus
 DSPI spi(3);
-MB85RS fram(spi, GPIO_PORT_P1, GPIO_PIN0, true );
+MB85RS fram(spi, GPIO_PORT_P1, GPIO_PIN0, MB85RS::MB85RS1MT );
 
 // HardwareMonitor
 HWMonitor hwMonitor(&fram);
@@ -70,15 +70,7 @@ PeriodicTaskNotifier taskNotifier = PeriodicTaskNotifier(periodicTasks, 1);
 Task* tasks[] = { &cmdHandler, &timerTask };
 // system uptime
 unsigned long uptime = 0;
-// TODO: remove when bug in CCS has been solved
-void receivedCommand(DataFrame &newFrame)
-{
-    cmdHandler.received(newFrame);
-}
-void validCmd(void)
-{
-    reset.kickInternalWatchDog();
-}
+
 void periodicTask()
 {
     // increase the timer, this happens every second
@@ -191,8 +183,8 @@ void acquireTelemetry(EPSTelemetryContainer *tc)
     tc->setBusStatus(busHandler.getStatus());
     tc->setBusErrorStatus(busHandler.getErrorStatus());
     int temperature_C = (int)(10*((ADCManager::getMeasurementVolt(batteryTemp) - 1886.3)/(-11.69)));
-    Console::log("TMP20 = %d C || GG = %d C", temperature_C, tc->getBattTemperature());
-    Console::log("MCUTemp: %d", hwMonitor.getMCUTemp());
+    //Console::log("TMP20 = %d C || GG = %d C", temperature_C, tc->getBattTemperature());
+    //Console::log("MCUTemp: %d", hwMonitor.getMCUTemp());
     tc->setBatteryTMP20Temperature(temperature_C);
 }
 
@@ -248,40 +240,46 @@ void main(void)
     tempYm.init();
     tempXp.init();
     tempXm.init();
+
     // initialize GasGauge
     batteryGG.init();
+
     // Initialize SPI master
     spi.initMaster(DSPI::MODE0, DSPI::MSBFirst, 1000000);
     fram.init();
+
     Console::init( 115200 );                // baud rate: 115200 bps
     pq9bus.begin(115200, EPS_ADDRESS);      // baud rate: 115200 bps
                                             // address EPS (2)
     //InitBootLoader!
     bootLoader.JumpSlot();
+
     // initialize the reset handler:
     // - prepare the watch-dog
     // - initialize the pins for the hardware watch-dog
     // - prepare the pin for power cycling the system
     reset.init();
+
     // initialize Task Notifier
     taskNotifier.init();
+
     // initialize HWMonitor readings
     hwMonitor.readResetStatus();
     hwMonitor.readCSStatus();
 
     // link the command handler to the PQ9 bus:
     // every time a new command is received, it will be forwarded to the command handler
-    // TODO: put back the lambda function after bug in CCS has been fixed
-    //pq9bus.setReceiveHandler([](PQ9Frame &newFrame){ cmdHandler.received(newFrame); });
-    pq9bus.setReceiveHandler(receivedCommand);
+    pq9bus.setReceiveHandler([](DataFrame &newFrame){ cmdHandler.received(newFrame); });
+
     // every time a command is correctly processed, call the watch-dog
-    // TODO: put back the lambda function after bug in CCS has been fixed
-    //cmdHandler.onValidCommand([]{ reset.kickInternalWatchDog(); });
-    cmdHandler.onValidCommand(validCmd);
+    cmdHandler.onValidCommand([]{ reset.kickInternalWatchDog(); });
+
     Console::log("EPS booting...SLOT: %d", (int) Bootloader::getCurrentSlot());
-    if(HAS_SW_VERSION == 1){
+    if(HAS_SW_VERSION == 1)
+    {
         Console::log("SW_VERSION: %s", (const char*)xtr(SW_VERSION));
     }
+
     // start the Task Manager: all activities from now on
     // will be managed from a dedicated task
     TaskManager::start(tasks, 2);

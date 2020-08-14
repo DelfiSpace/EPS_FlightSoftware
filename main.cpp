@@ -16,8 +16,8 @@ INA226 unregulatedBus(I2Cinternal, 0x4A);
 // external power busses
 INA226 bus1(I2Cinternal, 0x40);
 INA226 bus2(I2Cinternal, 0x41);
-INA226 bus3(I2Cinternal, 0x43);
-INA226 bus4(I2Cinternal, 0x42);
+INA226 bus3(I2Cinternal, 0x42);
+INA226 bus4(I2Cinternal, 0x43);
 // Solar arrays
 INA226 SAYp(SolarPanelsBus, 0x40);
 INA226 SAYm(SolarPanelsBus, 0x41);

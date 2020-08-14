@@ -36,7 +36,7 @@ TMP100 tempXm(SolarPanelsBus, 0x49);
 //
 // SPI bus
 DSPI spi(3);
-MB85RS fram(spi, GPIO_PORT_P1, GPIO_PIN0 );
+MB85RS fram(spi, GPIO_PORT_P1, GPIO_PIN0, true );
 //
 // HardwareMonitor
 HWMonitor hwMonitor(&fram);
@@ -232,12 +232,12 @@ void main(void)
     BatteryBoardBus.begin();
 
     // initialize the shunt resistors
-    internalBus.setShuntResistor(40);
-    unregulatedBus.setShuntResistor(40);
-    bus1.setShuntResistor(40);
-    bus2.setShuntResistor(40);
-    bus3.setShuntResistor(40);
-    bus4.setShuntResistor(40);
+    internalBus.setShuntResistor(33);
+    unregulatedBus.setShuntResistor(33);
+    bus1.setShuntResistor(33);
+    bus2.setShuntResistor(33);
+    bus3.setShuntResistor(33);
+    bus4.setShuntResistor(33);
     SAYp.setShuntResistor(40);
     SAYm.setShuntResistor(40);
     SAXp.setShuntResistor(40);

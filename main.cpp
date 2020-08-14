@@ -16,8 +16,8 @@ INA226 unregulatedBus(I2Cinternal, 0x4A);
 // external power busses
 INA226 bus1(I2Cinternal, 0x40);
 INA226 bus2(I2Cinternal, 0x41);
-INA226 bus3(I2Cinternal, 0x43);
-INA226 bus4(I2Cinternal, 0x42);
+INA226 bus3(I2Cinternal, 0x42);
+INA226 bus4(I2Cinternal, 0x43);
 // Solar Cells
 INA226 cellOutYp(SolarPanelsBus, 0x40);
 INA226 cellOutYm(SolarPanelsBus, 0x41);
@@ -40,7 +40,8 @@ TMP100 tempXm(SolarPanelsBus, 0x49);
 int batteryTemp = 0; //Register on ADCManager  (P8.4 / A21)
 // SPI bus
 DSPI spi(3);
-MB85RS fram(spi, GPIO_PORT_P1, GPIO_PIN0 );
+MB85RS fram(spi, GPIO_PORT_P1, GPIO_PIN0, true );
+
 // HardwareMonitor
 HWMonitor hwMonitor(&fram);
 // Bootloader
@@ -50,7 +51,8 @@ PQ9Bus pq9bus(3, GPIO_PORT_P9, GPIO_PIN0);
 // services running in the system
 HousekeepingService<EPSTelemetryContainer> hk;
 PingService ping;
-ResetService reset( GPIO_PORT_P4, GPIO_PIN0 );
+ResetService reset( GPIO_PORT_P4, GPIO_PIN0, GPIO_PORT_P4, GPIO_PIN2 );
+
 #ifndef SW_VERSION
 SoftwareUpdateService SWupdate(fram);
 #else
@@ -221,12 +223,12 @@ void main(void)
     BatteryBoardBus.begin();
 
     // initialize the shunt resistors
-    internalBus.setShuntResistor(40);
-    unregulatedBus.setShuntResistor(40);
-    bus1.setShuntResistor(40);
-    bus2.setShuntResistor(40);
-    bus3.setShuntResistor(40);
-    bus4.setShuntResistor(40);
+    internalBus.setShuntResistor(33);
+    unregulatedBus.setShuntResistor(33);
+    bus1.setShuntResistor(33);
+    bus2.setShuntResistor(33);
+    bus3.setShuntResistor(33);
+    bus4.setShuntResistor(33);
     cellOutYp.setShuntResistor(40);
     cellOutYm.setShuntResistor(40);
     cellOutXp.setShuntResistor(40);
@@ -240,6 +242,7 @@ void main(void)
     mpptOutXp.setShuntResistor(40);
     mpptOutXm.setShuntResistor(40);
     batteryINA.setShuntResistor(33);
+
     // initialize temperature sensors
     tempYp.init();
     tempYm.init();

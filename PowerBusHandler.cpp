@@ -160,10 +160,22 @@ unsigned char PowerBusHandler::getStatus( void )
 
 unsigned char PowerBusHandler::getErrorStatus( void )
 {
-    return ((MAP_GPIO_getInputPinValue( GPIO_PORT_P3, GPIO_PIN0 ) == GPIO_INPUT_PIN_HIGH) |
-           ((MAP_GPIO_getInputPinValue( GPIO_PORT_P3, GPIO_PIN1 ) == GPIO_INPUT_PIN_HIGH) << 1) |
+    unsigned char tmp = (((MAP_GPIO_getInputPinValue( GPIO_PORT_P3, GPIO_PIN1 ) == GPIO_INPUT_PIN_HIGH) << 1) |
            ((MAP_GPIO_getInputPinValue( GPIO_PORT_P3, GPIO_PIN2 ) == GPIO_INPUT_PIN_HIGH) << 2) |
            ((MAP_GPIO_getInputPinValue( GPIO_PORT_P3, GPIO_PIN3 ) == GPIO_INPUT_PIN_HIGH) << 3));
+
+   if (MAP_GPIO_getInputPinValue( GPIO_PORT_P8, GPIO_PIN0 ) == GPIO_INPUT_PIN_HIGH)
+   {
+       // if BUS 1 is ON, read the status bit
+       tmp |= (MAP_GPIO_getInputPinValue( GPIO_PORT_P3, GPIO_PIN0 ) == GPIO_INPUT_PIN_HIGH);
+   }
+   else
+   {
+       // otherwise, if OFF report there is no error
+       tmp |= 1;
+   }
+
+    return tmp;
 }
 
 bool PowerBusHandler::process(DataMessage &command, DataMessage &workingBuffer)

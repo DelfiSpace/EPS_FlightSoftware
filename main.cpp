@@ -61,7 +61,8 @@ SoftwareUpdateService SWupdate(fram, (uint8_t*)xtr(SW_VERSION));
 
 TestService test;
 PowerBusHandler busHandler;
-Service* services[] = { &hk, &ping, &reset, &SWupdate, &busHandler, &test };
+FRAMService framService(fram);
+Service* services[] = { &hk, &ping, &reset, &SWupdate, &busHandler, &framService, &test };
 // EPS board tasks
 CommandHandler<PQ9Frame,PQ9Message> cmdHandler(pq9bus, services, 6);
 PeriodicTask timerTask(1000, periodicTask);

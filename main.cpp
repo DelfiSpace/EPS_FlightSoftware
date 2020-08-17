@@ -71,11 +71,13 @@ PeriodicTaskNotifier taskNotifier = PeriodicTaskNotifier(periodicTasks, 1);
 Task* tasks[] = { &cmdHandler, &timerTask };
 // system uptime
 unsigned long uptime = 0;
+FRAMVar<unsigned long> totalUptime;
 
 void periodicTask()
 {
     // increase the timer, this happens every second
-    uptime++;
+    totalUptime += 1;
+    uptime += 1;
     // collect telemetry
     hk.acquireTelemetry(acquireTelemetry);
     // handle power busses:
@@ -105,8 +107,7 @@ void acquireTelemetry(EPSTelemetryContainer *tc)
     tc->setBootCounter(uc);
     tc->setResetCause(hwMonitor.getResetStatus());
     tc->setUptime(uptime);
-    fram.read(FRAM_TOTAL_UPTIME, (unsigned char*)&ul, 4);
-    tc->setTotalUptime(ul);
+    tc->setTotalUptime((unsigned long) totalUptime);
     tc->setVersionNumber(2);
     tc->setMCUTemp(hwMonitor.getMCUTemp());
 
@@ -275,7 +276,12 @@ void main(void)
 
     // Initialize SPI master
     spi.initMaster(DSPI::MODE0, DSPI::MSBFirst, 1000000);
+
+    // Initialize fram and fram-variables
     fram.init();
+    totalUptime.init(fram, FRAM_TOTAL_UPTIME);
+
+
 
     Console::init( 115200 );                // baud rate: 115200 bps
     pq9bus.begin(115200, EPS_ADDRESS);      // baud rate: 115200 bps

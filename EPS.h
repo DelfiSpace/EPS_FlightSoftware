@@ -40,6 +40,7 @@
 #include "Bootloader.h"
 #include "HWMonitor.h"
 #include "ADCManager.h"
+#include "FRAMVar.h"
 
 #define FCLOCK 48000000
 #define SCLOCK 32768

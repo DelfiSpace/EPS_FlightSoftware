@@ -37,239 +37,239 @@ public:
     short getMCUTemp();
     void setMCUTemp(short var);
 
-    bool getBATTERY_INA_STATUS();
-    void setBATTERY_INA_STATUS(bool var);
+    bool getBatteryINAStatus();
+    void setBatteryINAStatus(bool var);
 
-    bool getBATTERY_GG_STATUS();
-    void setBATTERY_GG_STATUS(bool var);
+    bool getBatteryGGStatus();
+    void setBatteryGGStatus(bool var);
 
-    bool getINTERNAL_INA_STATUS();
-    void setINTERNAL_INA_STATUS(bool var);
+    bool getInternalINAStatus();
+    void setInternalINAStatus(bool var);
 
-    bool getUNREGULATED_INA_STATUS();
-    void setUNREGULATED_INA_STATUS(bool var);
+    bool getUnregulatedINAStatus();
+    void setUnregulatedINAStatus(bool var);
 
-    bool getBUS1_INA_STATUS();
-    void setBUS1_INA_STATUS(bool var);
+    bool getBus1INAStatus();
+    void setBus1INAStatus(bool var);
 
-    bool getBUS2_INA_STATUS();
-    void setBUS2_INA_STATUS(bool var);
+    bool getBus2INAStatus();
+    void setBus2INAStatus(bool var);
 
-    bool getBUS3_INA_STATUS();
-    void setBUS3_INA_STATUS(bool var);
+    bool getBus3INAStatus();
+    void setBus3INAStatus(bool var);
 
-    bool getBUS4_INA_STATUS();
-    void setBUS4_INA_STATUS(bool var);
+    bool getBus4INAStatus();
+    void setBus4INAStatus(bool var);
 
-    bool getBUS4_ERROR();
-    void setBUS4_ERROR(bool var);
+    bool getBus4Error();
+    void setBus4Error(bool var);
 
-    bool getBUS3_ERROR();
-    void setBUS3_ERROR(bool var);
+    bool getBus3Error();
+    void setBus3Error(bool var);
 
-    bool getBUS2_ERROR();
-    void setBUS2_ERROR(bool var);
+    bool getBus2Error();
+    void setBus2Error(bool var);
 
-    bool getBUS1_ERROR();
-    void setBUS1_ERROR(bool var);
+    bool getBus1Error();
+    void setBus1Error(bool var);
 
-    bool getBUS4_STATE();
-    void setBUS4_STATE(bool var);
+    bool getBus4State();
+    void setBus4State(bool var);
 
-    bool getBUS3_STATE();
-    void setBUS3_STATE(bool var);
+    bool getBus3State();
+    void setBus3State(bool var);
 
-    bool getBUS2_STATE();
-    void setBUS2_STATE(bool var);
+    bool getBus2State();
+    void setBus2State(bool var);
 
-    bool getBUS1_STATE();
-    void setBUS1_STATE(bool var);
+    bool getBus1State();
+    void setBus1State(bool var);
 
-    bool getCELLOUT_YP_INA_STATUS();
-    void setCELLOUT_YP_INA_STATUS(bool var);
+    bool getPanelYpINAStatus();
+    void setPanelYpINAStatus(bool var);
 
-    bool getCELLOUT_YM_INA_STATUS();
-    void setCELLOUT_YM_INA_STATUS(bool var);
+    bool getPanelYmINAStatus();
+    void setPanelYmINAStatus(bool var);
 
-    bool getCELLOUT_XP_INA_STATUS();
-    void setCELLOUT_XP_INA_STATUS(bool var);
+    bool getPanelXpINAStatus();
+    void setPanelXpINAStatus(bool var);
 
-    bool getCELLOUT_XM_INA_STATUS();
-    void setCELLOUT_XM_INA_STATUS(bool var);
+    bool getPanelXmINAStatus();
+    void setPanelXmINAStatus(bool var);
 
-    bool getCELLOUT_YP_TMP_STATUS();
-    void setCELLOUT_YP_TMP_STATUS(bool var);
+    bool getPanelYpTMPStatus();
+    void setPanelYpTMPStatus(bool var);
 
-    bool getCELLOUT_YM_TMP_STATUS();
-    void setCELLOUT_YM_TMP_STATUS(bool var);
+    bool getPanelYmTMPStatus();
+    void setPanelYmTMPStatus(bool var);
 
-    bool getCELLOUT_XP_TMP_STATUS();
-    void setCELLOUT_XP_TMP_STATUS(bool var);
+    bool getPanelXpTMPStatus();
+    void setPanelXpTMPStatus(bool var);
 
-    bool getCELLOUT_XM_TMP_STATUS();
-    void setCELLOUT_XM_TMP_STATUS(bool var);
+    bool getPanelXmTMPStatus();
+    void setPanelXmTMPStatus(bool var);
 
-    bool getMPPT_YP_INA_STATUS();
-    void setMPPT_YP_INA_STATUS(bool var);
+    bool getMpptYpINAStatus();
+    void setMpptYpINAStatus(bool var);
 
-    bool getMPPT_YM_INA_STATUS();
-    void setMPPT_YM_INA_STATUS(bool var);
+    bool getMpptYmINAStatus();
+    void setMpptYmINAStatus(bool var);
 
-    bool getMPPT_XP_INA_STATUS();
-    void setMPPT_XP_INA_STATUS(bool var);
+    bool getMpptXpINAStatus();
+    void setMpptXpINAStatus(bool var);
 
-    bool getMPPT_XM_INA_STATUS();
-    void setMPPT_XM_INA_STATUS(bool var);
+    bool getMpptXmINAStatus();
+    void setMpptXmINAStatus(bool var);
 
-    bool getPANELOUT_YP_INA_STATUS();
-    void setPANELOUT_YP_INA_STATUS(bool var);
+    bool getCellYpINAStatus();
+    void setCellYpINAStatus(bool var);
 
-    bool getPANELOUT_YM_INA_STATUS();
-    void setPANELOUT_YM_INA_STATUS(bool var);
+    bool getCellYmINAStatus();
+    void setCellYmINAStatus(bool var);
 
-    bool getPANELOUT_XP_INA_STATUS();
-    void setPANELOUT_XP_INA_STATUS(bool var);
+    bool getCellXpINAStatus();
+    void setCellXpINAStatus(bool var);
 
-    bool getPANELOUT_XM_INA_STATUS();
-    void setPANELOUT_XM_INA_STATUS(bool var);
+    bool getCellXmINAStatus();
+    void setCellXmINAStatus(bool var);
 
-    short getINTERNAL_INA_CURRENT();
-    void setINTERNAL_INA_CURRENT(short var);
+    short getInternalINACurrent();
+    void setInternalINACurrent(short var);
 
-    short getINTERNAL_INA_VOLTAGE();
-    void setINTERNAL_INA_VOLTAGE(short var);
+    short getInternalINAVoltage();
+    void setInternalINAVoltage(short var);
 
-    short getUNREGULATED_INA_CURRENT();
-    void setUNREGULATED_INA_CURRENT(short var);
+    short getUnregulatedINACurrent();
+    void setUnregulatedINACurrent(short var);
 
-    short getUNREGULATED_INA_VOLTAGE();
-    void setUNREGULATED_INA_VOLTAGE(short var);
+    short getUnregulatedINAVoltage();
+    void setUnregulatedINAVoltage(short var);
 
-    short getBATTERY_GG_VOLTAGE();
-    void setBATTERY_GG_VOLTAGE(short var);
+    short getBatteryGGVoltage();
+    void setBatteryGGVoltage(short var);
 
-    short getBATTERY_INA_VOLTAGE();
-    void setBATTERY_INA_VOLTAGE(short var);
+    short getBatteryINAVoltage();
+    void setBatteryINAVoltage(short var);
 
-    short getBATTERY_INA_CURRENT();
-    void setBATTERY_INA_CURRENT(short var);
+    short getBatteryINACurrent();
+    void setBatteryINACurrent(short var);
 
-    short getBATTERY_GG_CAPACITY();
-    void setBATTERY_GG_CAPACITY(short var);
+    short getBatteryGGCapacity();
+    void setBatteryGGCapacity(short var);
 
-    short getBATTERY_GG_TEMP();
-    void setBATTERY_GG_TEMP(short var);
+    short getBatteryGGTemperature();
+    void setBatteryGGTemperature(short var);
 
-    short getBATTERY_TMP20_TEMP();
-    void setBATTERY_TMP20_TEMP(short var);
+    short getBatteryTMP20Temperature();
+    void setBatteryTMP20Temperature(short var);
 
-    short getBUS4_VOLTAGE();
-    void setBUS4_VOLTAGE(short var);
+    short getBus4Current();
+    void setBus4Current(short var);
 
-    short getBUS3_VOLTAGE();
-    void setBUS3_VOLTAGE(short var);
+    short getBus3Current();
+    void setBus3Current(short var);
 
-    short getBUS2_VOLTAGE();
-    void setBUS2_VOLTAGE(short var);
+    short getBus2Current();
+    void setBus2Current(short var);
 
-    short getBUS1_VOLTAGE();
-    void setBUS1_VOLTAGE(short var);
+    short getBus1Current();
+    void setBus1Current(short var);
 
-    short getBUS4_CURRENT();
-    void setBUS4_CURRENT(short var);
+    short getBus4Voltage();
+    void setBus4Voltage(short var);
 
-    short getBUS3_CURRENT();
-    void setBUS3_CURRENT(short var);
+    short getBus3Voltage();
+    void setBus3Voltage(short var);
 
-    short getBUS2_CURRENT();
-    void setBUS2_CURRENT(short var);
+    short getBus2Voltage();
+    void setBus2Voltage(short var);
 
-    short getBUS1_CURRENT();
-    void setBUS1_CURRENT(short var);
+    short getBus1Voltage();
+    void setBus1Voltage(short var);
 
-    short getCELLOUT_YP_CURRENT();
-    void setCELLOUT_YP_CURRENT(short var);
+    short getPanelYpCurrent();
+    void setPanelYpCurrent(short var);
 
-    short getCELLOUT_YM_CURRENT();
-    void setCELLOUT_YM_CURRENT(short var);
+    short getPanelYmCurrent();
+    void setPanelYmCurrent(short var);
 
-    short getCELLOUT_XP_CURRENT();
-    void setCELLOUT_XP_CURRENT(short var);
+    short getPanelXpCurrent();
+    void setPanelXpCurrent(short var);
 
-    short getCELLOUT_XM_CURRENT();
-    void setCELLOUT_XM_CURRENT(short var);
+    short getPanelXmCurrent();
+    void setPanelXmCurrent(short var);
 
-    short getCELLOUT_YP_VOLTAGE();
-    void setCELLOUT_YP_VOLTAGE(short var);
+    short getPanelYpVoltage();
+    void setPanelYpVoltage(short var);
 
-    short getCELLOUT_YM_VOLTAGE();
-    void setCELLOUT_YM_VOLTAGE(short var);
+    short getPanelYmVoltage();
+    void setPanelYmVoltage(short var);
 
-    short getCELLOUT_XP_VOLTAGE();
-    void setCELLOUT_XP_VOLTAGE(short var);
+    short getPanelXpVoltage();
+    void setPanelXpVoltage(short var);
 
-    short getCELLOUT_XM_VOLTAGE();
-    void setCELLOUT_XM_VOLTAGE(short var);
+    short getPanelXmVoltage();
+    void setPanelXmVoltage(short var);
 
-    short getCELLOUT_YP_TEMPERATURE();
-    void setCELLOUT_YP_TEMPERATURE(short var);
+    short getPanelYpTemperature();
+    void setPanelYpTemperature(short var);
 
-    short getCELLOUT_YM_TEMPERATURE();
-    void setCELLOUT_YM_TEMPERATURE(short var);
+    short getPanelYmTemperature();
+    void setPanelYmTemperature(short var);
 
-    short getCELLOUT_XP_TEMPERATURE();
-    void setCELLOUT_XP_TEMPERATURE(short var);
+    short getPanelXpTemperature();
+    void setPanelXpTemperature(short var);
 
-    short getCELLOUT_XM_TEMPERATURE();
-    void setCELLOUT_XM_TEMPERATURE(short var);
+    short getPanelXmTemperature();
+    void setPanelXmTemperature(short var);
 
-    short getMPPT_YP_CURRENT();
-    void setMPPT_YP_CURRENT(short var);
+    short getMpptYpCurrent();
+    void setMpptYpCurrent(short var);
 
-    short getMPPT_YM_CURRENT();
-    void setMPPT_YM_CURRENT(short var);
+    short getMpptYmCurrent();
+    void setMpptYmCurrent(short var);
 
-    short getMPPT_XP_CURRENT();
-    void setMPPT_XP_CURRENT(short var);
+    short getMpptXpCurrent();
+    void setMpptXpCurrent(short var);
 
-    short getMPPT_XM_CURRENT();
-    void setMPPT_XM_CURRENT(short var);
+    short getMpptXmCurrent();
+    void setMpptXmCurrent(short var);
 
-    short getMPPT_YP_VOLTAGE();
-    void setMPPT_YP_VOLTAGE(short var);
+    short getMpptYpVoltage();
+    void setMpptYpVoltage(short var);
 
-    short getMPPT_YM_VOLTAGE();
-    void setMPPT_YM_VOLTAGE(short var);
+    short getMpptYmVoltage();
+    void setMpptYmVoltage(short var);
 
-    short getMPPT_XP_VOLTAGE();
-    void setMPPT_XP_VOLTAGE(short var);
+    short getMpptXpVoltage();
+    void setMpptXpVoltage(short var);
 
-    short getMPPT_XM_VOLTAGE();
-    void setMPPT_XM_VOLTAGE(short var);
+    short getMpptXmVoltage();
+    void setMpptXmVoltage(short var);
 
-    short getPANELOUT_YP_VOLTAGE();
-    void setPANELOUT_YP_VOLTAGE(short var);
+    short getCellYpCurrent();
+    void setCellYpCurrent(short var);
 
-    short getPANELOUT_YM_VOLTAGE();
-    void setPANELOUT_YM_VOLTAGE(short var);
+    short getCellYmCurrent();
+    void setCellYmCurrent(short var);
 
-    short getPANELOUT_XP_VOLTAGE();
-    void setPANELOUT_XP_VOLTAGE(short var);
+    short getCellXpCurrent();
+    void setCellXpCurrent(short var);
 
-    short getPANELOUT_XM_VOLTAGE();
-    void setPANELOUT_XM_VOLTAGE(short var);
+    short getCellXmCurrent();
+    void setCellXmCurrent(short var);
 
-    short getPANELOUT_YP_CURRENT();
-    void setPANELOUT_YP_CURRENT(short var);
+    short getCellYpVoltage();
+    void setCellYpVoltage(short var);
 
-    short getPANELOUT_YM_CURRENT();
-    void setPANELOUT_YM_CURRENT(short var);
+    short getCellYmVoltage();
+    void setCellYmVoltage(short var);
 
-    short getPANELOUT_XP_CURRENT();
-    void setPANELOUT_XP_CURRENT(short var);
+    short getCellXpVoltage();
+    void setCellXpVoltage(short var);
 
-    short getPANELOUT_XM_CURRENT();
-    void setPANELOUT_XM_CURRENT(short var);
+    short getCellXmVoltage();
+    void setCellXmVoltage(short var);
 
 };
 

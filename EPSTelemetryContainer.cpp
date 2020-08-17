@@ -94,842 +94,842 @@ void EPSTelemetryContainer::setMCUTemp(short ushort)
     telemetry[14] = ((unsigned char *)&ushort)[1];
     telemetry[15] = ((unsigned char *)&ushort)[0];
 }
-bool EPSTelemetryContainer::getBATTERY_INA_STATUS()
+bool EPSTelemetryContainer::getBatteryINAStatus()
 {
     return ((telemetry[16] & 0x80) != 0);
 }
-void EPSTelemetryContainer::setBATTERY_INA_STATUS(bool bval)
+void EPSTelemetryContainer::setBatteryINAStatus(bool bval)
 {
     telemetry[16] &= (~0x80);
     telemetry[16] |= bval ? 0x80 : 0x00;
 }
-bool EPSTelemetryContainer::getBATTERY_GG_STATUS()
+bool EPSTelemetryContainer::getBatteryGGStatus()
 {
     return ((telemetry[16] & 0x40) != 0);
 }
-void EPSTelemetryContainer::setBATTERY_GG_STATUS(bool bval)
+void EPSTelemetryContainer::setBatteryGGStatus(bool bval)
 {
     telemetry[16] &= (~0x40);
     telemetry[16] |= bval ? 0x40 : 0x00;
 }
-bool EPSTelemetryContainer::getINTERNAL_INA_STATUS()
+bool EPSTelemetryContainer::getInternalINAStatus()
 {
     return ((telemetry[16] & 0x20) != 0);
 }
-void EPSTelemetryContainer::setINTERNAL_INA_STATUS(bool bval)
+void EPSTelemetryContainer::setInternalINAStatus(bool bval)
 {
     telemetry[16] &= (~0x20);
     telemetry[16] |= bval ? 0x20 : 0x00;
 }
-bool EPSTelemetryContainer::getUNREGULATED_INA_STATUS()
+bool EPSTelemetryContainer::getUnregulatedINAStatus()
 {
     return ((telemetry[16] & 0x10) != 0);
 }
-void EPSTelemetryContainer::setUNREGULATED_INA_STATUS(bool bval)
+void EPSTelemetryContainer::setUnregulatedINAStatus(bool bval)
 {
     telemetry[16] &= (~0x10);
     telemetry[16] |= bval ? 0x10 : 0x00;
 }
-bool EPSTelemetryContainer::getBUS1_INA_STATUS()
+bool EPSTelemetryContainer::getBus1INAStatus()
 {
     return ((telemetry[16] & 0x08) != 0);
 }
-void EPSTelemetryContainer::setBUS1_INA_STATUS(bool bval)
+void EPSTelemetryContainer::setBus1INAStatus(bool bval)
 {
     telemetry[16] &= (~0x08);
     telemetry[16] |= bval ? 0x08 : 0x00;
 }
-bool EPSTelemetryContainer::getBUS2_INA_STATUS()
+bool EPSTelemetryContainer::getBus2INAStatus()
 {
     return ((telemetry[16] & 0x04) != 0);
 }
-void EPSTelemetryContainer::setBUS2_INA_STATUS(bool bval)
+void EPSTelemetryContainer::setBus2INAStatus(bool bval)
 {
     telemetry[16] &= (~0x04);
     telemetry[16] |= bval ? 0x04 : 0x00;
 }
-bool EPSTelemetryContainer::getBUS3_INA_STATUS()
+bool EPSTelemetryContainer::getBus3INAStatus()
 {
     return ((telemetry[16] & 0x02) != 0);
 }
-void EPSTelemetryContainer::setBUS3_INA_STATUS(bool bval)
+void EPSTelemetryContainer::setBus3INAStatus(bool bval)
 {
     telemetry[16] &= (~0x02);
     telemetry[16] |= bval ? 0x02 : 0x00;
 }
-bool EPSTelemetryContainer::getBUS4_INA_STATUS()
+bool EPSTelemetryContainer::getBus4INAStatus()
 {
     return ((telemetry[16] & 0x01) != 0);
 }
-void EPSTelemetryContainer::setBUS4_INA_STATUS(bool bval)
+void EPSTelemetryContainer::setBus4INAStatus(bool bval)
 {
     telemetry[16] &= (~0x01);
     telemetry[16] |= bval ? 0x01 : 0x00;
 }
-bool EPSTelemetryContainer::getBUS4_ERROR()
+bool EPSTelemetryContainer::getBus4Error()
 {
     return ((telemetry[17] & 0x80) != 0);
 }
-void EPSTelemetryContainer::setBUS4_ERROR(bool bval)
+void EPSTelemetryContainer::setBus4Error(bool bval)
 {
     telemetry[17] &= (~0x80);
     telemetry[17] |= bval ? 0x80 : 0x00;
 }
-bool EPSTelemetryContainer::getBUS3_ERROR()
+bool EPSTelemetryContainer::getBus3Error()
 {
     return ((telemetry[17] & 0x40) != 0);
 }
-void EPSTelemetryContainer::setBUS3_ERROR(bool bval)
+void EPSTelemetryContainer::setBus3Error(bool bval)
 {
     telemetry[17] &= (~0x40);
     telemetry[17] |= bval ? 0x40 : 0x00;
 }
-bool EPSTelemetryContainer::getBUS2_ERROR()
+bool EPSTelemetryContainer::getBus2Error()
 {
     return ((telemetry[17] & 0x20) != 0);
 }
-void EPSTelemetryContainer::setBUS2_ERROR(bool bval)
+void EPSTelemetryContainer::setBus2Error(bool bval)
 {
     telemetry[17] &= (~0x20);
     telemetry[17] |= bval ? 0x20 : 0x00;
 }
-bool EPSTelemetryContainer::getBUS1_ERROR()
+bool EPSTelemetryContainer::getBus1Error()
 {
     return ((telemetry[17] & 0x10) != 0);
 }
-void EPSTelemetryContainer::setBUS1_ERROR(bool bval)
+void EPSTelemetryContainer::setBus1Error(bool bval)
 {
     telemetry[17] &= (~0x10);
     telemetry[17] |= bval ? 0x10 : 0x00;
 }
-bool EPSTelemetryContainer::getBUS4_STATE()
+bool EPSTelemetryContainer::getBus4State()
 {
     return ((telemetry[17] & 0x08) != 0);
 }
-void EPSTelemetryContainer::setBUS4_STATE(bool bval)
+void EPSTelemetryContainer::setBus4State(bool bval)
 {
     telemetry[17] &= (~0x08);
     telemetry[17] |= bval ? 0x08 : 0x00;
 }
-bool EPSTelemetryContainer::getBUS3_STATE()
+bool EPSTelemetryContainer::getBus3State()
 {
     return ((telemetry[17] & 0x04) != 0);
 }
-void EPSTelemetryContainer::setBUS3_STATE(bool bval)
+void EPSTelemetryContainer::setBus3State(bool bval)
 {
     telemetry[17] &= (~0x04);
     telemetry[17] |= bval ? 0x04 : 0x00;
 }
-bool EPSTelemetryContainer::getBUS2_STATE()
+bool EPSTelemetryContainer::getBus2State()
 {
     return ((telemetry[17] & 0x02) != 0);
 }
-void EPSTelemetryContainer::setBUS2_STATE(bool bval)
+void EPSTelemetryContainer::setBus2State(bool bval)
 {
     telemetry[17] &= (~0x02);
     telemetry[17] |= bval ? 0x02 : 0x00;
 }
-bool EPSTelemetryContainer::getBUS1_STATE()
+bool EPSTelemetryContainer::getBus1State()
 {
     return ((telemetry[17] & 0x01) != 0);
 }
-void EPSTelemetryContainer::setBUS1_STATE(bool bval)
+void EPSTelemetryContainer::setBus1State(bool bval)
 {
     telemetry[17] &= (~0x01);
     telemetry[17] |= bval ? 0x01 : 0x00;
 }
-bool EPSTelemetryContainer::getCELLOUT_YP_INA_STATUS()
+bool EPSTelemetryContainer::getPanelYpINAStatus()
 {
     return ((telemetry[18] & 0x80) != 0);
 }
-void EPSTelemetryContainer::setCELLOUT_YP_INA_STATUS(bool bval)
+void EPSTelemetryContainer::setPanelYpINAStatus(bool bval)
 {
     telemetry[18] &= (~0x80);
     telemetry[18] |= bval ? 0x80 : 0x00;
 }
-bool EPSTelemetryContainer::getCELLOUT_YM_INA_STATUS()
+bool EPSTelemetryContainer::getPanelYmINAStatus()
 {
     return ((telemetry[18] & 0x40) != 0);
 }
-void EPSTelemetryContainer::setCELLOUT_YM_INA_STATUS(bool bval)
+void EPSTelemetryContainer::setPanelYmINAStatus(bool bval)
 {
     telemetry[18] &= (~0x40);
     telemetry[18] |= bval ? 0x40 : 0x00;
 }
-bool EPSTelemetryContainer::getCELLOUT_XP_INA_STATUS()
+bool EPSTelemetryContainer::getPanelXpINAStatus()
 {
     return ((telemetry[18] & 0x20) != 0);
 }
-void EPSTelemetryContainer::setCELLOUT_XP_INA_STATUS(bool bval)
+void EPSTelemetryContainer::setPanelXpINAStatus(bool bval)
 {
     telemetry[18] &= (~0x20);
     telemetry[18] |= bval ? 0x20 : 0x00;
 }
-bool EPSTelemetryContainer::getCELLOUT_XM_INA_STATUS()
+bool EPSTelemetryContainer::getPanelXmINAStatus()
 {
     return ((telemetry[18] & 0x10) != 0);
 }
-void EPSTelemetryContainer::setCELLOUT_XM_INA_STATUS(bool bval)
+void EPSTelemetryContainer::setPanelXmINAStatus(bool bval)
 {
     telemetry[18] &= (~0x10);
     telemetry[18] |= bval ? 0x10 : 0x00;
 }
-bool EPSTelemetryContainer::getCELLOUT_YP_TMP_STATUS()
+bool EPSTelemetryContainer::getPanelYpTMPStatus()
 {
     return ((telemetry[18] & 0x08) != 0);
 }
-void EPSTelemetryContainer::setCELLOUT_YP_TMP_STATUS(bool bval)
+void EPSTelemetryContainer::setPanelYpTMPStatus(bool bval)
 {
     telemetry[18] &= (~0x08);
     telemetry[18] |= bval ? 0x08 : 0x00;
 }
-bool EPSTelemetryContainer::getCELLOUT_YM_TMP_STATUS()
+bool EPSTelemetryContainer::getPanelYmTMPStatus()
 {
     return ((telemetry[18] & 0x04) != 0);
 }
-void EPSTelemetryContainer::setCELLOUT_YM_TMP_STATUS(bool bval)
+void EPSTelemetryContainer::setPanelYmTMPStatus(bool bval)
 {
     telemetry[18] &= (~0x04);
     telemetry[18] |= bval ? 0x04 : 0x00;
 }
-bool EPSTelemetryContainer::getCELLOUT_XP_TMP_STATUS()
+bool EPSTelemetryContainer::getPanelXpTMPStatus()
 {
     return ((telemetry[18] & 0x02) != 0);
 }
-void EPSTelemetryContainer::setCELLOUT_XP_TMP_STATUS(bool bval)
+void EPSTelemetryContainer::setPanelXpTMPStatus(bool bval)
 {
     telemetry[18] &= (~0x02);
     telemetry[18] |= bval ? 0x02 : 0x00;
 }
-bool EPSTelemetryContainer::getCELLOUT_XM_TMP_STATUS()
+bool EPSTelemetryContainer::getPanelXmTMPStatus()
 {
     return ((telemetry[18] & 0x01) != 0);
 }
-void EPSTelemetryContainer::setCELLOUT_XM_TMP_STATUS(bool bval)
+void EPSTelemetryContainer::setPanelXmTMPStatus(bool bval)
 {
     telemetry[18] &= (~0x01);
     telemetry[18] |= bval ? 0x01 : 0x00;
 }
-bool EPSTelemetryContainer::getMPPT_YP_INA_STATUS()
+bool EPSTelemetryContainer::getMpptYpINAStatus()
 {
     return ((telemetry[19] & 0x80) != 0);
 }
-void EPSTelemetryContainer::setMPPT_YP_INA_STATUS(bool bval)
+void EPSTelemetryContainer::setMpptYpINAStatus(bool bval)
 {
     telemetry[19] &= (~0x80);
     telemetry[19] |= bval ? 0x80 : 0x00;
 }
-bool EPSTelemetryContainer::getMPPT_YM_INA_STATUS()
+bool EPSTelemetryContainer::getMpptYmINAStatus()
 {
     return ((telemetry[19] & 0x40) != 0);
 }
-void EPSTelemetryContainer::setMPPT_YM_INA_STATUS(bool bval)
+void EPSTelemetryContainer::setMpptYmINAStatus(bool bval)
 {
     telemetry[19] &= (~0x40);
     telemetry[19] |= bval ? 0x40 : 0x00;
 }
-bool EPSTelemetryContainer::getMPPT_XP_INA_STATUS()
+bool EPSTelemetryContainer::getMpptXpINAStatus()
 {
     return ((telemetry[19] & 0x20) != 0);
 }
-void EPSTelemetryContainer::setMPPT_XP_INA_STATUS(bool bval)
+void EPSTelemetryContainer::setMpptXpINAStatus(bool bval)
 {
     telemetry[19] &= (~0x20);
     telemetry[19] |= bval ? 0x20 : 0x00;
 }
-bool EPSTelemetryContainer::getMPPT_XM_INA_STATUS()
+bool EPSTelemetryContainer::getMpptXmINAStatus()
 {
     return ((telemetry[19] & 0x10) != 0);
 }
-void EPSTelemetryContainer::setMPPT_XM_INA_STATUS(bool bval)
+void EPSTelemetryContainer::setMpptXmINAStatus(bool bval)
 {
     telemetry[19] &= (~0x10);
     telemetry[19] |= bval ? 0x10 : 0x00;
 }
-bool EPSTelemetryContainer::getPANELOUT_YP_INA_STATUS()
+bool EPSTelemetryContainer::getCellYpINAStatus()
 {
     return ((telemetry[19] & 0x08) != 0);
 }
-void EPSTelemetryContainer::setPANELOUT_YP_INA_STATUS(bool bval)
+void EPSTelemetryContainer::setCellYpINAStatus(bool bval)
 {
     telemetry[19] &= (~0x08);
     telemetry[19] |= bval ? 0x08 : 0x00;
 }
-bool EPSTelemetryContainer::getPANELOUT_YM_INA_STATUS()
+bool EPSTelemetryContainer::getCellYmINAStatus()
 {
     return ((telemetry[19] & 0x04) != 0);
 }
-void EPSTelemetryContainer::setPANELOUT_YM_INA_STATUS(bool bval)
+void EPSTelemetryContainer::setCellYmINAStatus(bool bval)
 {
     telemetry[19] &= (~0x04);
     telemetry[19] |= bval ? 0x04 : 0x00;
 }
-bool EPSTelemetryContainer::getPANELOUT_XP_INA_STATUS()
+bool EPSTelemetryContainer::getCellXpINAStatus()
 {
     return ((telemetry[19] & 0x02) != 0);
 }
-void EPSTelemetryContainer::setPANELOUT_XP_INA_STATUS(bool bval)
+void EPSTelemetryContainer::setCellXpINAStatus(bool bval)
 {
     telemetry[19] &= (~0x02);
     telemetry[19] |= bval ? 0x02 : 0x00;
 }
-bool EPSTelemetryContainer::getPANELOUT_XM_INA_STATUS()
+bool EPSTelemetryContainer::getCellXmINAStatus()
 {
     return ((telemetry[19] & 0x01) != 0);
 }
-void EPSTelemetryContainer::setPANELOUT_XM_INA_STATUS(bool bval)
+void EPSTelemetryContainer::setCellXmINAStatus(bool bval)
 {
     telemetry[19] &= (~0x01);
     telemetry[19] |= bval ? 0x01 : 0x00;
 }
-short EPSTelemetryContainer::getINTERNAL_INA_CURRENT()
+short EPSTelemetryContainer::getInternalINACurrent()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[20];
     ((unsigned char *)&ushort)[0] = telemetry[21];
     return ushort;
 }
-void EPSTelemetryContainer::setINTERNAL_INA_CURRENT(short ushort)
+void EPSTelemetryContainer::setInternalINACurrent(short ushort)
 {
     telemetry[20] = ((unsigned char *)&ushort)[1];
     telemetry[21] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getINTERNAL_INA_VOLTAGE()
+short EPSTelemetryContainer::getInternalINAVoltage()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[22];
     ((unsigned char *)&ushort)[0] = telemetry[23];
     return ushort;
 }
-void EPSTelemetryContainer::setINTERNAL_INA_VOLTAGE(short ushort)
+void EPSTelemetryContainer::setInternalINAVoltage(short ushort)
 {
     telemetry[22] = ((unsigned char *)&ushort)[1];
     telemetry[23] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getUNREGULATED_INA_CURRENT()
+short EPSTelemetryContainer::getUnregulatedINACurrent()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[24];
     ((unsigned char *)&ushort)[0] = telemetry[25];
     return ushort;
 }
-void EPSTelemetryContainer::setUNREGULATED_INA_CURRENT(short ushort)
+void EPSTelemetryContainer::setUnregulatedINACurrent(short ushort)
 {
     telemetry[24] = ((unsigned char *)&ushort)[1];
     telemetry[25] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getUNREGULATED_INA_VOLTAGE()
+short EPSTelemetryContainer::getUnregulatedINAVoltage()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[26];
     ((unsigned char *)&ushort)[0] = telemetry[27];
     return ushort;
 }
-void EPSTelemetryContainer::setUNREGULATED_INA_VOLTAGE(short ushort)
+void EPSTelemetryContainer::setUnregulatedINAVoltage(short ushort)
 {
     telemetry[26] = ((unsigned char *)&ushort)[1];
     telemetry[27] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getBATTERY_GG_VOLTAGE()
+short EPSTelemetryContainer::getBatteryGGVoltage()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[28];
     ((unsigned char *)&ushort)[0] = telemetry[29];
     return ushort;
 }
-void EPSTelemetryContainer::setBATTERY_GG_VOLTAGE(short ushort)
+void EPSTelemetryContainer::setBatteryGGVoltage(short ushort)
 {
     telemetry[28] = ((unsigned char *)&ushort)[1];
     telemetry[29] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getBATTERY_INA_VOLTAGE()
+short EPSTelemetryContainer::getBatteryINAVoltage()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[30];
     ((unsigned char *)&ushort)[0] = telemetry[31];
     return ushort;
 }
-void EPSTelemetryContainer::setBATTERY_INA_VOLTAGE(short ushort)
+void EPSTelemetryContainer::setBatteryINAVoltage(short ushort)
 {
     telemetry[30] = ((unsigned char *)&ushort)[1];
     telemetry[31] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getBATTERY_INA_CURRENT()
+short EPSTelemetryContainer::getBatteryINACurrent()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[32];
     ((unsigned char *)&ushort)[0] = telemetry[33];
     return ushort;
 }
-void EPSTelemetryContainer::setBATTERY_INA_CURRENT(short ushort)
+void EPSTelemetryContainer::setBatteryINACurrent(short ushort)
 {
     telemetry[32] = ((unsigned char *)&ushort)[1];
     telemetry[33] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getBATTERY_GG_CAPACITY()
+short EPSTelemetryContainer::getBatteryGGCapacity()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[34];
     ((unsigned char *)&ushort)[0] = telemetry[35];
     return ushort;
 }
-void EPSTelemetryContainer::setBATTERY_GG_CAPACITY(short ushort)
+void EPSTelemetryContainer::setBatteryGGCapacity(short ushort)
 {
     telemetry[34] = ((unsigned char *)&ushort)[1];
     telemetry[35] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getBATTERY_GG_TEMP()
+short EPSTelemetryContainer::getBatteryGGTemperature()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[36];
     ((unsigned char *)&ushort)[0] = telemetry[37];
     return ushort;
 }
-void EPSTelemetryContainer::setBATTERY_GG_TEMP(short ushort)
+void EPSTelemetryContainer::setBatteryGGTemperature(short ushort)
 {
     telemetry[36] = ((unsigned char *)&ushort)[1];
     telemetry[37] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getBATTERY_TMP20_TEMP()
+short EPSTelemetryContainer::getBatteryTMP20Temperature()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[38];
     ((unsigned char *)&ushort)[0] = telemetry[39];
     return ushort;
 }
-void EPSTelemetryContainer::setBATTERY_TMP20_TEMP(short ushort)
+void EPSTelemetryContainer::setBatteryTMP20Temperature(short ushort)
 {
     telemetry[38] = ((unsigned char *)&ushort)[1];
     telemetry[39] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getBUS4_VOLTAGE()
+short EPSTelemetryContainer::getBus4Current()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[40];
     ((unsigned char *)&ushort)[0] = telemetry[41];
     return ushort;
 }
-void EPSTelemetryContainer::setBUS4_VOLTAGE(short ushort)
+void EPSTelemetryContainer::setBus4Current(short ushort)
 {
     telemetry[40] = ((unsigned char *)&ushort)[1];
     telemetry[41] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getBUS3_VOLTAGE()
+short EPSTelemetryContainer::getBus3Current()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[42];
     ((unsigned char *)&ushort)[0] = telemetry[43];
     return ushort;
 }
-void EPSTelemetryContainer::setBUS3_VOLTAGE(short ushort)
+void EPSTelemetryContainer::setBus3Current(short ushort)
 {
     telemetry[42] = ((unsigned char *)&ushort)[1];
     telemetry[43] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getBUS2_VOLTAGE()
+short EPSTelemetryContainer::getBus2Current()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[44];
     ((unsigned char *)&ushort)[0] = telemetry[45];
     return ushort;
 }
-void EPSTelemetryContainer::setBUS2_VOLTAGE(short ushort)
+void EPSTelemetryContainer::setBus2Current(short ushort)
 {
     telemetry[44] = ((unsigned char *)&ushort)[1];
     telemetry[45] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getBUS1_VOLTAGE()
+short EPSTelemetryContainer::getBus1Current()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[46];
     ((unsigned char *)&ushort)[0] = telemetry[47];
     return ushort;
 }
-void EPSTelemetryContainer::setBUS1_VOLTAGE(short ushort)
+void EPSTelemetryContainer::setBus1Current(short ushort)
 {
     telemetry[46] = ((unsigned char *)&ushort)[1];
     telemetry[47] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getBUS4_CURRENT()
+short EPSTelemetryContainer::getBus4Voltage()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[48];
     ((unsigned char *)&ushort)[0] = telemetry[49];
     return ushort;
 }
-void EPSTelemetryContainer::setBUS4_CURRENT(short ushort)
+void EPSTelemetryContainer::setBus4Voltage(short ushort)
 {
     telemetry[48] = ((unsigned char *)&ushort)[1];
     telemetry[49] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getBUS3_CURRENT()
+short EPSTelemetryContainer::getBus3Voltage()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[50];
     ((unsigned char *)&ushort)[0] = telemetry[51];
     return ushort;
 }
-void EPSTelemetryContainer::setBUS3_CURRENT(short ushort)
+void EPSTelemetryContainer::setBus3Voltage(short ushort)
 {
     telemetry[50] = ((unsigned char *)&ushort)[1];
     telemetry[51] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getBUS2_CURRENT()
+short EPSTelemetryContainer::getBus2Voltage()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[52];
     ((unsigned char *)&ushort)[0] = telemetry[53];
     return ushort;
 }
-void EPSTelemetryContainer::setBUS2_CURRENT(short ushort)
+void EPSTelemetryContainer::setBus2Voltage(short ushort)
 {
     telemetry[52] = ((unsigned char *)&ushort)[1];
     telemetry[53] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getBUS1_CURRENT()
+short EPSTelemetryContainer::getBus1Voltage()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[54];
     ((unsigned char *)&ushort)[0] = telemetry[55];
     return ushort;
 }
-void EPSTelemetryContainer::setBUS1_CURRENT(short ushort)
+void EPSTelemetryContainer::setBus1Voltage(short ushort)
 {
     telemetry[54] = ((unsigned char *)&ushort)[1];
     telemetry[55] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getCELLOUT_YP_CURRENT()
+short EPSTelemetryContainer::getPanelYpCurrent()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[56];
     ((unsigned char *)&ushort)[0] = telemetry[57];
     return ushort;
 }
-void EPSTelemetryContainer::setCELLOUT_YP_CURRENT(short ushort)
+void EPSTelemetryContainer::setPanelYpCurrent(short ushort)
 {
     telemetry[56] = ((unsigned char *)&ushort)[1];
     telemetry[57] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getCELLOUT_YM_CURRENT()
+short EPSTelemetryContainer::getPanelYmCurrent()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[58];
     ((unsigned char *)&ushort)[0] = telemetry[59];
     return ushort;
 }
-void EPSTelemetryContainer::setCELLOUT_YM_CURRENT(short ushort)
+void EPSTelemetryContainer::setPanelYmCurrent(short ushort)
 {
     telemetry[58] = ((unsigned char *)&ushort)[1];
     telemetry[59] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getCELLOUT_XP_CURRENT()
+short EPSTelemetryContainer::getPanelXpCurrent()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[60];
     ((unsigned char *)&ushort)[0] = telemetry[61];
     return ushort;
 }
-void EPSTelemetryContainer::setCELLOUT_XP_CURRENT(short ushort)
+void EPSTelemetryContainer::setPanelXpCurrent(short ushort)
 {
     telemetry[60] = ((unsigned char *)&ushort)[1];
     telemetry[61] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getCELLOUT_XM_CURRENT()
+short EPSTelemetryContainer::getPanelXmCurrent()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[62];
     ((unsigned char *)&ushort)[0] = telemetry[63];
     return ushort;
 }
-void EPSTelemetryContainer::setCELLOUT_XM_CURRENT(short ushort)
+void EPSTelemetryContainer::setPanelXmCurrent(short ushort)
 {
     telemetry[62] = ((unsigned char *)&ushort)[1];
     telemetry[63] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getCELLOUT_YP_VOLTAGE()
+short EPSTelemetryContainer::getPanelYpVoltage()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[64];
     ((unsigned char *)&ushort)[0] = telemetry[65];
     return ushort;
 }
-void EPSTelemetryContainer::setCELLOUT_YP_VOLTAGE(short ushort)
+void EPSTelemetryContainer::setPanelYpVoltage(short ushort)
 {
     telemetry[64] = ((unsigned char *)&ushort)[1];
     telemetry[65] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getCELLOUT_YM_VOLTAGE()
+short EPSTelemetryContainer::getPanelYmVoltage()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[66];
     ((unsigned char *)&ushort)[0] = telemetry[67];
     return ushort;
 }
-void EPSTelemetryContainer::setCELLOUT_YM_VOLTAGE(short ushort)
+void EPSTelemetryContainer::setPanelYmVoltage(short ushort)
 {
     telemetry[66] = ((unsigned char *)&ushort)[1];
     telemetry[67] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getCELLOUT_XP_VOLTAGE()
+short EPSTelemetryContainer::getPanelXpVoltage()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[68];
     ((unsigned char *)&ushort)[0] = telemetry[69];
     return ushort;
 }
-void EPSTelemetryContainer::setCELLOUT_XP_VOLTAGE(short ushort)
+void EPSTelemetryContainer::setPanelXpVoltage(short ushort)
 {
     telemetry[68] = ((unsigned char *)&ushort)[1];
     telemetry[69] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getCELLOUT_XM_VOLTAGE()
+short EPSTelemetryContainer::getPanelXmVoltage()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[70];
     ((unsigned char *)&ushort)[0] = telemetry[71];
     return ushort;
 }
-void EPSTelemetryContainer::setCELLOUT_XM_VOLTAGE(short ushort)
+void EPSTelemetryContainer::setPanelXmVoltage(short ushort)
 {
     telemetry[70] = ((unsigned char *)&ushort)[1];
     telemetry[71] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getCELLOUT_YP_TEMPERATURE()
+short EPSTelemetryContainer::getPanelYpTemperature()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[72];
     ((unsigned char *)&ushort)[0] = telemetry[73];
     return ushort;
 }
-void EPSTelemetryContainer::setCELLOUT_YP_TEMPERATURE(short ushort)
+void EPSTelemetryContainer::setPanelYpTemperature(short ushort)
 {
     telemetry[72] = ((unsigned char *)&ushort)[1];
     telemetry[73] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getCELLOUT_YM_TEMPERATURE()
+short EPSTelemetryContainer::getPanelYmTemperature()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[74];
     ((unsigned char *)&ushort)[0] = telemetry[75];
     return ushort;
 }
-void EPSTelemetryContainer::setCELLOUT_YM_TEMPERATURE(short ushort)
+void EPSTelemetryContainer::setPanelYmTemperature(short ushort)
 {
     telemetry[74] = ((unsigned char *)&ushort)[1];
     telemetry[75] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getCELLOUT_XP_TEMPERATURE()
+short EPSTelemetryContainer::getPanelXpTemperature()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[76];
     ((unsigned char *)&ushort)[0] = telemetry[77];
     return ushort;
 }
-void EPSTelemetryContainer::setCELLOUT_XP_TEMPERATURE(short ushort)
+void EPSTelemetryContainer::setPanelXpTemperature(short ushort)
 {
     telemetry[76] = ((unsigned char *)&ushort)[1];
     telemetry[77] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getCELLOUT_XM_TEMPERATURE()
+short EPSTelemetryContainer::getPanelXmTemperature()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[78];
     ((unsigned char *)&ushort)[0] = telemetry[79];
     return ushort;
 }
-void EPSTelemetryContainer::setCELLOUT_XM_TEMPERATURE(short ushort)
+void EPSTelemetryContainer::setPanelXmTemperature(short ushort)
 {
     telemetry[78] = ((unsigned char *)&ushort)[1];
     telemetry[79] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getMPPT_YP_CURRENT()
+short EPSTelemetryContainer::getMpptYpCurrent()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[80];
     ((unsigned char *)&ushort)[0] = telemetry[81];
     return ushort;
 }
-void EPSTelemetryContainer::setMPPT_YP_CURRENT(short ushort)
+void EPSTelemetryContainer::setMpptYpCurrent(short ushort)
 {
     telemetry[80] = ((unsigned char *)&ushort)[1];
     telemetry[81] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getMPPT_YM_CURRENT()
+short EPSTelemetryContainer::getMpptYmCurrent()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[82];
     ((unsigned char *)&ushort)[0] = telemetry[83];
     return ushort;
 }
-void EPSTelemetryContainer::setMPPT_YM_CURRENT(short ushort)
+void EPSTelemetryContainer::setMpptYmCurrent(short ushort)
 {
     telemetry[82] = ((unsigned char *)&ushort)[1];
     telemetry[83] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getMPPT_XP_CURRENT()
+short EPSTelemetryContainer::getMpptXpCurrent()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[84];
     ((unsigned char *)&ushort)[0] = telemetry[85];
     return ushort;
 }
-void EPSTelemetryContainer::setMPPT_XP_CURRENT(short ushort)
+void EPSTelemetryContainer::setMpptXpCurrent(short ushort)
 {
     telemetry[84] = ((unsigned char *)&ushort)[1];
     telemetry[85] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getMPPT_XM_CURRENT()
+short EPSTelemetryContainer::getMpptXmCurrent()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[86];
     ((unsigned char *)&ushort)[0] = telemetry[87];
     return ushort;
 }
-void EPSTelemetryContainer::setMPPT_XM_CURRENT(short ushort)
+void EPSTelemetryContainer::setMpptXmCurrent(short ushort)
 {
     telemetry[86] = ((unsigned char *)&ushort)[1];
     telemetry[87] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getMPPT_YP_VOLTAGE()
+short EPSTelemetryContainer::getMpptYpVoltage()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[88];
     ((unsigned char *)&ushort)[0] = telemetry[89];
     return ushort;
 }
-void EPSTelemetryContainer::setMPPT_YP_VOLTAGE(short ushort)
+void EPSTelemetryContainer::setMpptYpVoltage(short ushort)
 {
     telemetry[88] = ((unsigned char *)&ushort)[1];
     telemetry[89] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getMPPT_YM_VOLTAGE()
+short EPSTelemetryContainer::getMpptYmVoltage()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[90];
     ((unsigned char *)&ushort)[0] = telemetry[91];
     return ushort;
 }
-void EPSTelemetryContainer::setMPPT_YM_VOLTAGE(short ushort)
+void EPSTelemetryContainer::setMpptYmVoltage(short ushort)
 {
     telemetry[90] = ((unsigned char *)&ushort)[1];
     telemetry[91] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getMPPT_XP_VOLTAGE()
+short EPSTelemetryContainer::getMpptXpVoltage()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[92];
     ((unsigned char *)&ushort)[0] = telemetry[93];
     return ushort;
 }
-void EPSTelemetryContainer::setMPPT_XP_VOLTAGE(short ushort)
+void EPSTelemetryContainer::setMpptXpVoltage(short ushort)
 {
     telemetry[92] = ((unsigned char *)&ushort)[1];
     telemetry[93] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getMPPT_XM_VOLTAGE()
+short EPSTelemetryContainer::getMpptXmVoltage()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[94];
     ((unsigned char *)&ushort)[0] = telemetry[95];
     return ushort;
 }
-void EPSTelemetryContainer::setMPPT_XM_VOLTAGE(short ushort)
+void EPSTelemetryContainer::setMpptXmVoltage(short ushort)
 {
     telemetry[94] = ((unsigned char *)&ushort)[1];
     telemetry[95] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getPANELOUT_YP_VOLTAGE()
+short EPSTelemetryContainer::getCellYpCurrent()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[96];
     ((unsigned char *)&ushort)[0] = telemetry[97];
     return ushort;
 }
-void EPSTelemetryContainer::setPANELOUT_YP_VOLTAGE(short ushort)
+void EPSTelemetryContainer::setCellYpCurrent(short ushort)
 {
     telemetry[96] = ((unsigned char *)&ushort)[1];
     telemetry[97] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getPANELOUT_YM_VOLTAGE()
+short EPSTelemetryContainer::getCellYmCurrent()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[98];
     ((unsigned char *)&ushort)[0] = telemetry[99];
     return ushort;
 }
-void EPSTelemetryContainer::setPANELOUT_YM_VOLTAGE(short ushort)
+void EPSTelemetryContainer::setCellYmCurrent(short ushort)
 {
     telemetry[98] = ((unsigned char *)&ushort)[1];
     telemetry[99] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getPANELOUT_XP_VOLTAGE()
+short EPSTelemetryContainer::getCellXpCurrent()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[100];
     ((unsigned char *)&ushort)[0] = telemetry[101];
     return ushort;
 }
-void EPSTelemetryContainer::setPANELOUT_XP_VOLTAGE(short ushort)
+void EPSTelemetryContainer::setCellXpCurrent(short ushort)
 {
     telemetry[100] = ((unsigned char *)&ushort)[1];
     telemetry[101] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getPANELOUT_XM_VOLTAGE()
+short EPSTelemetryContainer::getCellXmCurrent()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[102];
     ((unsigned char *)&ushort)[0] = telemetry[103];
     return ushort;
 }
-void EPSTelemetryContainer::setPANELOUT_XM_VOLTAGE(short ushort)
+void EPSTelemetryContainer::setCellXmCurrent(short ushort)
 {
     telemetry[102] = ((unsigned char *)&ushort)[1];
     telemetry[103] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getPANELOUT_YP_CURRENT()
+short EPSTelemetryContainer::getCellYpVoltage()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[104];
     ((unsigned char *)&ushort)[0] = telemetry[105];
     return ushort;
 }
-void EPSTelemetryContainer::setPANELOUT_YP_CURRENT(short ushort)
+void EPSTelemetryContainer::setCellYpVoltage(short ushort)
 {
     telemetry[104] = ((unsigned char *)&ushort)[1];
     telemetry[105] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getPANELOUT_YM_CURRENT()
+short EPSTelemetryContainer::getCellYmVoltage()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[106];
     ((unsigned char *)&ushort)[0] = telemetry[107];
     return ushort;
 }
-void EPSTelemetryContainer::setPANELOUT_YM_CURRENT(short ushort)
+void EPSTelemetryContainer::setCellYmVoltage(short ushort)
 {
     telemetry[106] = ((unsigned char *)&ushort)[1];
     telemetry[107] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getPANELOUT_XP_CURRENT()
+short EPSTelemetryContainer::getCellXpVoltage()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[108];
     ((unsigned char *)&ushort)[0] = telemetry[109];
     return ushort;
 }
-void EPSTelemetryContainer::setPANELOUT_XP_CURRENT(short ushort)
+void EPSTelemetryContainer::setCellXpVoltage(short ushort)
 {
     telemetry[108] = ((unsigned char *)&ushort)[1];
     telemetry[109] = ((unsigned char *)&ushort)[0];
 }
-short EPSTelemetryContainer::getPANELOUT_XM_CURRENT()
+short EPSTelemetryContainer::getCellXmVoltage()
 {
     unsigned short ushort;
     ((unsigned char *)&ushort)[1] = telemetry[110];
     ((unsigned char *)&ushort)[0] = telemetry[111];
     return ushort;
 }
-void EPSTelemetryContainer::setPANELOUT_XM_CURRENT(short ushort)
+void EPSTelemetryContainer::setCellXmVoltage(short ushort)
 {
     telemetry[110] = ((unsigned char *)&ushort)[1];
     telemetry[111] = ((unsigned char *)&ushort)[0];

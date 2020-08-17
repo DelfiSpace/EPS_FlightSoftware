@@ -37,10 +37,10 @@ void PowerBusHandler::checkBussesStatus( EPSTelemetryContainer *tc )
 
     int curBatteryVoltage = 0;
 
-    if(tc->getBATTERY_INA_STATUS()){
-        curBatteryVoltage = tc->getBATTERY_INA_VOLTAGE();
-    }else if(tc->getBATTERY_GG_STATUS()){
-        curBatteryVoltage = tc->getBATTERY_GG_VOLTAGE();
+    if(tc->getBatteryINAStatus()){
+        curBatteryVoltage = tc->getBatteryINAVoltage();
+    }else if(tc->getBatteryGGStatus()){
+        curBatteryVoltage = tc->getBatteryGGVoltage();
     }else{
         //both sensors are dead. Just set voltage high enough to turn on the bus.
         curBatteryVoltage = BATTERY_HIGH_THRESHOLD;

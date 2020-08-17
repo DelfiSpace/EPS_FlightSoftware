@@ -112,110 +112,111 @@ void acquireTelemetry(EPSTelemetryContainer *tc)
     tc->setMCUTemp(hwMonitor.getMCUTemp());
 
     // BatteryBoard Telemetry
-    tc->setBATTERY_INA_STATUS((!batteryINA.getVoltage(v)) & (!batteryINA.getCurrent(i)));
-    tc->setBATTERY_INA_VOLTAGE(v);
-    tc->setBATTERY_INA_CURRENT(i);
-    tc->setBATTERY_GG_STATUS((!batteryGG.getVoltage(v)) &
+    tc->setBatteryINAStatus((!batteryINA.getVoltage(v)) & (!batteryINA.getCurrent(i)));
+    tc->setBatteryINAVoltage(v);
+    tc->setBatteryINACurrent(i);
+    tc->setBatteryGGStatus((!batteryGG.getVoltage(v)) &
                     (!batteryGG.getTemperature(t)) &
                     (!batteryGG.getAvailableCapacity(c)));
-    tc->setBATTERY_GG_VOLTAGE(v);
-    tc->setBATTERY_GG_TEMP(t);
-    tc->setBATTERY_GG_CAPACITY(c);
+    tc->setBatteryGGVoltage(v);
+    tc->setBatteryGGTemperature(t);
+    tc->setBatteryGGCapacity(c);
     int temperature_C = (int)(10*((ADCManager::getMeasurementVolt(batteryTemp) - 1886.3)/(-11.69)));
     //Console::log("TMP20 = %d C || GG = %d C", temperature_C, tc->getBattTemperature());
     //Console::log("MCUTemp: %d", hwMonitor.getMCUTemp());
-    tc->setBATTERY_TMP20_TEMP(temperature_C);
+    tc->setBatteryTMP20Temperature(temperature_C);
 
     // Bus Telemetry
-    tc->setBUS1_INA_STATUS((!bus1.getVoltage(v)) & (!bus1.getCurrent(i)));
-    tc->setBUS1_VOLTAGE(v);
-    tc->setBUS1_CURRENT(i);
-    tc->setBUS1_STATE(busHandler.getStatus() & (0x01));
-    tc->setBUS1_ERROR(busHandler.getErrorStatus() & (0x01));
+    tc->setBus1INAStatus((!bus1.getVoltage(v)) & (!bus1.getCurrent(i)));
+    tc->setBus1Voltage(v);
+    tc->setBus1Current(i);
+    tc->setBus1State(busHandler.getStatus() & (0x01));
+    tc->setBus1Error(busHandler.getErrorStatus() & (0x01));
 
-    tc->setBUS2_INA_STATUS((!bus2.getVoltage(v)) & (!bus2.getCurrent(i)));
-    tc->setBUS2_VOLTAGE(v);
-    tc->setBUS2_CURRENT(i);
-    tc->setBUS2_STATE(busHandler.getStatus() & (0x01 << 1));
-    tc->setBUS2_ERROR(busHandler.getErrorStatus() & (0x01 << 1));
+    tc->setBus2INAStatus((!bus2.getVoltage(v)) & (!bus2.getCurrent(i)));
+    tc->setBus2Voltage(v);
+    tc->setBus2Current(i);
+    tc->setBus2State(busHandler.getStatus() & (0x01 << 1));
+    tc->setBus2Error(busHandler.getErrorStatus() & (0x01 << 1));
 
-    tc->setBUS3_INA_STATUS((!bus3.getVoltage(v)) & (!bus3.getCurrent(i)));
-    tc->setBUS3_VOLTAGE(v);
-    tc->setBUS3_CURRENT(i);
-    tc->setBUS3_STATE(busHandler.getStatus() & (0x01 << 2));
-    tc->setBUS3_ERROR(busHandler.getErrorStatus() & (0x01 << 2));
+    tc->setBus3INAStatus((!bus3.getVoltage(v)) & (!bus3.getCurrent(i)));
+    tc->setBus3Voltage(v);
+    tc->setBus3Current(i);
+    tc->setBus3State(busHandler.getStatus() & (0x01 << 2));
+    tc->setBus3Error(busHandler.getErrorStatus() & (0x01 << 2));
 
-    tc->setBUS4_INA_STATUS((!bus4.getVoltage(v)) & (!bus4.getCurrent(i)));
-    tc->setBUS4_VOLTAGE(v);
-    tc->setBUS4_CURRENT(i);
-    tc->setBUS4_STATE(busHandler.getStatus() & (0x01 << 3));
-    tc->setBUS4_ERROR(busHandler.getErrorStatus() & (0x01 << 3));
+    tc->setBus4INAStatus((!bus4.getVoltage(v)) & (!bus4.getCurrent(i)));
+    tc->setBus4Voltage(v);
+    tc->setBus4Current(i);
+    tc->setBus4State(busHandler.getStatus() & (0x01 << 3));
+    tc->setBus4Error(busHandler.getErrorStatus() & (0x01 << 3));
 
     // INAS on the output of solar panels
-    tc->setCELLOUT_XM_INA_STATUS((!cellOutXm.getVoltage(v)) & (!cellOutXm.getCurrent(i)));
-    tc->setCELLOUT_XM_CURRENT(i);
-    tc->setCELLOUT_XM_VOLTAGE(v);
-    tc->setCELLOUT_XM_TMP_STATUS(!tempXm.getTemperature(t));
-    tc->setCELLOUT_XM_TEMPERATURE(t);
+    tc->setCellXmINAStatus((!cellOutXm.getVoltage(v)) & (!cellOutXm.getCurrent(i)));
+    tc->setCellXmCurrent(i);
+    tc->setCellXmVoltage(v);
 
-    tc->setCELLOUT_XP_INA_STATUS((!cellOutXp.getVoltage(v)) & (!cellOutXp.getCurrent(i)));
-    tc->setCELLOUT_XP_CURRENT(i);
-    tc->setCELLOUT_XP_VOLTAGE(v);
-    tc->setCELLOUT_XP_TMP_STATUS(!tempXp.getTemperature(t));
-    tc->setCELLOUT_XP_TEMPERATURE(t);
+    tc->setCellXpINAStatus((!cellOutXp.getVoltage(v)) & (!cellOutXp.getCurrent(i)));
+    tc->setCellXpCurrent(i);
+    tc->setCellXpVoltage(v);
 
-    tc->setCELLOUT_YM_INA_STATUS((!cellOutXm.getVoltage(v)) & (!cellOutXm.getCurrent(i)));
-    tc->setCELLOUT_YM_CURRENT(i);
-    tc->setCELLOUT_YM_VOLTAGE(v);
-    tc->setCELLOUT_YM_TMP_STATUS(!tempXm.getTemperature(t));
-    tc->setCELLOUT_YM_TEMPERATURE(t);
+    tc->setCellYmINAStatus((!cellOutYm.getVoltage(v)) & (!cellOutYm.getCurrent(i)));
+    tc->setCellYmCurrent(i);
+    tc->setCellYmVoltage(v);
 
-    tc->setCELLOUT_YP_INA_STATUS((!cellOutYp.getVoltage(v)) & (!cellOutYp.getCurrent(i)));
-    tc->setCELLOUT_YP_CURRENT(i);
-    tc->setCELLOUT_YP_VOLTAGE(v);
-    tc->setCELLOUT_YP_TMP_STATUS(!tempYp.getTemperature(t));
-    tc->setCELLOUT_YP_TEMPERATURE(t);
+    tc->setCellYpINAStatus((!cellOutYp.getVoltage(v)) & (!cellOutYp.getCurrent(i)));
+    tc->setCellYpCurrent(i);
+    tc->setCellYpVoltage(v);
 
-    tc->setMPPT_XM_INA_STATUS((!mpptOutXm.getVoltage(v)) & (!mpptOutXm.getCurrent(i)));
-    tc->setMPPT_XM_CURRENT(i);
-    tc->setMPPT_XM_VOLTAGE(v);
+    tc->setPanelXmTMPStatus(!tempXm.getTemperature(t));
+    tc->setPanelXmTemperature(t);
+    tc->setPanelXpTMPStatus(!tempXp.getTemperature(t));
+    tc->setPanelXpTemperature(t);
+    tc->setPanelYmTMPStatus(!tempYm.getTemperature(t));
+    tc->setPanelYmTemperature(t);
+    tc->setPanelYpTMPStatus(!tempYp.getTemperature(t));
+    tc->setPanelYpTemperature(t);
 
-    tc->setMPPT_XP_INA_STATUS((!mpptOutXp.getVoltage(v)) & (!mpptOutXp.getCurrent(i)));
-    tc->setMPPT_XP_CURRENT(i);
-    tc->setMPPT_XP_VOLTAGE(v);
+    tc->setMpptXmINAStatus((!mpptOutXm.getVoltage(v)) & (!mpptOutXm.getCurrent(i)));
+    tc->setMpptXmCurrent(i);
+    tc->setMpptXmVoltage(v);
 
-    tc->setMPPT_YM_INA_STATUS((!mpptOutYm.getVoltage(v)) & (!mpptOutYm.getCurrent(i)));
-    tc->setMPPT_YM_CURRENT(i);
-    tc->setMPPT_YM_VOLTAGE(v);
+    tc->setMpptXpINAStatus((!mpptOutXp.getVoltage(v)) & (!mpptOutXp.getCurrent(i)));
+    tc->setMpptXpCurrent(i);
+    tc->setMpptXpVoltage(v);
 
-    tc->setMPPT_YP_INA_STATUS((!mpptOutYp.getVoltage(v)) & (!mpptOutYp.getCurrent(i)));
-    tc->setMPPT_YP_CURRENT(i);
-    tc->setMPPT_YP_VOLTAGE(v);
+    tc->setMpptYmINAStatus((!mpptOutYm.getVoltage(v)) & (!mpptOutYm.getCurrent(i)));
+    tc->setMpptYmCurrent(i);
+    tc->setMpptYmVoltage(v);
 
-    tc->setPANELOUT_XM_INA_STATUS((!panelOutXm.getVoltage(v)) & (!panelOutXm.getCurrent(i)));
-    tc->setPANELOUT_XM_CURRENT(i);
-    tc->setPANELOUT_XM_VOLTAGE(v);
+    tc->setMpptYpINAStatus((!mpptOutYp.getVoltage(v)) & (!mpptOutYp.getCurrent(i)));
+    tc->setMpptYpCurrent(i);
+    tc->setMpptYpVoltage(v);
 
-    tc->setPANELOUT_XP_INA_STATUS((!panelOutXp.getVoltage(v)) & (!panelOutXp.getCurrent(i)));
-    tc->setPANELOUT_XP_CURRENT(i);
-    tc->setPANELOUT_XP_VOLTAGE(v);
+    tc->setPanelXmINAStatus((!panelOutXm.getVoltage(v)) & (!panelOutXm.getCurrent(i)));
+    tc->setPanelXmCurrent(i);
+    tc->setPanelXmVoltage(v);
 
-    tc->setPANELOUT_YM_INA_STATUS((!panelOutYm.getVoltage(v)) & (!panelOutYm.getCurrent(i)));
-    tc->setPANELOUT_YM_CURRENT(i);
-    tc->setPANELOUT_YM_VOLTAGE(v);
+    tc->setPanelXpINAStatus((!panelOutXp.getVoltage(v)) & (!panelOutXp.getCurrent(i)));
+    tc->setPanelXpCurrent(i);
+    tc->setPanelXpVoltage(v);
 
-    tc->setPANELOUT_YP_INA_STATUS((!panelOutYp.getVoltage(v)) & (!panelOutYp.getCurrent(i)));
-    tc->setPANELOUT_YP_CURRENT(i);
-    tc->setPANELOUT_YP_VOLTAGE(v);
+    tc->setPanelYmINAStatus((!panelOutYm.getVoltage(v)) & (!panelOutYm.getCurrent(i)));
+    tc->setPanelYmCurrent(i);
+    tc->setPanelYmVoltage(v);
+
+    tc->setPanelYpINAStatus((!panelOutYp.getVoltage(v)) & (!panelOutYp.getCurrent(i)));
+    tc->setPanelYpCurrent(i);
+    tc->setPanelYpVoltage(v);
 
     // Internal and Unregulated Bus:
-    tc->setINTERNAL_INA_STATUS((!internalBus.getVoltage(v)) & (!internalBus.getCurrent(i)));
-    tc->setINTERNAL_INA_CURRENT(i);
-    tc->setINTERNAL_INA_VOLTAGE(v);
+    tc->setInternalINAStatus((!internalBus.getVoltage(v)) & (!internalBus.getCurrent(i)));
+    tc->setInternalINACurrent(i);
+    tc->setInternalINAVoltage(v);
 
-    tc->setUNREGULATED_INA_STATUS((!unregulatedBus.getVoltage(v)) & (!unregulatedBus.getCurrent(i)));
-    tc->setUNREGULATED_INA_CURRENT(i);
-    tc->setUNREGULATED_INA_VOLTAGE(v);
+    tc->setUnregulatedINAStatus((!unregulatedBus.getVoltage(v)) & (!unregulatedBus.getCurrent(i)));
+    tc->setUnregulatedINACurrent(i);
+    tc->setUnregulatedINAVoltage(v);
 }
 
 /**

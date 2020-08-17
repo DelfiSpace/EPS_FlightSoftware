@@ -29,6 +29,7 @@
 #include "PowerBusHandler.h"
 #include "Service.h"
 #include "HousekeepingService.h"
+#include "FRAMService.h"
 #include "EPSTelemetryContainer.h"
 #include "PingService.h"
 #include "ResetService.h"
@@ -39,6 +40,7 @@
 #include "Bootloader.h"
 #include "HWMonitor.h"
 #include "ADCManager.h"
+#include "FRAMVar.h"
 
 #define FCLOCK 48000000
 #define SCLOCK 32768

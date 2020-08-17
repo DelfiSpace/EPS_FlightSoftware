@@ -34,7 +34,19 @@ void PowerBusHandler::checkBussesStatus( EPSTelemetryContainer *tc )
 {
     // check if Unregulated Bus voltage is below threshold
     // if so, switch all buses off
-    if (tc->getBattVoltage() < BATTERY_LOW_THRESHOLD)
+
+    int curBatteryVoltage = 0;
+
+    if(tc->getBATTERY_INA_STATUS()){
+        curBatteryVoltage = tc->getBATTERY_INA_VOLTAGE();
+    }else if(tc->getBATTERY_GG_STATUS()){
+        curBatteryVoltage = tc->getBATTERY_GG_VOLTAGE();
+    }else{
+        //both sensors are dead. Just set voltage high enough to turn on the bus.
+        curBatteryVoltage = BATTERY_HIGH_THRESHOLD;
+    }
+
+    if (curBatteryVoltage < BATTERY_LOW_THRESHOLD)
     {
         MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P8, GPIO_PIN0 );
         MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P8, GPIO_PIN1 );
@@ -49,7 +61,7 @@ void PowerBusHandler::checkBussesStatus( EPSTelemetryContainer *tc )
     }
     else
     {
-        if ((undervoltageProtection) && (tc->getBattVoltage() >= BATTERY_HIGH_THRESHOLD))
+        if ((undervoltageProtection) && (curBatteryVoltage >= BATTERY_HIGH_THRESHOLD))
         {
             undervoltageProtection = false;
             if (DEFAULT & BUS1)

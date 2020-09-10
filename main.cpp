@@ -89,8 +89,7 @@ void periodicTask()
     // watch-dog time window
     // kick hardware watch-dog after every telemetry collection happens
     reset.kickExternalWatchDog();
-    // make sure we dont reset on silent bus.
-    reset.kickInternalWatchDog();
+
 }
 
 void acquireTelemetry(EPSTelemetryContainer *tc)

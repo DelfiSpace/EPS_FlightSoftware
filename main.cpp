@@ -218,6 +218,7 @@ void acquireTelemetry(EPSTelemetryContainer *tc)
     tc->setUnregulatedINAVoltage(v);
 }
 
+
 /**
  * main.c
  */
@@ -264,6 +265,9 @@ void main(void)
     mpptOutXp.setShuntResistor(40);
     mpptOutXm.setShuntResistor(40);
     batteryINA.setShuntResistor(33);
+
+    unregulatedBus.setAlertLimitBusVoltage(BATTERY_LOW_THRESHOLD); //voltage in mV
+    unregulatedBus.setAlertEnableBusUnderVoltage();
 
     // initialize temperature sensors
     tempYp.init();

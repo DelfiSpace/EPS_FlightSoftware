@@ -19,7 +19,7 @@
 #define COMMAND_RESPONSE_PBUS             2
 
 #define BATTERY_LOW_THRESHOLD          3000    // mV
-#define BATTERY_HIGH_THRESHOLD         3200    // mV
+#define BATTERY_HIGH_THRESHOLD         3300    // mV
 
 #define BUS1        1
 #define BUS2        2
@@ -36,6 +36,7 @@ private:
 public:
     PowerBusHandler();
     void checkBussesStatus( EPSTelemetryContainer *tc );
+    void underVoltageTrip();
     unsigned char getStatus( void );
     unsigned char getErrorStatus( void );
     virtual bool process( DataMessage &command, DataMessage &workingBbuffer );

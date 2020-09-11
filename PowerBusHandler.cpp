@@ -7,9 +7,32 @@
 
 #include "PowerBusHandler.h"
 
+PowerBusHandler* _powerBusStub;
+
+void PowerBusHandler::underVoltageTrip(){
+
+    uint16_t status = MAP_GPIO_getInterruptStatus(GPIO_PORT_P2, GPIO_PIN7);
+    MAP_GPIO_clearInterruptFlag(GPIO_PORT_P2, PIN_ALL16);
+    if(status & GPIO_PIN7)
+    {
+        Console::log("PowerBusHandler: Under-voltage TRIP");
+        MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P8, GPIO_PIN0 );
+        MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P8, GPIO_PIN1 );
+        MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P8, GPIO_PIN2 );
+        MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P8, GPIO_PIN3 );
+
+        if ( !undervoltageProtection )
+        {
+            Console::log("PowerBusHandler: Under-voltage protection ON");
+        }
+        undervoltageProtection = true;
+    }
+
+}
 
 PowerBusHandler::PowerBusHandler()
 {
+    _powerBusStub = this;
     // always start with the busses in protection
     undervoltageProtection = true;
 
@@ -28,6 +51,14 @@ PowerBusHandler::PowerBusHandler()
     MAP_GPIO_setAsInputPin( GPIO_PORT_P3, GPIO_PIN1 );
     MAP_GPIO_setAsInputPin( GPIO_PORT_P3, GPIO_PIN2 );
     MAP_GPIO_setAsInputPin( GPIO_PORT_P3, GPIO_PIN3 );
+
+    //enable unregulated INA interrupt for undervoltage detection
+    //enable interrupt for P2.7
+    MAP_GPIO_setAsInputPinWithPullUpResistor(GPIO_PORT_P2, GPIO_PIN7);
+    MAP_GPIO_interruptEdgeSelect(GPIO_PORT_P2, GPIO_PIN7, GPIO_HIGH_TO_LOW_TRANSITION);
+    MAP_GPIO_registerInterrupt(GPIO_PORT_P2,[](){_powerBusStub->underVoltageTrip();});
+    MAP_GPIO_enableInterrupt(GPIO_PORT_P2,GPIO_PIN7);
+
 }
 
 void PowerBusHandler::checkBussesStatus( EPSTelemetryContainer *tc )

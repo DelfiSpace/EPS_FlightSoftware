@@ -26,6 +26,9 @@ void PowerBusHandler::underVoltageTrip(){
             Console::log("PowerBusHandler: Under-voltage protection ON");
         }
         undervoltageProtection = true;
+        //disable this interrupt to avoid hysteresis
+        MAP_GPIO_disableInterrupt(GPIO_PORT_P2,GPIO_PIN7);
+
     }
 
 }
@@ -57,7 +60,6 @@ PowerBusHandler::PowerBusHandler()
     MAP_GPIO_setAsInputPinWithPullUpResistor(GPIO_PORT_P2, GPIO_PIN7);
     MAP_GPIO_interruptEdgeSelect(GPIO_PORT_P2, GPIO_PIN7, GPIO_HIGH_TO_LOW_TRANSITION);
     MAP_GPIO_registerInterrupt(GPIO_PORT_P2,[](){_powerBusStub->underVoltageTrip();});
-    MAP_GPIO_enableInterrupt(GPIO_PORT_P2,GPIO_PIN7);
 
 }
 
@@ -70,11 +72,14 @@ void PowerBusHandler::checkBussesStatus( EPSTelemetryContainer *tc )
 
     if(tc->getBatteryINAStatus()){
         curBatteryVoltage = tc->getBatteryINAVoltage();
+        Console::log("PowerBusHandler: INA VOLTAGE %d mV",  curBatteryVoltage);
     }else if(tc->getBatteryGGStatus()){
         curBatteryVoltage = tc->getBatteryGGVoltage();
+        Console::log("PowerBusHandler: GG VOLTAGE %d mV",  curBatteryVoltage);
     }else{
         //both sensors are dead. Just set voltage high enough to turn on the bus.
         curBatteryVoltage = BATTERY_HIGH_THRESHOLD;
+        Console::log("PowerBusHandler: NO SENSOR, ASSUMING: %d mV",  curBatteryVoltage);
     }
 
     if (curBatteryVoltage < BATTERY_LOW_THRESHOLD)
@@ -94,7 +99,12 @@ void PowerBusHandler::checkBussesStatus( EPSTelemetryContainer *tc )
     {
         if ((undervoltageProtection) && (curBatteryVoltage >= BATTERY_HIGH_THRESHOLD))
         {
+            Console::log("PowerBusHandler: Under-voltage protection OFF");
             undervoltageProtection = false;
+            //turn undervoltage trip detection back on.
+            MAP_GPIO_clearInterruptFlag(GPIO_PORT_P2, PIN_ALL16);
+            MAP_GPIO_enableInterrupt(GPIO_PORT_P2,GPIO_PIN7);
+
             if (DEFAULT & BUS1)
             {
                 MAP_GPIO_setOutputHighOnPin( GPIO_PORT_P8, GPIO_PIN0 );
@@ -127,8 +137,6 @@ void PowerBusHandler::checkBussesStatus( EPSTelemetryContainer *tc )
             {
                 MAP_GPIO_setOutputLowOnPin( GPIO_PORT_P8, GPIO_PIN3 );
             }
-
-            Console::log("PowerBusHandler: Under-voltage protection OFF");
         }
     }
 }
@@ -255,10 +263,19 @@ bool PowerBusHandler::process(DataMessage &command, DataMessage &workingBuffer)
         }
         else
         {
-            Console::log("Uknown command / Wrong command length");
-            // unknown request
-            workingBuffer.setPayloadSize(1);
-            workingBuffer.getDataPayload()[0] = COMMAND_ERROR_PBUS;
+            if(command.getPayloadSize() == 1 && command.getDataPayload()[0] == 5){
+
+                Console::log("Toggle BAT_RST ON!");
+                this->setPostFunc([](){MAP_GPIO_setOutputHighOnPin(GPIO_PORT_P8, GPIO_PIN6);
+                    MAP_GPIO_setAsOutputPin( GPIO_PORT_P8, GPIO_PIN6 );});
+                workingBuffer.setPayloadSize(1);
+                workingBuffer.getDataPayload()[0] = command.getDataPayload()[0];
+            }else{
+                Console::log("Uknown command / Wrong command length");
+                // unknown request
+                workingBuffer.setPayloadSize(1);
+                workingBuffer.getDataPayload()[0] = COMMAND_ERROR_PBUS;
+            }
         }
 
         // command processed

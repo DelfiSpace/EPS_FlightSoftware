@@ -70,17 +70,28 @@ void PowerBusHandler::checkBussesStatus( EPSTelemetryContainer *tc )
 
     int curBatteryVoltage = 0;
 
-    if(tc->getBatteryINAStatus()){
-        curBatteryVoltage = tc->getBatteryINAVoltage();
-        Console::log("PowerBusHandler: INA VOLTAGE %d mV",  curBatteryVoltage);
-    }else if(tc->getBatteryGGStatus()){
-        curBatteryVoltage = tc->getBatteryGGVoltage();
-        Console::log("PowerBusHandler: GG VOLTAGE %d mV",  curBatteryVoltage);
+    if(tc->getUnregulatedINAStatus()){
+        curBatteryVoltage = tc->getUnregulatedINAVoltage();
+        Console::log("PowerBusHandler: Unregulated INA Voltage %d mV",  curBatteryVoltage);
     }else{
         //both sensors are dead. Just set voltage high enough to turn on the bus.
         curBatteryVoltage = BATTERY_HIGH_THRESHOLD;
         Console::log("PowerBusHandler: NO SENSOR, ASSUMING: %d mV",  curBatteryVoltage);
     }
+
+
+    // Changed to Unregulated INA as that is used in the interrupt TRIP
+//    if(tc->getBatteryINAStatus()){
+//        curBatteryVoltage = tc->getBatteryINAVoltage();
+//        Console::log("PowerBusHandler: INA VOLTAGE %d mV",  curBatteryVoltage);
+//    }else if(tc->getBatteryGGStatus()){
+//        curBatteryVoltage = tc->getBatteryGGVoltage();
+//        Console::log("PowerBusHandler: GG VOLTAGE %d mV",  curBatteryVoltage);
+//    }else{
+//        //both sensors are dead. Just set voltage high enough to turn on the bus.
+//        curBatteryVoltage = BATTERY_HIGH_THRESHOLD;
+//        Console::log("PowerBusHandler: NO SENSOR, ASSUMING: %d mV",  curBatteryVoltage);
+//    }
 
     if (curBatteryVoltage < BATTERY_LOW_THRESHOLD)
     {

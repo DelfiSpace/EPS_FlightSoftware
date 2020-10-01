@@ -69,7 +69,9 @@ PeriodicTask timerTask(1000, periodicTask);
 PeriodicTask* periodicTasks[] = {&timerTask};
 PeriodicTaskNotifier taskNotifier = PeriodicTaskNotifier(periodicTasks, 1);
 Task* tasks[] = { &cmdHandler, &timerTask };
+
 // system uptime
+uint8_t curSlot = 0;
 unsigned long uptime = 0;
 FRAMVar<unsigned long> totalUptime;
 
@@ -101,7 +103,7 @@ void acquireTelemetry(EPSTelemetryContainer *tc)
     //Set Telemetry:
 
     //HouseKeeping Header:
-    tc->setStatus(Bootloader::getCurrentSlot());
+    tc->setStatus(curSlot);
     fram.read(FRAM_RESET_COUNTER + Bootloader::getCurrentSlot(), &uc, 1);
     tc->setBootCounter(uc);
     tc->setResetCause(hwMonitor.getResetStatus());
@@ -313,7 +315,8 @@ void main(void)
     // every time a command is correctly processed, call the watch-dog
     cmdHandler.onValidCommand([]{ reset.kickInternalWatchDog(); });
 
-    Console::log("EPS booting...SLOT: %d", (int) Bootloader::getCurrentSlot());
+    curSlot = Bootloader::getCurrentSlot();
+    Console::log("EPS booting...SLOT: %d", curSlot);
     if(HAS_SW_VERSION == 1)
     {
         Console::log("SW_VERSION: %s", (const char*)xtr(SW_VERSION));
